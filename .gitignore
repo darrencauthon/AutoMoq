@@ -1,0 +1,13 @@
+obj
+bin
+_ReSharper.*
+csproj.user
+*.resharper.user
+*.resharper
+*.suo
+*.cache
+*~
+*.swp
+TestResults
+LocalTestRun.testrunconfig
+AutoMoq/TestResult
