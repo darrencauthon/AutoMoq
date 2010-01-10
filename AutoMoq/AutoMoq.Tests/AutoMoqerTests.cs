@@ -8,6 +8,13 @@ namespace AutoMoq.Tests
     public class AutoMoqerTests
     {
         [TestMethod]
+        public void Constructor_ClassInstantiatedWithNoConstructorArguments_ClassInstantiated()
+        {
+            // act
+            new AutoMoqer();
+        }
+
+        [TestMethod]
         public void Constructor_ClassInstantiated_AddsAutoMockingContainerExtensionToContainer()
         {
             // arrange

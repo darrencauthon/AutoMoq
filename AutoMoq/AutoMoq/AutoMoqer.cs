@@ -1,23 +1,28 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using AutoMoq.Unity;
 using Microsoft.Practices.Unity;
 using Moq;
+
+[assembly: InternalsVisibleTo("AutoMoq.Tests")]
 
 namespace AutoMoq
 {
     public class AutoMoqer
     {
-        private readonly IUnityContainer container;
-        private readonly IDictionary<Type, object> registeredMocks;
+        private IUnityContainer container;
+        private IDictionary<Type, object> registeredMocks;
 
-        public AutoMoqer(IUnityContainer container)
+        public AutoMoqer()
         {
-            this.container = container;
-            registeredMocks = new Dictionary<Type, object>();
+            SetupAutoMoqer(new UnityContainer());
+        }
 
-            AddTheAutoMockingContainerExtensionToTheContainer(container);
+        internal AutoMoqer(IUnityContainer container)
+        {
+            SetupAutoMoqer(container);
         }
 
         public T Resolve<T>()
@@ -35,6 +40,14 @@ namespace AutoMoq
         }
 
         #region private methods
+
+        private void SetupAutoMoqer(IUnityContainer container)
+        {
+            this.container = container;
+            registeredMocks = new Dictionary<Type, object>();
+
+            AddTheAutoMockingContainerExtensionToTheContainer(container);
+        }
 
         private static void AddTheAutoMockingContainerExtensionToTheContainer(IUnityContainer container)
         {
