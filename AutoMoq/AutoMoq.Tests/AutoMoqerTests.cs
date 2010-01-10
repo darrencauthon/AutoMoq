@@ -1,6 +1,7 @@
 ﻿using AutoMoq.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Microsoft.Practices.Unity;
 
 namespace AutoMoq.Tests
 {
@@ -25,6 +26,20 @@ namespace AutoMoq.Tests
 
             // assert
             containerFake.Verify(x => x.AddNewExtension<AutoMockingContainerExtension>());
+        }
+
+        [TestMethod]
+        public void Constructor_ClassInstantiated_RegistersItselfWithContainer()
+        {
+
+            // arrange
+            var containerFake = new Mock<MockUnityContainer>();
+
+            // act
+            var mocker = new AutoMoqer(containerFake.Object);
+
+            // assert
+            containerFake.Verify(x => x.RegisterInstance<AutoMoqer>(mocker));
         }
 
         [TestMethod]
@@ -103,6 +118,42 @@ namespace AutoMoq.Tests
             // assert
             containerFake.Verify(x => x.RegisterInstance(It.IsAny<IAction>()), Times.Once());
         }
+
+        [TestMethod]
+        public void SetMock_MockPassed_SetsMockObject()
+        {
+
+            // arrange
+            var mocker = new AutoMoqer(new Mock<MockUnityContainer>().Object);
+
+            var expectedDependency = new Mock<IDependency>();
+
+            // act
+            mocker.SetMock(typeof(IDependency), expectedDependency);
+
+            // assert
+            Assert.AreSame(expectedDependency, mocker.GetMock<IDependency>());
+
+        }
+
+        [TestMethod]
+        public void SetMock_MockPassedTwice_OnlyAcceptsTheFirst()
+        {
+
+            // arrange
+            var container = new UnityContainer();
+            var mocker = new AutoMoqer(container);
+
+            var expectedDependency = new Mock<IDependency>();
+
+            // act
+            mocker.SetMock(typeof(IDependency), expectedDependency);
+            mocker.SetMock(typeof(IDependency), new Mock<IDependency>());
+
+            // assert
+            Assert.AreSame(expectedDependency, mocker.GetMock<IDependency>());            
+
+        }
     }
 
     public interface IAction
@@ -111,5 +162,17 @@ namespace AutoMoq.Tests
 
     public class Action : IAction
     {
+        public Action()
+        {
+        }
+        public Action(IDependency dependency)
+        {
+        }
     }
+
+    public interface IDependency
+    {
+    }
+    
+    public class Dependency : IDependency{}
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Microsoft.Practices.ObjectBuilder2;
+using Microsoft.Practices.Unity;
 using Moq;
 
 namespace AutoMoq.Unity
@@ -11,18 +12,26 @@ namespace AutoMoq.Unity
     {
         private readonly MockFactory mockFactory;
         private readonly IEnumerable<Type> registeredTypes;
+        private readonly IUnityContainer container;
 
-        public AutoMockingBuilderStrategy(IEnumerable<Type> registeredTypes)
+        public AutoMockingBuilderStrategy(IEnumerable<Type> registeredTypes, IUnityContainer container)
         {
             mockFactory = new MockFactory(MockBehavior.Loose);
             this.registeredTypes = registeredTypes;
+            this.container = container;
         }
 
         public override void PreBuildUp(IBuilderContext context)
         {
+            var autoMoqer = container.Resolve<AutoMoqer>();
+
             var type = GetTheTypeFromTheBuilderContext(context);
             if (AMockObjectShouldBeCreatedForThisType(type))
-                context.Existing = CreateAMockObject(type).Object;
+            {
+                var mock = CreateAMockObject(type);
+                context.Existing = mock.Object;
+                autoMoqer.SetMock(type, mock);
+            }
         }
 
         #region private methods
