@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("AutoMoq")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Automocker for Moq.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("DEG")]
 [assembly: AssemblyProduct("AutoMoq")]
-[assembly: AssemblyCopyright("Copyright © DEG 2010")]
+[assembly: AssemblyCopyright("Copyright © Darren Cauthon 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
