@@ -61,7 +61,7 @@ namespace AutoMoq
 
         private static Type GetTheMockType<T>() where T : class
         {
-            return typeof(Mock<T>);
+            return typeof (Mock<T>);
         }
 
         #endregion

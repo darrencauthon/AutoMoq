@@ -4,7 +4,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace AutoMoq.Tests.Unity
 {
-
     [TestClass]
     public class AutoMockingContainerExtensionTests
     {

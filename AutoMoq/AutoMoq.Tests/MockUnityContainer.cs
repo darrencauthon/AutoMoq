@@ -21,7 +21,8 @@ namespace AutoMoq.Tests
             throw new NotImplementedException();
         }
 
-        public IUnityContainer RegisterType<TFrom, TTo>(LifetimeManager lifetimeManager, params InjectionMember[] injectionMembers) where TTo : TFrom
+        public IUnityContainer RegisterType<TFrom, TTo>(LifetimeManager lifetimeManager, params InjectionMember[] injectionMembers)
+            where TTo : TFrom
         {
             throw new NotImplementedException();
         }
@@ -31,7 +32,8 @@ namespace AutoMoq.Tests
             throw new NotImplementedException();
         }
 
-        public IUnityContainer RegisterType<TFrom, TTo>(string name, LifetimeManager lifetimeManager, params InjectionMember[] injectionMembers) where TTo : TFrom
+        public IUnityContainer RegisterType<TFrom, TTo>(string name, LifetimeManager lifetimeManager,
+                                                        params InjectionMember[] injectionMembers) where TTo : TFrom
         {
             throw new NotImplementedException();
         }
@@ -86,7 +88,8 @@ namespace AutoMoq.Tests
             throw new NotImplementedException();
         }
 
-        public IUnityContainer RegisterType(Type from, Type to, string name, LifetimeManager lifetimeManager, params InjectionMember[] injectionMembers)
+        public IUnityContainer RegisterType(Type from, Type to, string name, LifetimeManager lifetimeManager,
+                                            params InjectionMember[] injectionMembers)
         {
             throw new NotImplementedException();
         }
