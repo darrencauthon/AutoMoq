@@ -91,12 +91,12 @@ namespace AutoMoq.Tests
             throw new NotImplementedException();
         }
 
-        public IUnityContainer RegisterInstance<TInterface>(TInterface instance)
+        public virtual IUnityContainer RegisterInstance<TInterface>(TInterface instance)
         {
             throw new NotImplementedException();
         }
 
-        public IUnityContainer RegisterInstance<TInterface>(TInterface instance, LifetimeManager lifetimeManager)
+        public virtual IUnityContainer RegisterInstance<TInterface>(TInterface instance, LifetimeManager lifetimeManager)
         {
             throw new NotImplementedException();
         }
@@ -191,7 +191,7 @@ namespace AutoMoq.Tests
             throw new NotImplementedException();
         }
 
-        public IUnityContainer AddNewExtension<TExtension>() where TExtension : UnityContainerExtension, new()
+        public virtual IUnityContainer AddNewExtension<TExtension>() where TExtension : UnityContainerExtension, new()
         {
             throw new NotImplementedException();
         }
