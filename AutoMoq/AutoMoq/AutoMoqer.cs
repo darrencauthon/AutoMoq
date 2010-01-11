@@ -71,7 +71,7 @@ namespace AutoMoq
         {
             var mock = new Mock<T>();
             container.RegisterInstance<T>(mock.Object);
-            registeredMocks.Add(type, mock);
+            SetMock(type, mock);
         }
 
         private bool GetMockHasNotBeenCalledForThisType(Type type)
