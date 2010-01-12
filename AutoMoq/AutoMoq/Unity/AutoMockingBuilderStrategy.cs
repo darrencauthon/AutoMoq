@@ -10,6 +10,7 @@ namespace AutoMoq.Unity
 {
     public class AutoMockingBuilderStrategy : BuilderStrategy
     {
+
         private readonly MockFactory mockFactory;
         private readonly IEnumerable<Type> registeredTypes;
         private readonly IUnityContainer container;
