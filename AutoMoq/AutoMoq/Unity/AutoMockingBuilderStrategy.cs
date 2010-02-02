@@ -10,7 +10,6 @@ namespace AutoMoq.Unity
 {
     public class AutoMockingBuilderStrategy : BuilderStrategy
     {
-
         private readonly MockFactory mockFactory;
         private readonly IEnumerable<Type> registeredTypes;
         private readonly IUnityContainer container;
@@ -44,7 +43,7 @@ namespace AutoMoq.Unity
 
         private static Type GetTheTypeFromTheBuilderContext(IBuilderContext context)
         {
-            return ((NamedTypeBuildKey)context.OriginalBuildKey).Type;
+            return ((NamedTypeBuildKey) context.OriginalBuildKey).Type;
         }
 
         private bool TypeIsNotRegistered(Type type)
@@ -61,7 +60,7 @@ namespace AutoMoq.Unity
 
         private Mock InvokeTheMockCreationMethod(MethodInfo createMethod)
         {
-            return (Mock)createMethod.Invoke(mockFactory, new object[] {new List<object>().ToArray()});
+            return (Mock) createMethod.Invoke(mockFactory, new object[] {new List<object>().ToArray()});
         }
 
         private MethodInfo GenerateAnInterfaceMockCreationMethod(Type type)

@@ -1,7 +1,7 @@
 ﻿using AutoMoq.Unity;
+using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Microsoft.Practices.Unity;
 
 namespace AutoMoq.Tests
 {
@@ -31,7 +31,6 @@ namespace AutoMoq.Tests
         [TestMethod]
         public void Constructor_ClassInstantiated_RegistersItselfWithContainer()
         {
-
             // arrange
             var containerFake = new Mock<MockUnityContainer>();
 
@@ -39,7 +38,7 @@ namespace AutoMoq.Tests
             var mocker = new AutoMoqer(containerFake.Object);
 
             // assert
-            containerFake.Verify(x => x.RegisterInstance<AutoMoqer>(mocker));
+            containerFake.Verify(x => x.RegisterInstance(mocker));
         }
 
         [TestMethod]
@@ -122,24 +121,21 @@ namespace AutoMoq.Tests
         [TestMethod]
         public void SetMock_MockPassed_SetsMockObject()
         {
-
             // arrange
             var mocker = new AutoMoqer(new Mock<MockUnityContainer>().Object);
 
             var expectedDependency = new Mock<IDependency>();
 
             // act
-            mocker.SetMock(typeof(IDependency), expectedDependency);
+            mocker.SetMock(typeof (IDependency), expectedDependency);
 
             // assert
             Assert.AreSame(expectedDependency, mocker.GetMock<IDependency>());
-
         }
 
         [TestMethod]
         public void SetMock_MockPassedTwice_OnlyAcceptsTheFirst()
         {
-
             // arrange
             var container = new UnityContainer();
             var mocker = new AutoMoqer(container);
@@ -147,12 +143,11 @@ namespace AutoMoq.Tests
             var expectedDependency = new Mock<IDependency>();
 
             // act
-            mocker.SetMock(typeof(IDependency), expectedDependency);
-            mocker.SetMock(typeof(IDependency), new Mock<IDependency>());
+            mocker.SetMock(typeof (IDependency), expectedDependency);
+            mocker.SetMock(typeof (IDependency), new Mock<IDependency>());
 
             // assert
-            Assert.AreSame(expectedDependency, mocker.GetMock<IDependency>());            
-
+            Assert.AreSame(expectedDependency, mocker.GetMock<IDependency>());
         }
     }
 
@@ -165,6 +160,7 @@ namespace AutoMoq.Tests
         public Action()
         {
         }
+
         public Action(IDependency dependency)
         {
         }
@@ -173,6 +169,8 @@ namespace AutoMoq.Tests
     public interface IDependency
     {
     }
-    
-    public class Dependency : IDependency{}
+
+    public class Dependency : IDependency
+    {
+    }
 }

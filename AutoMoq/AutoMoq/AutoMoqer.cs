@@ -39,7 +39,7 @@ namespace AutoMoq
             return TheRegisteredMockForThisType<T>(type);
         }
 
-        internal virtual void SetMock(System.Type type, Mock mock)
+        internal virtual void SetMock(Type type, Mock mock)
         {
             if (registeredMocks.ContainsKey(type) == false)
                 registeredMocks.Add(type, mock);
@@ -64,13 +64,13 @@ namespace AutoMoq
 
         private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class
         {
-            return (Mock<T>)registeredMocks.Where(x => x.Key == type).First().Value;
+            return (Mock<T>) registeredMocks.Where(x => x.Key == type).First().Value;
         }
 
         private void CreateANewMockAndRegisterIt<T>(Type type) where T : class
         {
             var mock = new Mock<T>();
-            container.RegisterInstance<T>(mock.Object);
+            container.RegisterInstance(mock.Object);
             SetMock(type, mock);
         }
 
