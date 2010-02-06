@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using AutoMoq.Unity;
 using Microsoft.Practices.Unity;
 using Moq;
+using Moq.Language.Flow;
 
 [assembly: InternalsVisibleTo("AutoMoq.Tests")]
 
@@ -85,5 +87,11 @@ namespace AutoMoq
         }
 
         #endregion
+
+        public ISetup<T> Setup<T>(Expression<Action<T>> expression) where T : class
+        {
+            return GetMock<T>().Setup(expression);
+        }
+
     }
 }

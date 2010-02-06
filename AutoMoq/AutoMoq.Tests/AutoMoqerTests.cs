@@ -1,4 +1,5 @@
-﻿using AutoMoq.Unity;
+﻿using System;
+using AutoMoq.Unity;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -149,6 +150,20 @@ namespace AutoMoq.Tests
             // assert
             Assert.AreSame(expectedDependency, mocker.GetMock<IDependency>());
         }
+
+        [TestMethod]
+        public void Setup_CalledWithAction_ReturnsSetupFromMock()
+        {
+            // arrange
+            var mocker = new AutoMoqer(new UnityContainer());
+
+            // act
+            var result = mocker.Setup<IDependency>(x=>x.Action());
+
+            // assert
+            Assert.IsNotNull(result);
+        }
+
     }
 
     public interface IAction
@@ -168,9 +183,20 @@ namespace AutoMoq.Tests
 
     public interface IDependency
     {
+        void Action();
+
+        string Function();
     }
 
     public class Dependency : IDependency
     {
+        public void Action()
+        {
+        }
+
+        public string Function()
+        {
+            return string.Empty;
+        }
     }
 }
