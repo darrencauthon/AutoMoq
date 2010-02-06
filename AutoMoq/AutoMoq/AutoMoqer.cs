@@ -93,6 +93,11 @@ namespace AutoMoq
             return GetMock<T>().Setup(expression);
         }
 
+        public ISetup<T, TResult> Setup<T, TResult>(Expression<Func<T, TResult>> expression) where T : class
+        {
+            return GetMock<T>().Setup(expression);
+        }
+
         public void Verify<T>(Expression<Action<T>> expression) where T : class
         {
             GetMock<T>().Verify(expression);
