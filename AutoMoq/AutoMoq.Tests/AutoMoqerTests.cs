@@ -1,5 +1,4 @@
-﻿using System;
-using AutoMoq.Unity;
+﻿using AutoMoq.Unity;
 using Microsoft.Practices.Unity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -158,12 +157,11 @@ namespace AutoMoq.Tests
             var mocker = new AutoMoqer(new UnityContainer());
 
             // act
-            var result = mocker.Setup<IDependency>(x=>x.Action());
+            var result = mocker.Setup<IDependency>(x => x.Action());
 
             // assert
             Assert.IsNotNull(result);
         }
-
     }
 
     public interface IAction
@@ -172,12 +170,16 @@ namespace AutoMoq.Tests
 
     public class Action : IAction
     {
+        private readonly IDependency dependency;
+
         public Action()
         {
+            dependency.Action();
         }
 
         public Action(IDependency dependency)
         {
+            this.dependency = dependency;
         }
     }
 

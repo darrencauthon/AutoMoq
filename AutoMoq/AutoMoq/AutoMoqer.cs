@@ -93,5 +93,25 @@ namespace AutoMoq
             return GetMock<T>().Setup(expression);
         }
 
+        public void Verify<T>(Expression<Action<T>> expression) where T : class
+        {
+            GetMock<T>().Verify(expression);
+        }
+
+        public void Verify<T>(Expression<Action<T>> expression, string failMessage) where T : class
+        {
+            GetMock<T>().Verify(expression, failMessage);
+        }
+
+        public void Verify<T>(Expression<Action<T>> expression, Times times) where T : class
+        {
+            GetMock<T>().Verify(expression, times);
+        }
+
+        public void Verify<T>(Expression<Action<T>> expression, Times times, string failMessage) where T : class
+        {
+            GetMock<T>().Verify(expression, times, failMessage);
+        }
+
     }
 }
