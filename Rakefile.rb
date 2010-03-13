@@ -53,4 +53,5 @@ task :create_deployment do
 		end
 	end
 	sh "#{ILMERGE} /t:library /out:#{DEPLOY_FILE} #{includes.join(" ")}"
+	Rake::Task['clean'].execute
 end
