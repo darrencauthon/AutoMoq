@@ -6,11 +6,11 @@ ILMERGE = "ilmerge"
 DEVENV = "\"C:\\Program Files\\Microsoft Visual Studio 9.0\\Common7\\IDE\\devenv.exe\""
 
 SOLUTION_ROOT = Dir.pwd
-SOLUTION_FILE = "\"#{SOLUTION_ROOT}\\automoq\\automoq.sln\""
+SOLUTION_FILE = "\"#{SOLUTION_ROOT}\\src\\automoq.sln\""
 
-BIN_DIRECTORY = "#{SOLUTION_ROOT}\\AutoMoq\\AutoMoq\\bin\\Release"
+BIN_DIRECTORY = "#{SOLUTION_ROOT}\\src\\AutoMoq\\bin\\Release"
 
-DEPLOY_DIRECTORY = "#{SOLUTION_ROOT}\\Deploy"
+DEPLOY_DIRECTORY = "#{SOLUTION_ROOT}\\deploy"
 DEPLOY_FILE =  "#{DEPLOY_DIRECTORY}\\AutoMoq.dll"
 
 task :default=>[:say_hi]
