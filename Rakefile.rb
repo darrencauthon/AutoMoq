@@ -38,13 +38,13 @@ task :clean do
 end
 
 desc "Execute release build"
-task :release_build do
+task :build_release do
 	sh "#{DEVENV} #{SOLUTION_FILE} /build Release"
 end
 
 desc "Create the AutoMoq.dll in /Deploy"
-task :create_deployment do
-    Rake::Task['release_build'].execute
+task :create_deploy do
+    Rake::Task['build_release'].execute
 	mkdir "#{DEPLOY_DIRECTORY}" unless File.exists?(DEPLOY_DIRECTORY)
 	includes = []
 	Dir["#{BIN_DIRECTORY}/*.dll"].each do |f| 
