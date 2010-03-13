@@ -3,9 +3,14 @@ require 'rubygems'
 require 'ftools'
 
 ILMERGE = "ilmerge"
+DEVENV = "\"C:\\Program Files\\Microsoft Visual Studio 9.0\\Common7\\IDE\\devenv.exe\""
+
 SOLUTION_ROOT = Dir.pwd
+SOLUTION_FILE = "\"#{SOLUTION_ROOT}\\automoq\\automoq.sln\""
+
+BIN_DIRECTORY = "#{SOLUTION_ROOT}\\AutoMoq\\AutoMoq\\bin\\Release"
+
 DEPLOY_DIRECTORY = "#{SOLUTION_ROOT}\\Deploy"
-BIN_DIRECTORY = "#{SOLUTION_ROOT}\\AutoMoq/AutoMoq/bin/Debug"
 DEPLOY_FILE =  "#{DEPLOY_DIRECTORY}\\AutoMoq.dll"
 
 task :default=>[:say_hi]
@@ -27,8 +32,14 @@ task :file_count do
 	end   
 end
 
-desc "Merges the assemblies"
-task :merge do
+desc "Execute release build"
+task :release_build do
+	sh "#{DEVENV} #{SOLUTION_FILE} /build Release"
+end
+
+desc "Create the AutoMoq.dll in /Deploy"
+task :create_deployment do
+    Rake::Task['release_build'].execute
 	mkdir "#{DEPLOY_DIRECTORY}" unless File.exists?(DEPLOY_DIRECTORY)
 	includes = []
 	Dir["#{BIN_DIRECTORY}/*.dll"].each do |f| 
