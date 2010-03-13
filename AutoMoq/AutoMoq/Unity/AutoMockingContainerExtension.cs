@@ -5,7 +5,7 @@ using Microsoft.Practices.Unity.ObjectBuilder;
 
 namespace AutoMoq.Unity
 {
-    public class AutoMockingContainerExtension : UnityContainerExtension
+    internal class AutoMockingContainerExtension : UnityContainerExtension
     {
         private readonly IList<Type> registeredTypes = new List<Type>();
 
