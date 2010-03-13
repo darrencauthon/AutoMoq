@@ -32,6 +32,11 @@ task :file_count do
 	end   
 end
 
+desc "Clean the solution"
+task :clean do
+	sh "#{DEVENV} #{SOLUTION_FILE} /clean"
+end
+
 desc "Execute release build"
 task :release_build do
 	sh "#{DEVENV} #{SOLUTION_FILE} /build Release"
