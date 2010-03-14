@@ -15,13 +15,13 @@ DEPLOY_FILE =  "#{DEPLOY_DIRECTORY}\\AutoMoq.dll"
 
 task :default=>[:say_hi]
 
-desc "Says Hi"
+desc "Says hi"
 task :say_hi do 
 	puts "Hi there. Rake is working."
 	puts "Type rake --tasks."
 end
 
-desc "Count files of each type in this solution"
+desc "Count the files of each type in this solution"
 task :file_count do
 	report = {}
 	Dir['./**/**'].each do |f| 
@@ -32,19 +32,19 @@ task :file_count do
 	end   
 end
 
-desc "Clean the solution"
+desc "Cleans the solution"
 task :clean do
 	sh "#{DEVENV} #{SOLUTION_FILE} /clean"
 end
 
-desc "Execute release build"
-task :build_release do
+desc "Builds the release version"
+task :release_build do
 	sh "#{DEVENV} #{SOLUTION_FILE} /build Release"
 end
 
-desc "Create the AutoMoq.dll in /Deploy"
+desc "Create the AutoMoq.dll in /deploy"
 task :create_deploy do
-    Rake::Task['build_release'].execute
+    Rake::Task['release_build'].execute
 	mkdir "#{DEPLOY_DIRECTORY}" unless File.exists?(DEPLOY_DIRECTORY)
 	includes = []
 	Dir["#{BIN_DIRECTORY}/*.dll"].each do |f| 
@@ -54,4 +54,11 @@ task :create_deploy do
 	end
 	sh "#{ILMERGE} /t:library /out:#{DEPLOY_FILE} #{includes.join(" ")}"
 	Rake::Task['clean'].execute
+end
+
+desc "Delete the /deploy directory"
+task :clean_deploy do
+	File.delete "#{DEPLOY_DIRECTORY + "/AutoMoq.dll"}" if File.exists?(DEPLOY_DIRECTORY + "/AutoMoq.dll")
+	File.delete "#{DEPLOY_DIRECTORY + "/AutoMoq.pdb"}" if File.exists?(DEPLOY_DIRECTORY + "/AutoMoq.pdb")
+	Dir.delete "#{DEPLOY_DIRECTORY}" if File.exists?(DEPLOY_DIRECTORY)
 end
