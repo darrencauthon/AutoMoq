@@ -1,25 +1,25 @@
 ﻿using AutoMoq.Unity;
 using Microsoft.Practices.Unity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NUnit.Framework;
 
 namespace AutoMoq.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class AutoMoqerTests
     {
-        [TestMethod]
+        [Test]
         public void Constructor_ClassInstantiatedWithNoConstructorArguments_ClassInstantiated()
         {
             // act
             new AutoMoqer();
         }
 
-        [TestMethod]
+        [Test]
         public void Constructor_ClassInstantiated_AddsAutoMockingContainerExtensionToContainer()
         {
             // arrange
-            var containerFake = new Mock<MockUnityContainer>();
+            var containerFake = new Mock<UnityContainer>();
 
             // act
             new AutoMoqer(containerFake.Object);
@@ -28,7 +28,7 @@ namespace AutoMoq.Tests
             containerFake.Verify(x => x.AddNewExtension<AutoMockingContainerExtension>());
         }
 
-        [TestMethod]
+        [Test]
         public void Constructor_ClassInstantiated_RegistersItselfWithContainer()
         {
             // arrange
@@ -41,7 +41,7 @@ namespace AutoMoq.Tests
             containerFake.Verify(x => x.RegisterInstance(mocker));
         }
 
-        [TestMethod]
+        [Test]
         public void Resolve_InterfacePassed_ReturnsResolutionFromUnityContainer()
         {
             // arrange
@@ -60,7 +60,7 @@ namespace AutoMoq.Tests
             Assert.AreSame(expectedResult, result);
         }
 
-        [TestMethod]
+        [Test]
         public void GetMock_CalledWithInterface_ReturnsMockObject()
         {
             // arrange
@@ -73,7 +73,7 @@ namespace AutoMoq.Tests
             Assert.AreEqual(typeof (Mock<IAction>), result.GetType());
         }
 
-        [TestMethod]
+        [Test]
         public void GetMock_CalledWithSameInterfaceTwice_SecondCallReturnsSameRequestAsFirst()
         {
             // arrange
@@ -87,7 +87,7 @@ namespace AutoMoq.Tests
             Assert.AreSame(first, second);
         }
 
-        [TestMethod]
+        [Test]
         public void GetMock_CalledWithInterface_RegistersMockWithContainer()
         {
             // arrange
@@ -102,7 +102,7 @@ namespace AutoMoq.Tests
             containerFake.Verify(x => x.RegisterInstance(It.IsAny<IAction>()), Times.Once());
         }
 
-        [TestMethod]
+        [Test]
         public void GetMock_CalledWithSameInterfaceTwice_RegistersMockWithContainer()
         {
             // arrange
@@ -118,7 +118,7 @@ namespace AutoMoq.Tests
             containerFake.Verify(x => x.RegisterInstance(It.IsAny<IAction>()), Times.Once());
         }
 
-        [TestMethod]
+        [Test]
         public void SetMock_MockPassed_SetsMockObject()
         {
             // arrange
@@ -133,7 +133,7 @@ namespace AutoMoq.Tests
             Assert.AreSame(expectedDependency, mocker.GetMock<IDependency>());
         }
 
-        [TestMethod]
+        [Test]
         public void SetMock_MockPassedTwice_OnlyAcceptsTheFirst()
         {
             // arrange
@@ -150,7 +150,7 @@ namespace AutoMoq.Tests
             Assert.AreSame(expectedDependency, mocker.GetMock<IDependency>());
         }
 
-        [TestMethod]
+        [Test]
         public void Setup_CalledWithAction_ReturnsSetupFromMock()
         {
             // arrange
@@ -163,7 +163,7 @@ namespace AutoMoq.Tests
             Assert.IsNotNull(result);
         }
 
-        [TestMethod]
+        [Test]
         public void Setup_CalledWithFunction_ReturnsSetupFromMock()
         {
             // arrange

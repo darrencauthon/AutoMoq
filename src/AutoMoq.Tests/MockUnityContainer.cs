@@ -231,5 +231,30 @@ namespace AutoMoq.Tests
         {
             get { throw new NotImplementedException(); }
         }
+
+        #region IUnityContainer Members
+
+
+        public object BuildUp(Type t, object existing, string name, params ResolverOverride[] resolverOverrides)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<ContainerRegistration> Registrations
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public object Resolve(Type t, string name, params ResolverOverride[] resolverOverrides)
+        {
+            return this.Resolve(t, name);
+        }
+
+        public IEnumerable<object> ResolveAll(Type t, params ResolverOverride[] resolverOverrides)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }
