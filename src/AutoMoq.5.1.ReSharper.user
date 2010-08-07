@@ -1,0 +1,31 @@
+<Configuration>
+  <SettingsComponent>
+    <string />
+    <integer />
+    <boolean>
+      <setting name="SolutionAnalysisEnabled">False</setting>
+    </boolean>
+  </SettingsComponent>
+  <RecentFiles>
+    <RecentFiles>
+      <File id="5D9356F3-9AA2-4278-9A53-A7BD936EED9F/f:MockUnityContainer.cs" caret="279" fromTop="11" />
+      <File id="5D9356F3-9AA2-4278-9A53-A7BD936EED9F/f:AutoMoqerTests.cs" caret="219" fromTop="10" />
+    </RecentFiles>
+    <RecentEdits>
+      <File id="5D9356F3-9AA2-4278-9A53-A7BD936EED9F/f:MockUnityContainer.cs" caret="5367" fromTop="16" />
+      <File id="5D9356F3-9AA2-4278-9A53-A7BD936EED9F/f:MockUnityContainer.cs" caret="157" fromTop="0" />
+      <File id="5D9356F3-9AA2-4278-9A53-A7BD936EED9F/f:AutoMoqerTests.cs" caret="56" fromTop="1" />
+      <File id="5D9356F3-9AA2-4278-9A53-A7BD936EED9F/f:AutoMoqerTests.cs" caret="189" fromTop="9" />
+    </RecentEdits>
+  </RecentFiles>
+  <NAntValidationSettings>
+    <NAntPath value="" />
+  </NAntValidationSettings>
+  <UnitTestRunner>
+    <Providers />
+  </UnitTestRunner>
+  <UnitTestRunnerNUnit>
+    <NUnitInstallDir>C:\Program Files\NUnit 2.4.8\bin\net-2.0\</NUnitInstallDir>
+    <UseAddins>Never</UseAddins>
+  </UnitTestRunnerNUnit>
+</Configuration>
