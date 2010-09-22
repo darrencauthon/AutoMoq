@@ -25,6 +25,7 @@ namespace AutoMoq
         internal AutoMoqer(IUnityContainer container)
         {
             SetupAutoMoqer(container);
+        	var test = "test";
         }
 
         public virtual T Resolve<T>()
