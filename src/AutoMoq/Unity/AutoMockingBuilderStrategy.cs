@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
@@ -55,7 +56,35 @@ namespace AutoMoq.Unity
         {
             var createMethod = GenerateAnInterfaceMockCreationMethod(type);
 
-            return InvokeTheMockCreationMethod(createMethod);
+            var mock = InvokeTheMockCreationMethod(createMethod);
+            foreach (var propertyInfo in type.GetProperties())
+            {
+                if (propertyInfo.CanRead && !propertyInfo.CanWrite && propertyInfo.PropertyType.IsInterface)
+                {
+                    SetupMockPropertyGetter(type, propertyInfo, mock);
+                }
+            }
+            return mock;
+        }
+
+        private void SetupMockPropertyGetter(Type type, PropertyInfo propertyInfo, Mock mock)
+        {
+            var methodTemplate = GetType().GetMethod("SetupDependency", BindingFlags.Instance | BindingFlags.NonPublic);
+            var genericMethod = methodTemplate.MakeGenericMethod(new[] { type, propertyInfo.PropertyType });
+            genericMethod.Invoke(this, new object[] { mock, propertyInfo });
+        }
+
+        private void SetupDependency<TMock, TDependency>(Mock<TMock> mock, PropertyInfo propertyInfo) where TMock:class
+        { 
+            // Creates an expression for (x => x.Dependency) where Dependency is a read only 
+            // property of type propertyInfo.PropertyType
+            var argument = Expression.Parameter(typeof(TMock), "x");
+            var getPropertyExpression = Expression.Property(argument, propertyInfo.Name);
+            var lambda = Expression.Lambda<Func<TMock, TDependency>>(getPropertyExpression, argument);            
+            Expression<Func<TMock, TDependency>> expression = lambda;            
+
+            var dependency = container.Resolve<TDependency>();
+            mock.Setup(expression).Returns(dependency);
         }
 
         private Mock InvokeTheMockCreationMethod(MethodInfo createMethod)

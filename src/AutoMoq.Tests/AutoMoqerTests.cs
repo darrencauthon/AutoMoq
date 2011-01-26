@@ -27,6 +27,21 @@ namespace AutoMoq.Tests
             var concreteClass = mocker.Resolve<ClassWithDependencies>();
             concreteClass.ShouldNotBeNull();
         }
+
+        [Test]
+        public void Can_resolve_a_nested_dependency_without_injection()
+        {
+            var concreteClass = mocker.Resolve<ClassWithNestedDependencies>();
+            concreteClass.DependencyWithDependencies.Dependency.ShouldNotBeNull();
+        }
+
+        [Test]
+        public void Can_inject_a_nested_dependency()
+        {
+            var nestedDependency = mocker.GetMock<IDependency>();
+            var concreteClass = mocker.Resolve<ClassWithNestedDependencies>();
+            concreteClass.DependencyWithDependencies.Dependency.ShouldBeSameAs(nestedDependency.Object);
+        }
     }
 
     public class ConcreteClass
@@ -45,5 +60,20 @@ namespace AutoMoq.Tests
 
     public interface IDependency
     {
+    }
+
+    public class ClassWithNestedDependencies
+    {
+        public IDependencyWithDependencies DependencyWithDependencies { get; set; }
+
+        public ClassWithNestedDependencies(IDependencyWithDependencies dependencyWithDependencies)
+        {
+            DependencyWithDependencies = dependencyWithDependencies;
+        }
+    }
+
+    public interface IDependencyWithDependencies
+    {
+        IDependency Dependency { get; }
     }
 }
