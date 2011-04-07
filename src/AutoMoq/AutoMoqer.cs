@@ -41,6 +41,12 @@ namespace AutoMoq
             return TheRegisteredMockForThisType<T>(type);
         }
 
+        public virtual void SetConstant<T>(T instance) where T : class
+        {
+            container.RegisterInstance(instance);
+            SetMock(instance.GetType(), null);
+        }
+
         internal virtual void SetMock(Type type, Mock mock)
         {
             if (registeredMocks.ContainsKey(type) == false)
