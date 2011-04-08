@@ -16,6 +16,7 @@ namespace AutoMoq
     {
         private IUnityContainer container;
         private IDictionary<Type, object> registeredMocks;
+        internal Type ResolveType = null;
 
         public AutoMoqer()
         {
@@ -29,11 +30,15 @@ namespace AutoMoq
 
         public virtual T Resolve<T>()
         {
-            return container.Resolve<T>();
+            ResolveType = typeof(T);
+            var result = container.Resolve<T>();
+            ResolveType = null;
+            return result;
         }
 
         public virtual Mock<T> GetMock<T>() where T : class
         {
+            ResolveType = null;
             var type = GetTheMockType<T>();
             if (GetMockHasNotBeenCalledForThisType(type))
                 CreateANewMockAndRegisterIt<T>(type);
@@ -41,16 +46,16 @@ namespace AutoMoq
             return TheRegisteredMockForThisType<T>(type);
         }
 
-        public virtual void SetConstant<T>(T instance) where T : class
-        {
-            container.RegisterInstance(instance);
-            SetMock(instance.GetType(), null);
-        }
-
         internal virtual void SetMock(Type type, Mock mock)
         {
             if (registeredMocks.ContainsKey(type) == false)
                 registeredMocks.Add(type, mock);
+        }
+
+        public virtual void SetConstant<T>(T instance) where T : class
+        {
+            container.RegisterInstance(instance);
+            SetMock(instance.GetType(), null);
         }
 
         #region private methods
@@ -72,7 +77,7 @@ namespace AutoMoq
 
         private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class
         {
-            return (Mock<T>) registeredMocks.Where(x => x.Key == type).First().Value;
+            return (Mock<T>)registeredMocks.Where(x => x.Key == type).First().Value;
         }
 
         private void CreateANewMockAndRegisterIt<T>(Type type) where T : class
@@ -89,7 +94,7 @@ namespace AutoMoq
 
         private static Type GetTheMockType<T>() where T : class
         {
-            return typeof (T);
+            return typeof(T);
         }
 
         #endregion

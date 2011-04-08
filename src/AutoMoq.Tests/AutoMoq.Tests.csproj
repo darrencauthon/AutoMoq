@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="AutoMoqerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="EnsureMoqTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AutoMoq\AutoMoq.csproj">
