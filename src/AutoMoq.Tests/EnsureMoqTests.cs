@@ -49,6 +49,19 @@ namespace AutoMoq.Tests.PullRequest
         }
 
         [Test]
+        public void Resolve_is_an_alias_for_create()
+        {
+            //Arrange
+            var mocker = new AutoMoqer();
+
+            //Act
+            var result = mocker.Resolve<ConcreteClass>().Do();
+
+            //Assert
+            Assert.AreEqual("hello", result);
+        }
+
+        [Test]
         public void Create_with_dependency_doesnt_return_mock()
         {
             //Arrange

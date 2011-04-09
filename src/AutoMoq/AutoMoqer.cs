@@ -28,6 +28,11 @@ namespace AutoMoq
             SetupAutoMoqer(container);
         }
 
+        public virtual T Resolve<T>()
+        {
+            return Create<T>();
+        }
+
         public virtual T Create<T>()
         {
             ResolveType = typeof(T);
