@@ -28,11 +28,21 @@ namespace AutoMoq
             SetupAutoMoqer(container);
         }
 
+        /// <summary>
+        /// Creates an instance of type T. Any interface dependencies will be replaced with mocks.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public virtual T Resolve<T>()
         {
             return Create<T>();
         }
 
+        /// <summary>
+        /// Creates an instance of type T. Any interface dependencies will be replaced with mocks.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public virtual T Create<T>()
         {
             ResolveType = typeof(T);
@@ -41,6 +51,11 @@ namespace AutoMoq
             return result;
         }
 
+        /// <summary>
+        /// Gets the mock that was or will be passed to any object created by Create/Resolve.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         public virtual Mock<T> GetMock<T>() where T : class
         {
             ResolveType = null;
