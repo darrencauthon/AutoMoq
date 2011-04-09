@@ -1,0 +1,4 @@
+V 1.4
++ Added SetInstance method, uses that instance instead of a mock. (thanks Keivan Beigi)
++ Created a "Create" alias for Resolve.
++ Added xml docs on public Automoqer methods.
