@@ -36,33 +36,33 @@ namespace AutoMoq.Tests.PullRequest
 
 
         [Test]
-        public void Resolve_doesnt_return_mock()
+        public void Create_doesnt_return_mock()
         {
             //Arrange
             var mocker = new AutoMoqer();
 
             //Act
-            var result = mocker.Resolve<ConcreteClass>().Do();
+            var result = mocker.Create<ConcreteClass>().Do();
 
             //Assert
             Assert.AreEqual("hello", result);
         }
 
         [Test]
-        public void Resolve_with_dependency_doesnt_return_mock()
+        public void Create_with_dependency_doesnt_return_mock()
         {
             //Arrange
             var mocker = new AutoMoqer();
 
             //Act
-            var result = mocker.Resolve<VirtualDependency>().VirtualMethod();
+            var result = mocker.Create<VirtualDependency>().VirtualMethod();
 
             //Assert
             Assert.AreEqual("hello", result);
         }
 
         [Test]
-        public void Resolve_with_mocked_dependency_uses_mock()
+        public void Create_with_mocked_dependency_uses_mock()
         {
             //Arrange
             var mocker = new AutoMoqer();
@@ -72,7 +72,7 @@ namespace AutoMoq.Tests.PullRequest
                 .Returns("mocked");
 
             //Act
-            var result = mocker.Resolve<ClassWithVirtualDependencies>().CallVirtualChild();
+            var result = mocker.Create<ClassWithVirtualDependencies>().CallVirtualChild();
 
             //Assert
             Assert.AreEqual("mocked", result);
@@ -80,13 +80,13 @@ namespace AutoMoq.Tests.PullRequest
 
 
         [Test]
-        public void Resolve_with_unbound_concerete_dependency_uses_mock()
+        public void Create_with_unbound_concerete_dependency_uses_mock()
         {
             //Arrange
             var mocker = new AutoMoqer();
 
             //Act
-            var result = mocker.Resolve<ClassWithVirtualDependencies>().CallVirtualChild();
+            var result = mocker.Create<ClassWithVirtualDependencies>().CallVirtualChild();
 
             var mockedResult = new Mock<VirtualDependency>().Object.VirtualMethod();
 
@@ -96,7 +96,7 @@ namespace AutoMoq.Tests.PullRequest
 
 
         [Test]
-        public void Resolve_with_constant_concerete_dependency_uses_constant()
+        public void Create_with_constant_concerete_dependency_uses_constant()
         {
             //Arrange
             var mocker = new AutoMoqer();
@@ -106,7 +106,7 @@ namespace AutoMoq.Tests.PullRequest
             mocker.SetInstance(constant);
 
             //Act
-            var result = mocker.Resolve<ClassWithVirtualDependencies>().GetVirtualProperty();
+            var result = mocker.Create<ClassWithVirtualDependencies>().GetVirtualProperty();
 
             //Assert
             Assert.AreEqual((object) constant.PropValue, result);

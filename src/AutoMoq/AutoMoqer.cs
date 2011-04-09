@@ -28,7 +28,7 @@ namespace AutoMoq
             SetupAutoMoqer(container);
         }
 
-        public virtual T Resolve<T>()
+        public virtual T Create<T>()
         {
             ResolveType = typeof(T);
             var result = container.Resolve<T>();

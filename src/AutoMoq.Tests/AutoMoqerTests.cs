@@ -17,14 +17,14 @@ namespace AutoMoq.Tests
         [Test]
         public void Can_resolve_a_concrete_class()
         {
-            var concreteClass = mocker.Resolve<ConcreteClass>();
+            var concreteClass = mocker.Create<ConcreteClass>();
             concreteClass.ShouldNotBeNull();
         }
 
         [Test]
         public void Can_resolve_a_class_with_dependencies()
         {
-            var concreteClass = mocker.Resolve<ClassWithDependencies>();
+            var concreteClass = mocker.Create<ClassWithDependencies>();
             concreteClass.ShouldNotBeNull();
         }
     }
