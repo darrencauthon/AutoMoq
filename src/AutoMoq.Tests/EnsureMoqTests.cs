@@ -103,7 +103,7 @@ namespace AutoMoq.Tests.PullRequest
 
             var constant = new VirtualDependency() { PropValue = Guid.NewGuid().ToString() };
 
-            mocker.SetConstant(constant);
+            mocker.SetInstance(constant);
 
             //Act
             var result = mocker.Resolve<ClassWithVirtualDependencies>().GetVirtualProperty();

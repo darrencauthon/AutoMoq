@@ -52,7 +52,7 @@ namespace AutoMoq
                 registeredMocks.Add(type, mock);
         }
 
-        public virtual void SetConstant<T>(T instance) where T : class
+        public virtual void SetInstance<T>(T instance) where T : class
         {
             container.RegisterInstance(instance);
             SetMock(instance.GetType(), null);
