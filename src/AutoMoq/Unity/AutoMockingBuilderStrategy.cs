@@ -10,13 +10,13 @@ namespace AutoMoq.Unity
 {
     internal class AutoMockingBuilderStrategy : BuilderStrategy
     {
-        private readonly MockFactory mockFactory;
+        private readonly MockRepository mockRepository;
         private readonly IEnumerable<Type> registeredTypes;
         private readonly IUnityContainer container;
 
         public AutoMockingBuilderStrategy(IEnumerable<Type> registeredTypes, IUnityContainer container)
         {
-            mockFactory = new MockFactory(MockBehavior.Loose);
+            mockRepository = new MockRepository(MockBehavior.Loose);
             this.registeredTypes = registeredTypes;
             this.container = container;
         }
@@ -39,8 +39,19 @@ namespace AutoMoq.Unity
         private bool AMockObjectShouldBeCreatedForThisType(Type type)
         {
             var mocker = container.Resolve<AutoMoqer>();
-            return TypeIsNotRegistered(type) && (mocker.ResolveType == null || mocker.ResolveType != type);
-            //return TypeIsNotRegistered(type) && type.IsInterface;
+            return ThisTypeIsNotAFunction(type) &&
+                   ThisTypeIsNotRegistered(type) &&
+                   ThisIsNotTheTypeThatIsBeingResolvedForTesting(type, mocker);
+        }
+
+        private static bool ThisIsNotTheTypeThatIsBeingResolvedForTesting(Type type, AutoMoqer mocker)
+        {
+            return (mocker.ResolveType == null || mocker.ResolveType != type);
+        }
+
+        private static bool ThisTypeIsNotAFunction(Type type)
+        {
+            return type.Name != "Func`1";
         }
 
         private static Type GetTheTypeFromTheBuilderContext(IBuilderContext context)
@@ -48,7 +59,7 @@ namespace AutoMoq.Unity
             return ((NamedTypeBuildKey)context.OriginalBuildKey).Type;
         }
 
-        private bool TypeIsNotRegistered(Type type)
+        private bool ThisTypeIsNotRegistered(Type type)
         {
             return registeredTypes.Any(x => x.Equals(type)) == false;
         }
@@ -62,12 +73,12 @@ namespace AutoMoq.Unity
 
         private Mock InvokeTheMockCreationMethod(MethodInfo createMethod)
         {
-            return (Mock)createMethod.Invoke(mockFactory, new object[] { new List<object>().ToArray() });
+            return (Mock)createMethod.Invoke(mockRepository, new object[] { new List<object>().ToArray() });
         }
 
         private MethodInfo GenerateAnInterfaceMockCreationMethod(Type type)
         {
-            var createMethodWithNoParameters = mockFactory.GetType().GetMethod("Create", EmptyArgumentList());
+            var createMethodWithNoParameters = mockRepository.GetType().GetMethod("Create", EmptyArgumentList());
 
             return createMethodWithNoParameters.MakeGenericMethod(new[] { type });
         }

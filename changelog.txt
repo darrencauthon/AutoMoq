@@ -1,3 +1,6 @@
+v 1.4.2
++ Fixed the ability to resolve Func<T>.
+
 V 1.4
 + Added SetInstance method, uses that instance instead of a mock. (thanks Keivan Beigi)
 + Created a "Create" alias for Resolve.
