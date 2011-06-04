@@ -38,14 +38,14 @@ namespace AutoMoq.Unity
 
         private bool AMockObjectShouldBeCreatedForThisType(Type type)
         {
-            var mocker = container.Resolve<AutoMoqer>();
             return ThisTypeIsNotAFunction(type) &&
                    ThisTypeIsNotRegistered(type) &&
-                   ThisIsNotTheTypeThatIsBeingResolvedForTesting(type, mocker);
+                   ThisIsNotTheTypeThatIsBeingResolvedForTesting(type);
         }
 
-        private static bool ThisIsNotTheTypeThatIsBeingResolvedForTesting(Type type, AutoMoqer mocker)
+        private bool ThisIsNotTheTypeThatIsBeingResolvedForTesting(Type type)
         {
+            var mocker = container.Resolve<AutoMoqer>();
             return (mocker.ResolveType == null || mocker.ResolveType != type);
         }
 
