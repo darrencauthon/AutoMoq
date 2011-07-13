@@ -23,26 +23,30 @@ namespace AutoMoq.Unity
 
         public override void PreBuildUp(IBuilderContext context)
         {
-            var autoMoqer = container.Resolve<AutoMoqer>();
 
             var type = GetTheTypeFromTheBuilderContext(context);
             if (AMockObjectShouldBeCreatedForThisType(type))
             {
-                var mock = CreateAMockObject(type);
+                var mock = CreateAMockTrackedByAutoMoq(type);
                 context.Existing = mock.Object;
-                autoMoqer.SetMock(type, mock);
             }
-
             if (type.GetConstructors().Any())
             {
                 var abstractParameters = type.GetConstructors().ToList()[0].GetParameters().Where(x => x.ParameterType.IsAbstract);
                 foreach (var abstractParameter in abstractParameters)
                 {
-                    var mock = CreateAMockObject(abstractParameter.ParameterType);
-                    autoMoqer.SetMock(abstractParameter.ParameterType, mock);
+                    var mock = CreateAMockTrackedByAutoMoq(abstractParameter.ParameterType);
                     container.RegisterInstance(abstractParameter.ParameterType, mock.Object);
                 }
             }
+        }
+
+        private Mock CreateAMockTrackedByAutoMoq(Type type)
+        {
+            var mock = CreateAMockObject(type);
+            var autoMoqer = container.Resolve<AutoMoqer>();
+            autoMoqer.SetMock(type, mock);
+            return mock;
         }
 
         #region private methods
