@@ -31,6 +31,15 @@ namespace AutoMoq.Unity
                 var mock = CreateAMockObject(type);
                 context.Existing = mock.Object;
                 autoMoqer.SetMock(type, mock);
+            } else if (type.GetConstructors().ToList()[0].GetParameters().Any(x=>x.ParameterType.IsAbstract))
+            {
+                var abstractParameters = type.GetConstructors().ToList()[0].GetParameters().Where(x => x.ParameterType.IsAbstract);
+                foreach(var abstractParameter in abstractParameters)
+                {
+                    var mock = CreateAMockObject(abstractParameter.ParameterType);
+                    autoMoqer.SetMock(abstractParameter.ParameterType, mock);
+                    container.RegisterInstance(abstractParameter.ParameterType, mock.Object);
+                }
             }
         }
 
