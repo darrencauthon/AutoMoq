@@ -49,10 +49,16 @@ namespace AutoMoq.Tests
         [Test]
         public void Can_test_with_an_abstract_dependency()
         {
-            var concreteClass = mocker.Create<ClassWithAbstractDependencies>();
+            var concreteClass = mocker.Create<ClassWithAbstractDependenciesAndManyConstructors>();
             concreteClass.CallSomething();
             mocker.GetMock<AbstractDependency>()
                 .Verify(x => x.Something(), Times.Once());
+        }
+
+        [Test]
+        public void Can_test_with_a_class_that_has_many_constructors_and_abstract_dependencies()
+        {
+            
         }
     }
 
@@ -97,6 +103,30 @@ namespace AutoMoq.Tests
         private readonly AbstractDependency abstractDependency;
 
         public ClassWithAbstractDependencies(AbstractDependency abstractDependency)
+        {
+            this.abstractDependency = abstractDependency;
+        }
+
+        public void CallSomething()
+        {
+            abstractDependency.Something();
+        }
+    }
+
+    public class ClassWithAbstractDependenciesAndManyConstructors
+    {
+        private readonly AbstractDependency abstractDependency;
+
+        public ClassWithAbstractDependenciesAndManyConstructors()
+        {
+        }
+
+        public ClassWithAbstractDependenciesAndManyConstructors(AbstractDependency abstractDependency)
+        {
+            this.abstractDependency = abstractDependency;
+        }
+
+        public ClassWithAbstractDependenciesAndManyConstructors(IDependency dependency, AbstractDependency abstractDependency)
         {
             this.abstractDependency = abstractDependency;
         }
