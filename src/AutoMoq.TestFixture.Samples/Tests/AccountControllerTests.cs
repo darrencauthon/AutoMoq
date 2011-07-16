@@ -1,0 +1,39 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Web.Mvc;
+using AutoMoq.TestFixture.Samples.Code;
+using NUnit.Framework;
+
+namespace AutoMoq.TestFixture.Samples.Tests
+{
+    [TestFixture]
+    public class AccountControllerTests : AutoMoqTestFixture<AccountController>
+    {
+        [Test]
+        public void ShouldListAllAccountsFromRepository()
+        {
+            Mocked<IAccountRepository>().Setup(
+                x => x.Find()).Returns(
+                    new[] {new Account(), new Account()});
+
+            ViewResult result = Subject.ListAllAccounts() as ViewResult;
+
+            var model = result.ViewData.Model as IEnumerable<Account>;
+
+            Assert.That(model.Count(), Is.EqualTo(2));
+        }
+
+        [Test]
+        public void ShouldShowTheErrorPageWhenRepositoryHasErrors()
+        {
+            Mocked<IAccountRepository>().Setup(
+                    x => x.Find()).Throws(new Exception());
+
+            ViewResult result = Subject.ListAllAccounts() as ViewResult;
+
+            Assert.That(result.ViewName, Is.EqualTo("Error"));
+        }
+    }
+}
