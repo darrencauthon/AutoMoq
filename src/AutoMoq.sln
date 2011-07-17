@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMoq", "AutoMoq\AutoMoq.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMoq.Tests", "AutoMoq.Tests\AutoMoq.Tests.csproj", "{5D9356F3-9AA2-4278-9A53-A7BD936EED9F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMoq.TestFixture.Samples", "AutoMoq.TestFixture.Samples\AutoMoq.TestFixture.Samples.csproj", "{D2FBF68E-3D26-484A-A5D7-DF6CC49837C9}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = AutoMoq.vsmdi
@@ -22,6 +24,10 @@ Global
 		{5D9356F3-9AA2-4278-9A53-A7BD936EED9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D9356F3-9AA2-4278-9A53-A7BD936EED9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D9356F3-9AA2-4278-9A53-A7BD936EED9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2FBF68E-3D26-484A-A5D7-DF6CC49837C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2FBF68E-3D26-484A-A5D7-DF6CC49837C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2FBF68E-3D26-484A-A5D7-DF6CC49837C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2FBF68E-3D26-484A-A5D7-DF6CC49837C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
