@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
 
@@ -10,7 +11,7 @@ namespace AutoMoq.Tests
         [Test]
         public void Subject_should_be_populated_after_construction()
         {
-            var fixture = new AutoMoqTestFixture<SystemUnderTest>();
+            var fixture = new AutoMoqTestFixture<ClassWithDependencies>();
 
             Assert.That( fixture.Subject, Is.Not.Null);
         }
@@ -18,9 +19,9 @@ namespace AutoMoq.Tests
         [Test]
         public void Dependencies_should_be_accessible()
         {
-            var fixture = new AutoMoqTestFixture<SystemUnderTest>();
+            var fixture = new AutoMoqTestFixture<ClassWithDependencies>();
 
-            IDisposable dependency = fixture.Dependency<IDisposable>();
+            IDependency dependency = fixture.Dependency<IDependency>();
             
             Assert.That( dependency, Is.Not.Null );
         }
@@ -28,21 +29,37 @@ namespace AutoMoq.Tests
         [Test]
         public void Mocked_dependencies_should_be_accessible()
         {
-            var fixture = new AutoMoqTestFixture<SystemUnderTest>();
+            var fixture = new AutoMoqTestFixture<ClassWithDependencies>();
 
-            Mock<IDisposable> disp = fixture.Mocked<IDisposable>();
+            Mock<IDependency> disp = fixture.Mocked<IDependency>();
             
             Assert.That(disp, Is.Not.Null);
         }
-    }
 
-    public class SystemUnderTest
-    {
-        public IDisposable Disp { get; private set; }
-
-        public SystemUnderTest(IDisposable disp)
+        [Test]
+        public void ResetSubject_should_give_another_instance_of_type()
         {
-            Disp = disp;
+            var fixture = new AutoMoqTestFixture<ClassWithDependencies>();
+
+            ClassWithDependencies instance1 = fixture.Subject;
+
+            fixture.ResetSubject();
+
+            ClassWithDependencies instance2 = fixture.Subject;
+
+            Assert.AreNotSame(instance1,instance2);
+        }
+
+        [Test]
+        public void ResetSubject_should_have_different_mock_dependencies()
+        {
+            var fixture = new AutoMoqTestFixture<ClassWithDependencies>();
+
+            var origDependency = fixture.Mocked<IDependency>();
+
+            fixture.ResetSubject();
+
+            Assert.AreNotSame(origDependency, fixture.Mocked<IDependency>());
         }
     }
 }

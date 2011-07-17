@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using AutoMoq.TestFixture.Samples.Code;
+using Moq;
 using NUnit.Framework;
 
 namespace AutoMoq.TestFixture.Samples.Tests
@@ -11,6 +12,12 @@ namespace AutoMoq.TestFixture.Samples.Tests
     [TestFixture]
     public class AccountControllerTests : AutoMoqTestFixture<AccountController>
     {
+        [SetUp]
+        public void BeforeEachTest()
+        {
+            ResetSubject();
+        }
+
         [Test]
         public void ShouldListAllAccountsFromRepository()
         {
@@ -23,6 +30,9 @@ namespace AutoMoq.TestFixture.Samples.Tests
             var model = result.ViewData.Model as IEnumerable<Account>;
 
             Assert.That(model.Count(), Is.EqualTo(2));
+
+            Mocked<IAccountRepository>()
+                .Verify(x => x.SomethingElse(), Times.Once());
         }
 
         [Test]

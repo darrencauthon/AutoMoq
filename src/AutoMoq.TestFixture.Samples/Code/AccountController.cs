@@ -19,6 +19,8 @@ namespace AutoMoq.TestFixture.Samples.Code
         {
             try
             {
+                _accountRepos.SomethingElse();
+
                 return View(_accountRepos.Find());    
             }
             catch
@@ -31,6 +33,7 @@ namespace AutoMoq.TestFixture.Samples.Code
     public interface IAccountRepository
     {
         IEnumerable<Account> Find();
+        void SomethingElse();
     }
 
     public class Account
