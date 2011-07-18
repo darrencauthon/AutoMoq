@@ -8,17 +8,8 @@ namespace AutoMoq
 {
     public class AutoMoqTestFixture<T> where T: class
     {
-        /// <summary>
-        /// The Class being tested in this Test Fixture.
-        /// </summary>
-        public T Subject { get; private set; }
-
         private AutoMoqer _moqer = new AutoMoqer();
-        
-        public AutoMoqTestFixture()
-        {
-            Subject = _moqer.Resolve<T>();
-        }
+        private T _subject;
 
         /// <summary>
         /// A Mock dependency that was auto-injected into Subject
@@ -47,7 +38,16 @@ namespace AutoMoq
         public void ResetSubject()
         {
             _moqer = new AutoMoqer();
-            Subject = _moqer.Resolve<T>();
+            _subject = null;
+        }
+
+        /// <summary>
+        /// The Class being tested in this Test Fixture.
+        /// </summary>
+        /// 
+        public T Subject
+        {
+            get { return _subject ?? (_subject = _moqer.Resolve<T>()); }
         }
     }
 }
