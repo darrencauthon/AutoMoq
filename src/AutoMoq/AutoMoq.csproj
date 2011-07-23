@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoMoqer.cs" />
+    <Compile Include="AutoMoqTestFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unity\AutoMockingBuilderStrategy.cs" />
     <Compile Include="Unity\AutoMockingContainerExtension.cs" />

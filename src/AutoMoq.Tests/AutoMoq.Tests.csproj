@@ -78,6 +78,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoMoqerTests.cs" />
+    <Compile Include="AutoMoqTestFixtureTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EnsureMoqTests.cs" />
   </ItemGroup>
