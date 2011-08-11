@@ -74,8 +74,8 @@ namespace AutoMoq
 
         public virtual void SetInstance<T>(T instance) where T : class
         {
-            container.RegisterInstance(instance);
-            SetMock(instance.GetType(), null);
+            container.RegisterInstance<T>(instance);
+            SetMock(GetTheMockType<T>(), null);
         }
 
         #region private methods
