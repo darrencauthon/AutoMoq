@@ -16,7 +16,7 @@ namespace AutoMoq
     {
         private IUnityContainer container;
         private IDictionary<Type, object> registeredMocks;
-        internal Type ResolveType = null;
+        internal Type ResolveType;
 
         public AutoMoqer()
         {
@@ -29,9 +29,9 @@ namespace AutoMoq
         }
 
         /// <summary>
-        /// Creates an instance of type T. Any interface dependencies will be replaced with mocks.
+        ///   Creates an instance of type T. Any interface dependencies will be replaced with mocks.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name = "T"></typeparam>
         /// <returns></returns>
         public virtual T Resolve<T>()
         {
@@ -39,22 +39,22 @@ namespace AutoMoq
         }
 
         /// <summary>
-        /// Creates an instance of type T. Any interface dependencies will be replaced with mocks.
+        ///   Creates an instance of type T. Any interface dependencies will be replaced with mocks.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name = "T"></typeparam>
         /// <returns></returns>
         public virtual T Create<T>()
         {
-            ResolveType = typeof(T);
+            ResolveType = typeof (T);
             var result = container.Resolve<T>();
             ResolveType = null;
             return result;
         }
 
         /// <summary>
-        /// Gets the mock that was or will be passed to any object created by Create/Resolve.
+        ///   Gets the mock that was or will be passed to any object created by Create/Resolve.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name = "T"></typeparam>
         /// <returns></returns>
         public virtual Mock<T> GetMock<T>() where T : class
         {
@@ -74,7 +74,7 @@ namespace AutoMoq
 
         public virtual void SetInstance<T>(T instance) where T : class
         {
-            container.RegisterInstance<T>(instance);
+            container.RegisterInstance(instance);
             SetMock(GetTheMockType<T>(), null);
         }
 
@@ -97,7 +97,7 @@ namespace AutoMoq
 
         private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class
         {
-            return (Mock<T>)registeredMocks.Where(x => x.Key == type).First().Value;
+            return (Mock<T>) registeredMocks.Where(x => x.Key == type).First().Value;
         }
 
         private void CreateANewMockAndRegisterIt<T>(Type type) where T : class
@@ -114,7 +114,7 @@ namespace AutoMoq
 
         private static Type GetTheMockType<T>() where T : class
         {
-            return typeof(T);
+            return typeof (T);
         }
 
         #endregion
@@ -148,6 +148,5 @@ namespace AutoMoq
         {
             GetMock<T>().Verify(expression, times, failMessage);
         }
-
     }
 }

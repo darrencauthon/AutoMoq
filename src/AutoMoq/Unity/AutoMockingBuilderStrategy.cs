@@ -56,7 +56,7 @@ namespace AutoMoq.Unity
 
         private static Type GetTheTypeFromTheBuilderContext(IBuilderContext context)
         {
-            return ((NamedTypeBuildKey)context.OriginalBuildKey).Type;
+            return (context.OriginalBuildKey).Type;
         }
 
         private bool ThisTypeIsNotRegistered(Type type)
@@ -73,19 +73,19 @@ namespace AutoMoq.Unity
 
         private Mock InvokeTheMockCreationMethod(MethodInfo createMethod)
         {
-            return (Mock)createMethod.Invoke(mockRepository, new object[] { new List<object>().ToArray() });
+            return (Mock) createMethod.Invoke(mockRepository, new object[] {new List<object>().ToArray()});
         }
 
         private MethodInfo GenerateAnInterfaceMockCreationMethod(Type type)
         {
             var createMethodWithNoParameters = mockRepository.GetType().GetMethod("Create", EmptyArgumentList());
 
-            return createMethodWithNoParameters.MakeGenericMethod(new[] { type });
+            return createMethodWithNoParameters.MakeGenericMethod(new[] {type});
         }
 
         private static Type[] EmptyArgumentList()
         {
-            return new[] { typeof(object[]) };
+            return new[] {typeof (object[])};
         }
 
         #endregion
