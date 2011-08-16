@@ -6,17 +6,17 @@ This tool uses Moq, my favorite .Net mocking framework, for all mocks.
 Example code:
 
 
-var mocker = new AutoMoqer();
+   var mocker = new AutoMoqer();
 
-mocker.GetMock<IDataDependency>()
-   .Setup(x => x.GetData())
-   .Returns("TEST DATA");
+   mocker.GetMock<IDataDependency>()
+      .Setup(x => x.GetData())
+      .Returns("TEST DATA");
 
-var classToTest = mocker.Resolve<ClassToTest>();
+   var classToTest = mocker.Resolve<ClassToTest>();
 
-classToTest.DoSomething();
+   classToTest.DoSomething();
 
-mocker.GetMock<IDependencyToCheck>()
-   .Setup(x=>x.CallMe("TEST"), Times.Once());
+   mocker.GetMock<IDependencyToCheck>()
+      .Setup(x=>x.CallMe("TEST"), Times.Once());
    
 
