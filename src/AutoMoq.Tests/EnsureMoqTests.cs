@@ -125,6 +125,23 @@ namespace AutoMoq.Tests.PullRequest
             Assert.AreEqual((object) constant.PropValue, result);
         }
 
+        [Test]
+        public void Registering_instance_for_Interface_injects_that_Instance()
+        {
+             //Arrange
+            var mocker = new AutoMoqer();
+
+            var instance = new Dependency();
+
+            mocker.SetInstance<IDependency>(instance);
+
+            //Act
+            var result = mocker.Create<ClassWithDependencies>().Dependency;
+
+            //Assert
+            Assert.AreEqual(instance, result);
+        }
+
     }
 
     #region Test Types
