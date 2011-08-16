@@ -1,4 +1,4 @@
-AutoMoqer is an "auto-mocking" container that automatically creates any fake objects that are necessary to instantiate the class under test. 
+AutoMoqer is an "auto-mocking" container that automatically creates any fake objects that are necessary to instantiate the class under test. You can access those fakes through the mocker, or you can just ignore them if they're not important.
 
 I wrote it for a few reason:
 
@@ -20,5 +20,8 @@ Example code:
 
    mocker.GetMock<IDependencyToCheck>()
       .Setup(x=>x.CallMe("TEST"), Times.Once());
+   
+
+CallMe("TEST"), Times.Once());
    
 
