@@ -1,6 +1,6 @@
 ﻿using Moq;
 
-namespace AutoMoq
+namespace AutoMoq.Helpers
 {
     public class AutoMoqTestFixture<T> where T : class
     {

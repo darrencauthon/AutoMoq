@@ -1,4 +1,5 @@
 using System;
+using AutoMoq.Helpers;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
