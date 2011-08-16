@@ -38,11 +38,22 @@ namespace AutoMoq.Unity
         private void LoadAbstractDependenciesInTheGreediestConstructor(Type type)
         {
             var constructor = type.GetConstructors().OrderByDescending(x => x.GetParameters().Count()).First();
-            var abstractParameters = constructor.GetParameters().Where(x => x.ParameterType.IsAbstract);
+            var abstractParameters = constructor.GetParameters()
+                .Where(x => x.ParameterType.IsAbstract)
+                .Where(x=>x.ParameterType.IsInterface == false)
+                .Select(x => x.ParameterType);
+
             foreach (var abstractParameter in abstractParameters)
             {
-                var mock = CreateAMockTrackedByAutoMoq(abstractParameter.ParameterType);
-                container.RegisterInstance(abstractParameter.ParameterType, mock.Object);
+                var mock = CreateAMockTrackedByAutoMoq(abstractParameter);
+                try
+                {
+                    container.Resolve(abstractParameter);
+                }
+                catch
+                {
+                    container.RegisterInstance(abstractParameter, mock.Object);
+                }
             }
         }
 
