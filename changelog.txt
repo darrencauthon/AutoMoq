@@ -1,0 +1,16 @@
+v 1.6.0
++ Help with setting instances (thanks Georg Rollinger)
++ Added a test fixture base class in new /Helpers (thanks Dan Sweeting)
++ Added a with_automoqer base class for help with mspec, in /Helpers.
++ Fixed issue with using an abstract base class.
+
+v 1.5.0
++ Added the ability to mock abstract dependencies. 
+
+v 1.4.2
++ Fixed the ability to resolve Func<T>.
+
+V 1.4
++ Added SetInstance method, uses that instance instead of a mock. (thanks Keivan Beigi)
++ Created a "Create" alias for Resolve.
++ Added xml docs on public Automoqer methods.

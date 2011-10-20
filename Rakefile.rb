@@ -3,7 +3,7 @@ require 'rubygems'
 require 'ftools'
 
 ILMERGE = "ilmerge"
-DEVENV = "\"C:\\Program Files\\Microsoft Visual Studio 10.0\\Common7\\IDE\\devenv.exe\""
+DEVENV = "\"C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\Common7\\IDE\\devenv.exe\""
 
 SOLUTION_ROOT = Dir.pwd
 SOLUTION_FILE = "\"#{SOLUTION_ROOT}\\src\\automoq.sln\""

@@ -1,4 +1,3 @@
-// ReSharper disable RedundantUsingDirective
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +17,7 @@ namespace AutoMoq
         internal readonly MockBehavior DefaultBehavior = MockBehavior.Default;
         private IUnityContainer container;
         private IDictionary<Type, object> registeredMocks;
-        internal Type ResolveType = null;
+        internal Type ResolveType;
 
         public AutoMoqer()
         {
@@ -37,15 +36,35 @@ namespace AutoMoq
             SetupAutoMoqer(container);
         }
 
+        /// <summary>
+        ///   Creates an instance of type T. Any interface dependencies will be replaced with mocks.
+        /// </summary>
+        /// <typeparam name = "T"></typeparam>
+        /// <returns></returns>
         public virtual T Resolve<T>()
         {
-            ResolveType = typeof(T);
+            return Create<T>();
+        }
+
+        /// <summary>
+        ///   Creates an instance of type T. Any interface dependencies will be replaced with mocks.
+        /// </summary>
+        /// <typeparam name = "T"></typeparam>
+        /// <returns></returns>
+        public virtual T Create<T>()
+        {
+            ResolveType = typeof (T);
             var result = container.Resolve<T>();
-            SetConstant(result);
+            SetInstance(result);
             ResolveType = null;
             return result;
         }
 
+        /// <summary>
+        ///   Gets the mock that was or will be passed to any object created by Create/Resolve.
+        /// </summary>
+        /// <typeparam name = "T"></typeparam>
+        /// <returns></returns>
         public virtual Mock<T> GetMock<T>() where T : class
         {
             return GetMock<T>(DefaultBehavior);
@@ -75,10 +94,10 @@ namespace AutoMoq
                 registeredMocks.Add(type, mock);
         }
 
-        public virtual void SetConstant<T>(T instance)
+        public virtual void SetInstance<T>(T instance) 
         {
             container.RegisterInstance(instance);
-            SetMock(instance.GetType(), null);
+            SetMock(GetTheMockType<T>(), null);
         }
 
         #region private methods
@@ -99,7 +118,7 @@ namespace AutoMoq
 
         private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class
         {
-            return (Mock<T>)registeredMocks.Where(x => x.Key == type).First().Value;
+            return (Mock<T>) registeredMocks.Where(x => x.Key == type).First().Value;
         }
 
         private void CreateANewMockAndRegisterIt<T>(Type type, MockBehavior behavior) where T : class
@@ -114,9 +133,9 @@ namespace AutoMoq
             return registeredMocks.ContainsKey(type) == false;
         }
 
-        private static Type GetTheMockType<T>() where T : class
+        private static Type GetTheMockType<T>()
         {
-            return typeof(T);
+            return typeof (T);
         }
 
         #endregion
