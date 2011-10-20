@@ -1,3 +1,4 @@
+// ReSharper disable RedundantUsingDirective
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,20 @@ namespace AutoMoq
 {
     public class AutoMoqer
     {
+        internal readonly MockBehavior DefaultBehavior = MockBehavior.Default;
         private IUnityContainer container;
         private IDictionary<Type, object> registeredMocks;
         internal Type ResolveType;
 
         public AutoMoqer()
         {
+            SetupAutoMoqer(new UnityContainer());
+        }
+
+
+        public AutoMoqer(MockBehavior defaultBehavior)
+        {
+            DefaultBehavior = defaultBehavior;
             SetupAutoMoqer(new UnityContainer());
         }
 
@@ -47,6 +56,7 @@ namespace AutoMoq
         {
             ResolveType = typeof (T);
             var result = container.Resolve<T>();
+            SetConstant(result);
             ResolveType = null;
             return result;
         }
@@ -58,12 +68,25 @@ namespace AutoMoq
         /// <returns></returns>
         public virtual Mock<T> GetMock<T>() where T : class
         {
+            return GetMock<T>(DefaultBehavior);
+        }
+
+        public virtual Mock<T> GetMock<T>(MockBehavior behavior) where T : class
+        {
             ResolveType = null;
             var type = GetTheMockType<T>();
             if (GetMockHasNotBeenCalledForThisType(type))
-                CreateANewMockAndRegisterIt<T>(type);
+                CreateANewMockAndRegisterIt<T>(type, behavior);
 
-            return TheRegisteredMockForThisType<T>(type);
+
+            var mock = TheRegisteredMockForThisType<T>(type);
+
+            if (behavior != MockBehavior.Default && mock.Behavior == MockBehavior.Default)
+            {
+                throw new InvalidOperationException("Unable to change be behaviour of a an existing mock.");
+            }
+
+            return mock;
         }
 
         internal virtual void SetMock(Type type, Mock mock)
@@ -72,7 +95,7 @@ namespace AutoMoq
                 registeredMocks.Add(type, mock);
         }
 
-        public virtual void SetInstance<T>(T instance) where T : class
+        public virtual void SetConstant<T>(T instance)
         {
             container.RegisterInstance(instance);
             SetMock(GetTheMockType<T>(), null);
@@ -84,9 +107,8 @@ namespace AutoMoq
         {
             this.container = container;
             registeredMocks = new Dictionary<Type, object>();
-
-            AddTheAutoMockingContainerExtensionToTheContainer(container);
             container.RegisterInstance(this);
+            AddTheAutoMockingContainerExtensionToTheContainer(container);
         }
 
         private static void AddTheAutoMockingContainerExtensionToTheContainer(IUnityContainer container)
@@ -100,9 +122,9 @@ namespace AutoMoq
             return (Mock<T>) registeredMocks.Where(x => x.Key == type).First().Value;
         }
 
-        private void CreateANewMockAndRegisterIt<T>(Type type) where T : class
+        private void CreateANewMockAndRegisterIt<T>(Type type, MockBehavior behavior) where T : class
         {
-            var mock = new Mock<T>();
+            var mock = new Mock<T>(behavior);
             container.RegisterInstance(mock.Object);
             SetMock(type, mock);
         }
@@ -118,6 +140,17 @@ namespace AutoMoq
         }
 
         #endregion
+
+
+        public void VerifyAllMocks()
+        {
+            foreach (var registeredMock in registeredMocks)
+            {
+                var mock = registeredMock.Value as Mock;
+                if (mock != null)
+                    mock.VerifyAll();
+            }
+        }
 
         public ISetup<T> Setup<T>(Expression<Action<T>> expression) where T : class
         {
