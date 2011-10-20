@@ -1,4 +1,5 @@
-﻿using System;
+﻿// ReSharper disable RedundantUsingDirective
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -10,13 +11,15 @@ namespace AutoMoq.Unity
 {
     internal class AutoMockingBuilderStrategy : BuilderStrategy
     {
+
         private readonly MockFactory mockFactory;
         private readonly IEnumerable<Type> registeredTypes;
         private readonly IUnityContainer container;
 
         public AutoMockingBuilderStrategy(IEnumerable<Type> registeredTypes, IUnityContainer container)
         {
-            mockFactory = new MockFactory(MockBehavior.Loose);
+            var autoMoqer = container.Resolve<AutoMoqer>();
+            mockFactory = new MockFactory(autoMoqer.DefaultBehavior);
             this.registeredTypes = registeredTypes;
             this.container = container;
         }
