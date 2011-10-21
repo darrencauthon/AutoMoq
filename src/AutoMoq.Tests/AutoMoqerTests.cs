@@ -55,10 +55,49 @@ namespace AutoMoq.Tests
                 .Verify(x => x.Something(), Times.Once());
         }
 
+
         [Test]
         public void Can_test_with_a_class_that_has_many_constructors_and_abstract_dependencies()
         {
-            
+
+        }
+
+        [Test]
+        public void setting_default_behaviour_on_container_should_apply_to_all_mocks()
+        {
+            var autoMoqer = new AutoMoqer(MockBehavior.Strict);
+            autoMoqer.GetMock<IDependency>().Behavior.ShouldEqual(MockBehavior.Strict);
+        }
+
+        [Test]
+        public void default_container_should_have_default_as_mock_behavirou()
+        {
+            var autoMoqer = new AutoMoqer();
+            autoMoqer.GetMock<IDependency>().Behavior.ShouldEqual(MockBehavior.Default);
+        }
+
+        [Test]
+        public void should_not_be_able_to_change_behaviour_of_existing_mock()
+        {
+            var autoMoqer = new AutoMoqer();
+            autoMoqer.GetMock<IDependency>(MockBehavior.Strict).Behavior.ShouldEqual(MockBehavior.Strict);
+
+            Assert.Throws<InvalidOperationException>(() => autoMoqer.GetMock<IDependency>(MockBehavior.Default));
+        }
+
+        [Test]
+        public void should_be_able_to_get_existing_mock_again()
+        {
+            var autoMoqer = new AutoMoqer();
+            autoMoqer.GetMock<IDependency>(MockBehavior.Strict).Behavior.ShouldEqual(MockBehavior.Strict);
+            autoMoqer.GetMock<IDependency>().Behavior.ShouldEqual(MockBehavior.Strict);
+        }
+
+        [Test]
+        public void default_container_should_allow_override_of_behaviour_on_mock_creation()
+        {
+            var autoMoqer = new AutoMoqer();
+            autoMoqer.GetMock<IDependency>(MockBehavior.Strict).Behavior.ShouldEqual(MockBehavior.Strict);
         }
     }
 
@@ -141,7 +180,7 @@ namespace AutoMoq.Tests
     {
         public virtual void Something()
         {
-            
+
         }
     }
 
