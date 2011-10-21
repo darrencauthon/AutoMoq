@@ -23,7 +23,7 @@ namespace AutoMoq
             SetupAutoMoqer(new UnityContainer());
         }
 
-        internal AutoMoqer(IUnityContainer container)
+        public AutoMoqer(IUnityContainer container)
         {
             SetupAutoMoqer(container);
         }
