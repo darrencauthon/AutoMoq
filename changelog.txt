@@ -1,3 +1,6 @@
+v 1.6.1
++ Exposed a constructor on Automoqer that accepts the IUnityContainer to use.
+
 v 1.6.0
 + Help with setting instances (thanks Georg Rollinger)
 + Added a test fixture base class in new /Helpers (thanks Dan Sweeting)
