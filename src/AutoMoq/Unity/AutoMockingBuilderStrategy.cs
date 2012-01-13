@@ -69,9 +69,10 @@ namespace AutoMoq.Unity
 
         private bool AMockObjectShouldBeCreatedForThisType(Type type)
         {
-            return ThisTypeIsNotAFunction(type) &&
-                   ThisTypeIsNotRegistered(type) &&
-                   ThisIsNotTheTypeThatIsBeingResolvedForTesting(type);
+			return (ThisTypeIsNotAFunction(type) &&
+				   ThisTypeIsNotRegistered(type) &&
+				   ThisIsNotTheTypeThatIsBeingResolvedForTesting(type))
+					|| type.IsInterface;
         }
 
         private bool ThisIsNotTheTypeThatIsBeingResolvedForTesting(Type type)
