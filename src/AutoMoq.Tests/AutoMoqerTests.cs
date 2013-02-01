@@ -46,7 +46,14 @@ namespace AutoMoq.Tests
                 .Verify(x => x.Something(), Times.Once());
         }
 
-        [Test]
+	    [Test]
+	    public void Injected_abstract_dependency_is_same_as_one_requested_from_mocker()
+	    {
+		    var concreteClass = mocker.Create<ClassWithAbstractDependenciesAndManyConstructors>();
+		    Assert.AreSame(concreteClass.abstractDependency, mocker.GetMock<AbstractDependency>().Object);
+	    }
+		
+		[Test]
         public void Can_test_with_an_abstract_dependency()
         {
             var concreteClass = mocker.Create<ClassWithAbstractDependenciesAndManyConstructors>();
@@ -115,7 +122,7 @@ namespace AutoMoq.Tests
 
     public class ClassWithAbstractDependenciesAndManyConstructors
     {
-        private readonly AbstractDependency abstractDependency;
+	    public readonly AbstractDependency abstractDependency;
 
         public ClassWithAbstractDependenciesAndManyConstructors()
         {
