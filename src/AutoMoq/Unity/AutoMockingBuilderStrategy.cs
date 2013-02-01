@@ -47,10 +47,7 @@ namespace AutoMoq.Unity
 	        {
 		        Mock mock = CreateAMockTrackedByAutoMoq(abstractParameter);
 		        if (!container.IsRegistered(abstractParameter))
-		        {
-			        var instance = container.Resolve(abstractParameter);
 			        container.RegisterInstance(abstractParameter, mock.Object);
-		        }
 	        }
         }
 
