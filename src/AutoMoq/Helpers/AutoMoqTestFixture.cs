@@ -17,6 +17,11 @@ namespace AutoMoq.Helpers
             return moqer.GetMock<TMock>();
         }
 
+		/// <summary>
+		///	The current AutoMoqer
+		/// </summary>
+		public AutoMoqer Mocker { get { return moqer; } }
+
         /// <summary>
         ///   A depenency that was auto-injected into Subject.  Implementation is a Moq object.
         /// </summary>

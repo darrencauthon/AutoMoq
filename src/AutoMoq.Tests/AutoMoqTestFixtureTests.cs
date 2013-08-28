@@ -61,6 +61,14 @@ namespace AutoMoq.Tests
             fixture.ResetSubject();
 
             Assert.AreNotSame(origDependency, fixture.Mocked<IDependency>());
-        }
+		}
+
+		[Test]
+		public void Mocker_should_be_set()
+		{
+			var fixture = new AutoMoqTestFixture<ClassWithDependencies>();
+
+			Assert.IsNotNull(fixture.Mocker);
+		}
     }
 }
