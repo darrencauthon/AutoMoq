@@ -72,19 +72,15 @@ namespace AutoMoq.Tests
 		[Test]
 		public void Can_resolve_a_interface()
 		{
-			var mockedInterface = mocker.Create<IDependency>();
-			
-			mockedInterface.ShouldImplement(typeof(IDependency));
-		}
+			var errorWasHit = false;
+			try {
+				var mockedInterface = mocker.Create<IDependency>();
+			    mockedInterface.ShouldImplement(typeof(IDependency));
+			} catch {
+				errorWasHit = true;
+			}
 
-		[Test]
-		public void Can_verify_a_resolved_interface()
-		{
-			var mockedInterface = mocker.Create<IDependency>();
-
-			mockedInterface.Something();
-
-			mocker.Verify<IDependency>(a => a.Something(), Times.Once());
+			errorWasHit.ShouldBeTrue();
 		}
     }
 
