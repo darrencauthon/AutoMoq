@@ -51,13 +51,13 @@ namespace AutoMoq
             return result;
         }
 
-		public virtual object Create(Type type)
-		{
-			ResolveType = type;
-			var result = container.Resolve(type);
-			ResolveType = null;
-			return result;
-		}
+        public virtual object Create(Type type)
+        {
+            ResolveType = type;
+            var result = container.Resolve(type);
+            ResolveType = null;
+            return result;
+        }
 
         /// <summary>
         ///   Gets the mock that was or will be passed to any object created by Create/Resolve.
