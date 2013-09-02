@@ -1,3 +1,7 @@
+v 1.6.2
++ Added a non-generic Create method.
++ Expose public mocker in the test fixture.
+
 v 1.6.1
 + Exposed a constructor on Automoqer that accepts the IUnityContainer to use.
 
