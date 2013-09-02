@@ -51,6 +51,11 @@ namespace AutoMoq
             return result;
         }
 
+		/// <summary>
+		///   Creates an instance of type. Any interface dependencies will be replaced with mocks.
+		/// </summary>
+		/// <param name = "type">The type to create</typeparam>
+		/// <returns></returns>
         public virtual object Create(Type type)
         {
             ResolveType = type;
