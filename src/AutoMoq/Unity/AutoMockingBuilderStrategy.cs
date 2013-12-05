@@ -43,18 +43,12 @@ namespace AutoMoq.Unity
                 .Where(x=>x.ParameterType.IsInterface == false)
                 .Select(x => x.ParameterType);
 
-            foreach (var abstractParameter in abstractParameters)
-            {
-                var mock = CreateAMockTrackedByAutoMoq(abstractParameter);
-                try
-                {
-                    container.Resolve(abstractParameter);
-                }
-                catch
-                {
-                    container.RegisterInstance(abstractParameter, mock.Object);
-                }
-            }
+	        foreach (Type abstractParameter in abstractParameters)
+	        {
+		        Mock mock = CreateAMockTrackedByAutoMoq(abstractParameter);
+		        if (!container.IsRegistered(abstractParameter))
+			        container.RegisterInstance(abstractParameter, mock.Object);
+	        }
         }
 
         private Mock CreateAMockTrackedByAutoMoq(Type type)
