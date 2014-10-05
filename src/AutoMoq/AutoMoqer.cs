@@ -7,6 +7,7 @@ using AutoMoq.Unity;
 using Microsoft.Practices.Unity;
 using Moq;
 using Moq.Language.Flow;
+using System.Reflection;
 
 [assembly: InternalsVisibleTo("AutoMoq.Tests")]
 
@@ -42,7 +43,12 @@ namespace AutoMoq
             ResolveType = typeof (T);
 			// REPLACE
 			//var result = container.Resolve<T>();
-			Object result = null;
+
+			var biggestCtor = GetConstructorWithMostParameters<T>();
+			var mockDependencies = GetMockDependencies(biggestCtor);
+
+			Object result = biggestCtor.Invoke(mockDependencies.Select(m => m.Object).ToArray());
+
             ResolveType = null;
 			return (T)result;
         }
@@ -76,6 +82,36 @@ namespace AutoMoq
 
             return TheRegisteredMockForThisType<T>(type);
         }
+
+		private static ConstructorInfo GetConstructorWithMostParameters<T>()
+		{
+			var constructors = typeof(T).GetConstructors();
+
+			if (!constructors.Any())
+			{
+				return typeof(T).GetConstructor(Type.EmptyTypes);
+			}
+
+			var maxParameterCount = constructors.Max(c => c.GetParameters().Length);
+			return constructors.First(c => c.GetParameters().Count() == maxParameterCount);
+		}
+
+		private static IList<Mock> GetMockDependencies(ConstructorInfo biggestCtor)
+		{
+			if (biggestCtor == null) return new List<Mock>();
+
+			return biggestCtor.GetParameters()
+				.Select(parameter => BuildMockObject(parameter.ParameterType))
+				.ToList();
+		}
+
+		protected static Mock BuildMockObject(Type type)
+		{
+			Type mockType = typeof(Mock<>).MakeGenericType(type);
+			ConstructorInfo mockCtor = mockType.GetConstructor(Type.EmptyTypes);
+			Mock instance = mockCtor.Invoke(new object[] { }) as Mock;
+			return instance;
+		}
 
         internal virtual void SetMock(Type type, Mock mock)
         {
