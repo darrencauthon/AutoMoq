@@ -107,7 +107,7 @@ namespace AutoMoq
 
 		protected Mock BuildMockObject(Type type)
 		{
-			//if (GetMockHasNotBeenCalledForThisType (type)) {
+			if (GetMockHasNotBeenCalledForThisType (type)) {
 				//var mock = new Mock<T> ();
 				//container.RegisterInstance(mock.Object);
 				Type mockType = typeof(Mock<>).MakeGenericType(type);
@@ -115,7 +115,8 @@ namespace AutoMoq
 				Mock instance = mockCtor.Invoke(new object[] { }) as Mock;
 				SetMock (type, instance);
 				return instance;
-			//}
+			}
+			return (Mock)registeredMocks[type];
 			//return null;
 			//return TheRegisteredMockForThisType(type);
 			//Type mockType = typeof(Mock<>).MakeGenericType(type);
