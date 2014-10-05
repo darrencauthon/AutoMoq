@@ -96,7 +96,7 @@ namespace AutoMoq
 			return constructors.First(c => c.GetParameters().Count() == maxParameterCount);
 		}
 
-		private static IList<Mock> GetMockDependencies(ConstructorInfo biggestCtor)
+		private IList<Mock> GetMockDependencies(ConstructorInfo biggestCtor)
 		{
 			if (biggestCtor == null) return new List<Mock>();
 
@@ -105,12 +105,23 @@ namespace AutoMoq
 				.ToList();
 		}
 
-		protected static Mock BuildMockObject(Type type)
+		protected Mock BuildMockObject(Type type)
 		{
-			Type mockType = typeof(Mock<>).MakeGenericType(type);
-			ConstructorInfo mockCtor = mockType.GetConstructor(Type.EmptyTypes);
-			Mock instance = mockCtor.Invoke(new object[] { }) as Mock;
-			return instance;
+			//if (GetMockHasNotBeenCalledForThisType (type)) {
+				//var mock = new Mock<T> ();
+				//container.RegisterInstance(mock.Object);
+				Type mockType = typeof(Mock<>).MakeGenericType(type);
+				ConstructorInfo mockCtor = mockType.GetConstructor(Type.EmptyTypes);
+				Mock instance = mockCtor.Invoke(new object[] { }) as Mock;
+				SetMock (type, instance);
+				return instance;
+			//}
+			//return null;
+			//return TheRegisteredMockForThisType(type);
+			//Type mockType = typeof(Mock<>).MakeGenericType(type);
+			//ConstructorInfo mockCtor = mockType.GetConstructor(Type.EmptyTypes);
+			//Mock instance = mockCtor.Invoke(new object[] { }) as Mock;
+			//return instance;
 		}
 
         internal virtual void SetMock(Type type, Mock mock)
