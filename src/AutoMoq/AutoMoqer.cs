@@ -46,9 +46,11 @@ namespace AutoMoq
         public virtual T Create<T>()
         {
             ResolveType = typeof (T);
-            var result = container.Resolve<T>();
+			// REPLACE
+			//var result = container.Resolve<T>();
+			Object result = null;
             ResolveType = null;
-            return result;
+			return (T)result;
         }
 
         /// <summary>
@@ -59,8 +61,10 @@ namespace AutoMoq
         public virtual object Create(Type type)
         {
             ResolveType = type;
-            var result = container.Resolve(type);
-            ResolveType = null;
+			// REPLACE
+			//var result = container.Resolve(type);
+			Object result = null;
+			ResolveType = null;
             return result;
         }
 
@@ -87,19 +91,21 @@ namespace AutoMoq
 
         public virtual void SetInstance<T>(T instance) where T : class
         {
-            container.RegisterInstance(instance);
-            SetMock(GetTheMockType<T>(), null);
+			// REPLACE
+            //container.RegisterInstance(instance);
+			SetMock(GetTheMockType<T>(), null);
         }
 
         #region private methods
 
         private void SetupAutoMoqer(IUnityContainer container)
         {
-            this.container = container;
+			// REPLACE
+            //this.container = container;
             registeredMocks = new Dictionary<Type, object>();
 
-            AddTheAutoMockingContainerExtensionToTheContainer(container);
-            container.RegisterInstance(this);
+            //AddTheAutoMockingContainerExtensionToTheContainer(container);
+            //container.RegisterInstance(this);
         }
 
         private static void AddTheAutoMockingContainerExtensionToTheContainer(IUnityContainer container)
