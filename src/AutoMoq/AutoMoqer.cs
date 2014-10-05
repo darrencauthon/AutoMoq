@@ -14,18 +14,12 @@ namespace AutoMoq
 {
     public class AutoMoqer
     {
-        private IUnityContainer container;
         private IDictionary<Type, object> registeredMocks;
         internal Type ResolveType;
 
         public AutoMoqer()
         {
-            SetupAutoMoqer(new UnityContainer());
-        }
-
-        public AutoMoqer(IUnityContainer container)
-        {
-            SetupAutoMoqer(container);
+            SetupAutoMoqer();
         }
 
         /// <summary>
@@ -98,22 +92,15 @@ namespace AutoMoq
 
         #region private methods
 
-        private void SetupAutoMoqer(IUnityContainer container)
+        private void SetupAutoMoqer()
         {
 			// REPLACE
             //this.container = container;
             registeredMocks = new Dictionary<Type, object>();
 
-            //AddTheAutoMockingContainerExtensionToTheContainer(container);
             //container.RegisterInstance(this);
         }
-
-        private static void AddTheAutoMockingContainerExtensionToTheContainer(IUnityContainer container)
-        {
-            container.AddNewExtension<AutoMockingContainerExtension>();
-            return;
-        }
-
+			
         private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class
         {
             return (Mock<T>) registeredMocks.Where(x => x.Key == type).First().Value;
@@ -122,7 +109,7 @@ namespace AutoMoq
         private void CreateANewMockAndRegisterIt<T>(Type type) where T : class
         {
             var mock = new Mock<T>();
-            container.RegisterInstance(mock.Object);
+            //container.RegisterInstance(mock.Object);
             SetMock(type, mock);
         }
 
