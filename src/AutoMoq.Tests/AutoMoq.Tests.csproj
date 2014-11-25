@@ -85,6 +85,7 @@
     <Compile Include="QuestionsAboutMockerGettingCalledTwice.cs" />
     <Compile Include="Scenario\HttpContextBaseExample.cs" />
     <Compile Include="with_automoqer_tests.cs" />
+    <Compile Include="AutoMoqListTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AutoMoq\AutoMoq.csproj">
