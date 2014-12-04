@@ -7,6 +7,7 @@ using AutoMoq.Unity;
 using Microsoft.Practices.Unity;
 using Moq;
 using Moq.Language.Flow;
+using System.Reflection;
 
 [assembly: InternalsVisibleTo("AutoMoq.Tests")]
 
@@ -14,18 +15,12 @@ namespace AutoMoq
 {
     public class AutoMoqer
     {
-        private IUnityContainer container;
         private IDictionary<Type, object> registeredMocks;
         internal Type ResolveType;
 
         public AutoMoqer()
         {
-            SetupAutoMoqer(new UnityContainer());
-        }
-
-        public AutoMoqer(IUnityContainer container)
-        {
-            SetupAutoMoqer(container);
+            SetupAutoMoqer();
         }
 
         /// <summary>
@@ -46,9 +41,16 @@ namespace AutoMoq
         public virtual T Create<T>()
         {
             ResolveType = typeof (T);
-            var result = container.Resolve<T>();
+			// REPLACE
+			//var result = container.Resolve<T>();
+
+			var biggestCtor = GetConstructorWithMostParameters<T>();
+			var mockDependencies = GetMockDependencies(biggestCtor);
+
+			Object result = biggestCtor.Invoke(mockDependencies.Select(m => m.Object).ToArray());
+
             ResolveType = null;
-            return result;
+			return (T)result;
         }
 
         /// <summary>
@@ -59,8 +61,10 @@ namespace AutoMoq
         public virtual object Create(Type type)
         {
             ResolveType = type;
-            var result = container.Resolve(type);
-            ResolveType = null;
+			// REPLACE
+			//var result = container.Resolve(type);
+			Object result = null;
+			ResolveType = null;
             return result;
         }
 
@@ -79,6 +83,48 @@ namespace AutoMoq
             return TheRegisteredMockForThisType<T>(type);
         }
 
+		private static ConstructorInfo GetConstructorWithMostParameters<T>()
+		{
+			var constructors = typeof(T).GetConstructors();
+
+			if (!constructors.Any())
+			{
+				return typeof(T).GetConstructor(Type.EmptyTypes);
+			}
+
+			var maxParameterCount = constructors.Max(c => c.GetParameters().Length);
+			return constructors.First(c => c.GetParameters().Count() == maxParameterCount);
+		}
+
+		private IList<Mock> GetMockDependencies(ConstructorInfo biggestCtor)
+		{
+			if (biggestCtor == null) return new List<Mock>();
+
+			return biggestCtor.GetParameters()
+				.Select(parameter => BuildMockObject(parameter.ParameterType))
+				.ToList();
+		}
+
+		protected Mock BuildMockObject(Type type)
+		{
+			if (GetMockHasNotBeenCalledForThisType (type)) {
+				//var mock = new Mock<T> ();
+				//container.RegisterInstance(mock.Object);
+				Type mockType = typeof(Mock<>).MakeGenericType(type);
+				ConstructorInfo mockCtor = mockType.GetConstructor(Type.EmptyTypes);
+				Mock instance = mockCtor.Invoke(new object[] { }) as Mock;
+				SetMock (type, instance);
+				return instance;
+			}
+			return (Mock)registeredMocks[type];
+			//return null;
+			//return TheRegisteredMockForThisType(type);
+			//Type mockType = typeof(Mock<>).MakeGenericType(type);
+			//ConstructorInfo mockCtor = mockType.GetConstructor(Type.EmptyTypes);
+			//Mock instance = mockCtor.Invoke(new object[] { }) as Mock;
+			//return instance;
+		}
+
         internal virtual void SetMock(Type type, Mock mock)
         {
             if (registeredMocks.ContainsKey(type) == false)
@@ -87,27 +133,22 @@ namespace AutoMoq
 
         public virtual void SetInstance<T>(T instance) where T : class
         {
-            container.RegisterInstance(instance);
-            SetMock(GetTheMockType<T>(), null);
+			// REPLACE
+            //container.RegisterInstance(instance);
+			SetMock(GetTheMockType<T>(), null);
         }
 
         #region private methods
 
-        private void SetupAutoMoqer(IUnityContainer container)
+        private void SetupAutoMoqer()
         {
-            this.container = container;
+			// REPLACE
+            //this.container = container;
             registeredMocks = new Dictionary<Type, object>();
 
-            AddTheAutoMockingContainerExtensionToTheContainer(container);
-            container.RegisterInstance(this);
+            //container.RegisterInstance(this);
         }
-
-        private static void AddTheAutoMockingContainerExtensionToTheContainer(IUnityContainer container)
-        {
-            container.AddNewExtension<AutoMockingContainerExtension>();
-            return;
-        }
-
+			
         private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class
         {
             return (Mock<T>) registeredMocks.Where(x => x.Key == type).First().Value;
@@ -116,7 +157,7 @@ namespace AutoMoq
         private void CreateANewMockAndRegisterIt<T>(Type type) where T : class
         {
             var mock = new Mock<T>();
-            container.RegisterInstance(mock.Object);
+            //container.RegisterInstance(mock.Object);
             SetMock(type, mock);
         }
 
