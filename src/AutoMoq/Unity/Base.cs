@@ -49,8 +49,8 @@ namespace AutoMoq.Unity
                 }
                 catch
                 {
-                    var thing = mock.Object as object;
-                    container.RegisterInstance(abstractParameter, thing);
+                    var mockObject = mock.Object as object;
+                    container.RegisterInstance(abstractParameter, mockObject);
                 }
             }
         }
