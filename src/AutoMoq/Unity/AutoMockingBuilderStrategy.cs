@@ -7,7 +7,7 @@ using Microsoft.Practices.Unity;
 
 namespace AutoMoq.Unity
 {
-    internal abstract class AutoMockingBuilderStrategy : BuilderStrategy
+    public abstract class AutoMockingBuilderStrategy : BuilderStrategy
     {
         private readonly IUnityContainer container;
         private readonly IEnumerable<Type> registeredTypes;
@@ -18,7 +18,7 @@ namespace AutoMoq.Unity
             this.container = container;
         }
 
-        internal abstract dynamic CreateAMockObject(Type type);
+        public abstract dynamic CreateAMockObject(Type type);
 
         public override void PreBuildUp(IBuilderContext context)
         {

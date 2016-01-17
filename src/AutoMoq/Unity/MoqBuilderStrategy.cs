@@ -16,7 +16,7 @@ namespace AutoMoq.Unity
             mockRepository = new MockRepository(MockBehavior.Loose);
         }
 
-        internal override dynamic CreateAMockObject(Type type)
+        public override dynamic CreateAMockObject(Type type)
         {
             var createMethod = GenerateAnInterfaceMockCreationMethod(type);
 
