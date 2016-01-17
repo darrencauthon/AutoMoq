@@ -2,6 +2,27 @@
 
 namespace AutoMoq.Helpers
 {
+    /// <summary>
+    /// An auto moq base class that you can use to get AutoMoq setup built-in.
+    ///
+    /// [TestFixture]
+    /// public class LoginGetTests : AutoMoqTestFixture<MyClassToTest>
+    /// {
+    ///     [SetUp]
+    ///     public void Setup()
+    ///     {
+    ///         ResetSubject();
+    ///     }
+    ///     
+    ///     [Test]
+    ///     public void Test_this()
+    ///     {
+    ///         Mocked<IFoo>().Verify(x => x.SomethingIsDone());
+    ///         Subject.DoSomething();
+    ///     }
+    /// }
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class AutoMoqTestFixture<T> where T : class
     {
         private T subject;
