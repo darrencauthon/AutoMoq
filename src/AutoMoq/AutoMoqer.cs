@@ -96,31 +96,67 @@ namespace AutoMoq
             SetMock(GetTheMockType<T>(), null);
         }
 
+        /// <summary>
+        /// Call Setup on the Mock.
+        /// </summary>
+        /// <typeparam name="T">The type of T to setup some sort of expression.</typeparam>
+        /// <param name="expression">The expression passed to the mock object.</param>
+        /// <returns></returns>
         public ISetup<T> Setup<T>(Expression<Action<T>> expression) where T : class
         {
             return GetMock<T>().Setup(expression);
         }
 
+        /// <summary>
+        /// Call Setup on the Mock.
+        /// </summary>
+        /// <typeparam name="T">The type of T to setup some sort of expression.</typeparam>
+        /// <param name="expression">The expression passed to the mock object.</param>
+        /// <returns>The next step in the setup.</returns>
         public ISetup<T, TResult> Setup<T, TResult>(Expression<Func<T, TResult>> expression) where T : class
         {
             return GetMock<T>().Setup(expression);
         }
 
+        /// <summary>
+        /// Call Verify on the Mock.
+        /// </summary>
+        /// <typeparam name="T">The type of T to verify some sort of expression.</typeparam>
+        /// <param name="expression">The expression to verify.</param>
         public void Verify<T>(Expression<Action<T>> expression) where T : class
         {
             GetMock<T>().Verify(expression);
         }
 
+        /// <summary>
+        /// Call Verify on the Mock.
+        /// </summary>
+        /// <typeparam name="T">The type of T to verify some sort of expression.</typeparam>
+        /// <param name="expression">The expression to verify.</param>
+        /// <param name="failMessage">A message if the expression cannot be verified.</param>
         public void Verify<T>(Expression<Action<T>> expression, string failMessage) where T : class
         {
             GetMock<T>().Verify(expression, failMessage);
         }
 
+        /// <summary>
+        /// Call Verify on the Mock.
+        /// </summary>
+        /// <typeparam name="T">The type of T to verify some sort of expression.</typeparam>
+        /// <param name="expression">The expression to verify.</param>
+        /// <param name="times">The number of times this expression should be verified.</param>
         public void Verify<T>(Expression<Action<T>> expression, Times times) where T : class
         {
             GetMock<T>().Verify(expression, times);
         }
 
+        /// <summary>
+        /// Call Verify on the Mock.
+        /// </summary>
+        /// <typeparam name="T">The type of T to verify some sort of expression.</typeparam>
+        /// <param name="expression">The expression to verify.</param>
+        /// <param name="times">The number of times this expression should be verified.</param>
+        /// <param name="failMessage">A message if the expression cannot be verified.</param>
         public void Verify<T>(Expression<Action<T>> expression, Times times, string failMessage) where T : class
         {
             GetMock<T>().Verify(expression, times, failMessage);
