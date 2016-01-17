@@ -8,13 +8,13 @@ using Moq;
 
 namespace AutoMoq.Unity
 {
-    internal class AutoMockingBuilderStrategy : BuilderStrategy
+    internal class Base : BuilderStrategy
     {
+        private readonly IUnityContainer container;
         private readonly MockRepository mockRepository;
         private readonly IEnumerable<Type> registeredTypes;
-        private readonly IUnityContainer container;
 
-        public AutoMockingBuilderStrategy(IEnumerable<Type> registeredTypes, IUnityContainer container)
+        public Base(IEnumerable<Type> registeredTypes, IUnityContainer container)
         {
             mockRepository = new MockRepository(MockBehavior.Loose);
             this.registeredTypes = registeredTypes;
@@ -40,7 +40,7 @@ namespace AutoMoq.Unity
             var constructor = type.GetConstructors().OrderByDescending(x => x.GetParameters().Count()).First();
             var abstractParameters = constructor.GetParameters()
                 .Where(x => x.ParameterType.IsAbstract)
-                .Where(x=>x.ParameterType.IsInterface == false)
+                .Where(x => x.ParameterType.IsInterface == false)
                 .Select(x => x.ParameterType);
 
             foreach (var abstractParameter in abstractParameters)
@@ -65,13 +65,11 @@ namespace AutoMoq.Unity
             return mock;
         }
 
-        #region private methods
-
         private bool AMockObjectShouldBeCreatedForThisType(Type type)
         {
-			return ThisTypeIsNotAFunction(type) &&
-				   ThisTypeIsNotRegistered(type) &&
-				   ThisIsNotTheTypeThatIsBeingResolvedForTesting(type);
+            return ThisTypeIsNotAFunction(type) &&
+                   ThisTypeIsNotRegistered(type) &&
+                   ThisIsNotTheTypeThatIsBeingResolvedForTesting(type);
         }
 
         private bool ThisIsNotTheTypeThatIsBeingResolvedForTesting(Type type)
@@ -111,14 +109,20 @@ namespace AutoMoq.Unity
         {
             var createMethodWithNoParameters = mockRepository.GetType().GetMethod("Create", EmptyArgumentList());
 
-            return createMethodWithNoParameters.MakeGenericMethod(new[] {type});
+            return createMethodWithNoParameters.MakeGenericMethod(type);
         }
 
         private static Type[] EmptyArgumentList()
         {
             return new[] {typeof (object[])};
         }
+    }
 
-        #endregion
+    internal class AutoMockingBuilderStrategy : Base
+    {
+        public AutoMockingBuilderStrategy(IEnumerable<Type> registeredTypes, IUnityContainer container)
+            : base(registeredTypes, container)
+        {
+        }
     }
 }
