@@ -18,7 +18,7 @@ namespace AutoMoq.Unity
             this.container = container;
         }
 
-        public abstract dynamic CreateAMockObject(Type type);
+        public abstract MockCreationResult CreateAMockObject(Type type);
 
         public override void PreBuildUp(IBuilderContext context)
         {
@@ -26,7 +26,7 @@ namespace AutoMoq.Unity
             if (AMockObjectShouldBeCreatedForThisType(type))
             {
                 var mock = CreateAMockTrackedByAutoMoq(type);
-                context.Existing = mock.Object;
+                context.Existing = mock.ActualObject;
             }
 
             if (type.GetConstructors().Any() == false) return;
@@ -45,7 +45,7 @@ namespace AutoMoq.Unity
                 }
                 catch
                 {
-                    var mockObject = mock.Object as object;
+                    var mockObject = mock.ActualObject as object;
                     container.RegisterInstance(abstractParameter, mockObject);
                 }
             }
@@ -62,11 +62,11 @@ namespace AutoMoq.Unity
                 .Select(x => x.ParameterType);
         }
 
-        private dynamic CreateAMockTrackedByAutoMoq(Type type)
+        private MockCreationResult CreateAMockTrackedByAutoMoq(Type type)
         {
             var mock = CreateAMockObject(type);
             var autoMoqer = container.Resolve<AutoMoqer>();
-            autoMoqer.SetMock(type, mock);
+            autoMoqer.SetMock(type, mock.MockObject);
             return mock;
         }
 

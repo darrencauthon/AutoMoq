@@ -79,7 +79,7 @@ namespace AutoMoq
             return TheRegisteredMockForThisType<T>(type);
         }
 
-        internal virtual void SetMock(Type type, Mock mock)
+        internal virtual void SetMock(Type type, Object mock)
         {
             if (registeredMocks.ContainsKey(type) == false)
                 registeredMocks.Add(type, mock);

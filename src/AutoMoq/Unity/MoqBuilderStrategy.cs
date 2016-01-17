@@ -16,7 +16,7 @@ namespace AutoMoq.Unity
             mockRepository = new MockRepository(MockBehavior.Loose);
         }
 
-        public override dynamic CreateAMockObject(Type type)
+        public override MockCreationResult CreateAMockObject(Type type)
         {
             var createMethod = GenerateAnInterfaceMockCreationMethod(type);
 
@@ -29,9 +29,15 @@ namespace AutoMoq.Unity
             return createMethodWithNoParameters.MakeGenericMethod(type);
         }
 
-        private dynamic InvokeTheMockCreationMethod(MethodInfo createMethod)
+        private MockCreationResult InvokeTheMockCreationMethod(MethodInfo createMethod)
         {
-            return (Mock) createMethod.Invoke(mockRepository, new object[] {new List<object>().ToArray()});
+            var mock = (Mock) createMethod.Invoke(mockRepository, new object[] {new List<object>().ToArray()});
+
+            return new MockCreationResult()
+            {
+                ActualObject = mock.Object,
+                MockObject = mock
+            };
         }
 
         private static Type[] EmptyArgumentList()
