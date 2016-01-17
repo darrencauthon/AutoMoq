@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Practices.ObjectBuilder2;
 using Microsoft.Practices.Unity;
-using Moq;
 
 namespace AutoMoq.Unity
 {
@@ -50,12 +49,13 @@ namespace AutoMoq.Unity
                 }
                 catch
                 {
-                    container.RegisterInstance(abstractParameter, mock.Object);
+                    var thing = mock.Object as object;
+                    container.RegisterInstance(abstractParameter, thing);
                 }
             }
         }
 
-        internal Mock CreateAMockTrackedByAutoMoq(Type type)
+        internal dynamic CreateAMockTrackedByAutoMoq(Type type)
         {
             var mock = CreateAMockObject(type);
             var autoMoqer = container.Resolve<AutoMoqer>();
@@ -91,14 +91,14 @@ namespace AutoMoq.Unity
             return registeredTypes.Any(x => x.Equals(type)) == false;
         }
 
-        internal Mock CreateAMockObject(Type type)
+        internal dynamic CreateAMockObject(Type type)
         {
             var createMethod = GenerateAnInterfaceMockCreationMethod(type);
 
             return InvokeTheMockCreationMethod(createMethod);
         }
 
-        internal abstract Mock InvokeTheMockCreationMethod(MethodInfo createMethod);
+        internal abstract dynamic InvokeTheMockCreationMethod(MethodInfo createMethod);
 
         internal abstract MethodInfo GenerateAnInterfaceMockCreationMethod(Type type);
 

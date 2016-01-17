@@ -22,7 +22,7 @@ namespace AutoMoq.Unity
             return createMethodWithNoParameters.MakeGenericMethod(type);
         }
 
-        internal override Mock InvokeTheMockCreationMethod(MethodInfo createMethod)
+        internal override dynamic InvokeTheMockCreationMethod(MethodInfo createMethod)
         {
             return (Mock) createMethod.Invoke(mockRepository, new object[] {new List<object>().ToArray()});
         }
