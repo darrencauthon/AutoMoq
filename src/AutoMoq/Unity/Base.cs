@@ -91,14 +91,7 @@ namespace AutoMoq.Unity
             return registeredTypes.Any(x => x.Equals(type)) == false;
         }
 
-        internal dynamic CreateAMockObject(Type type)
-        {
-            var createMethod = GenerateAnInterfaceMockCreationMethod(type);
-
-            return InvokeTheMockCreationMethod(createMethod);
-        }
-
-        internal abstract dynamic InvokeTheMockCreationMethod(MethodInfo createMethod);
+        internal abstract dynamic CreateAMockObject(Type type);
 
         internal abstract MethodInfo GenerateAnInterfaceMockCreationMethod(Type type);
 
