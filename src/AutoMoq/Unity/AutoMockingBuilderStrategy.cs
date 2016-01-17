@@ -36,13 +36,7 @@ namespace AutoMoq.Unity
 
         private void LoadAbstractDependenciesInTheGreediestConstructor(Type type)
         {
-            var constructor = type.GetConstructors().OrderByDescending(x => x.GetParameters().Count()).First();
-            var abstractParameters = constructor.GetParameters()
-                .Where(x => x.ParameterType.IsAbstract)
-                .Where(x => x.ParameterType.IsInterface == false)
-                .Select(x => x.ParameterType);
-
-            foreach (var abstractParameter in abstractParameters)
+            foreach (var abstractParameter in AbstractParameters(type))
             {
                 var mock = CreateAMockTrackedByAutoMoq(abstractParameter);
                 try
@@ -55,6 +49,17 @@ namespace AutoMoq.Unity
                     container.RegisterInstance(abstractParameter, mockObject);
                 }
             }
+        }
+
+        private static IEnumerable<Type> AbstractParameters(Type type)
+        {
+            var greediestConstructor = type.GetConstructors()
+                .OrderByDescending(x => x.GetParameters().Count())
+                .First();
+            return greediestConstructor.GetParameters()
+                .Where(x => x.ParameterType.IsAbstract)
+                .Where(x => x.ParameterType.IsInterface == false)
+                .Select(x => x.ParameterType);
         }
 
         private dynamic CreateAMockTrackedByAutoMoq(Type type)
