@@ -2,30 +2,58 @@
 
 namespace AutoMoq.Helpers
 {
+    /// <summary>
+    /// An auto moq base class that you can use to get AutoMoq setup built-in.
+    ///
+    /// [TestFixture]
+    /// public class LoginGetTests : AutoMoqTestFixture<MyClassToTest>
+    /// {
+    ///     [SetUp]
+    ///     public void Setup()
+    ///     {
+    ///         ResetSubject();
+    ///     }
+    ///     
+    ///     [Test]
+    ///     public void Test_this()
+    ///     {
+    ///         Mocked<IFoo>().Verify(x => x.SomethingIsDone());
+    ///         Subject.DoSomething();
+    ///     }
+    /// }
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class AutoMoqTestFixture<T> where T : class
     {
-        private AutoMoqer moqer = new AutoMoqer();
         private T subject;
 
         /// <summary>
-        ///   A Mock dependency that was auto-injected into Subject
+        ///     The current AutoMoqer
         /// </summary>
-        /// <typeparam name = "TMock"></typeparam>
+        public AutoMoqer Mocker { get; private set; } = new AutoMoqer();
+
+        /// <summary>
+        ///     The Class being tested in this Test Fixture.
+        /// </summary>
+        public T Subject
+        {
+            get { return subject ?? (subject = Mocker.Resolve<T>()); }
+        }
+
+        /// <summary>
+        ///     A Mock dependency that was auto-injected into Subject
+        /// </summary>
+        /// <typeparam name="TMock"></typeparam>
         /// <returns></returns>
         public Mock<TMock> Mocked<TMock>() where TMock : class
         {
-            return moqer.GetMock<TMock>();
+            return Mocker.GetMock<TMock>();
         }
 
-		/// <summary>
-		///	The current AutoMoqer
-		/// </summary>
-		public AutoMoqer Mocker { get { return moqer; } }
-
         /// <summary>
-        ///   A depenency that was auto-injected into Subject.  Implementation is a Moq object.
+        ///     A dependency that was auto-injected into Subject.  Implementation is a Moq object.
         /// </summary>
-        /// <typeparam name = "TDepend"></typeparam>
+        /// <typeparam name="TDepend"></typeparam>
         /// <returns></returns>
         public TDepend Dependency<TDepend>() where TDepend : class
         {
@@ -33,21 +61,14 @@ namespace AutoMoq.Helpers
         }
 
         /// <summary>
-        ///   Resets Subject instance.  A new instance will be created, with new depenencies auto-injected.
-        ///   Call this from NUnit's [SetUp] method, if you want each of your tests in the fixture to have a fresh instance of <typeparamref name = "T" />
+        ///     Resets Subject instance.  A new instance will be created, with new depenencies auto-injected.
+        ///     Call this from NUnit's [SetUp] method, if you want each of your tests in the fixture to have a fresh instance of
+        ///     <typeparamref name="T" />
         /// </summary>
         public void ResetSubject()
         {
-            moqer = new AutoMoqer();
+            Mocker = new AutoMoqer();
             subject = null;
-        }
-
-        /// <summary>
-        ///   The Class being tested in this Test Fixture.
-        /// </summary>
-        public T Subject
-        {
-            get { return subject ?? (subject = moqer.Resolve<T>()); }
         }
     }
 }

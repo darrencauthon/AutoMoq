@@ -45,19 +45,6 @@ namespace AutoMoq.Tests
 
             thing.FindOne().ShouldBeSameAs(dependency);
         }
-
-        [Test]
-        public void Cannot_figure_out_how_to_map_a_registered_concrete_list_to_an_interface()
-        {
-            var dependency = new Dependency();
-            var list = new List<Dependency>();
-            list.Add(dependency);
-
-            mocker.SetInstance(list);
-            var thing = mocker.Create<ThingThatHasDependencies>();
-
-            thing.FindOne().ShouldBeNull();
-        }
     }
 
     public class Dependency
