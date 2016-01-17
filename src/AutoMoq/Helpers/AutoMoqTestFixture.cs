@@ -30,7 +30,7 @@ namespace AutoMoq.Helpers
         }
 
         /// <summary>
-        ///     A depenency that was auto-injected into Subject.  Implementation is a Moq object.
+        ///     A dependency that was auto-injected into Subject.  Implementation is a Moq object.
         /// </summary>
         /// <typeparam name="TDepend"></typeparam>
         /// <returns></returns>
