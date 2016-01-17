@@ -16,17 +16,17 @@ namespace AutoMoq.Unity
             mockRepository = new MockRepository(MockBehavior.Loose);
         }
 
-        internal override MethodInfo GenerateAnInterfaceMockCreationMethod(Type type)
-        {
-            var createMethodWithNoParameters = mockRepository.GetType().GetMethod("Create", EmptyArgumentList());
-            return createMethodWithNoParameters.MakeGenericMethod(type);
-        }
-
         internal override dynamic CreateAMockObject(Type type)
         {
             var createMethod = GenerateAnInterfaceMockCreationMethod(type);
 
             return InvokeTheMockCreationMethod(createMethod);
+        }
+
+        private MethodInfo GenerateAnInterfaceMockCreationMethod(Type type)
+        {
+            var createMethodWithNoParameters = mockRepository.GetType().GetMethod("Create", EmptyArgumentList());
+            return createMethodWithNoParameters.MakeGenericMethod(type);
         }
 
         private dynamic InvokeTheMockCreationMethod(MethodInfo createMethod)

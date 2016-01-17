@@ -18,6 +18,8 @@ namespace AutoMoq.Unity
             this.container = container;
         }
 
+        internal abstract dynamic CreateAMockObject(Type type);
+
         public override void PreBuildUp(IBuilderContext context)
         {
             var type = GetTheTypeFromTheBuilderContext(context);
@@ -90,10 +92,6 @@ namespace AutoMoq.Unity
         {
             return registeredTypes.Any(x => x.Equals(type)) == false;
         }
-
-        internal abstract dynamic CreateAMockObject(Type type);
-
-        internal abstract MethodInfo GenerateAnInterfaceMockCreationMethod(Type type);
 
         internal static Type[] EmptyArgumentList()
         {
