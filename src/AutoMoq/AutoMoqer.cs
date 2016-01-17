@@ -29,20 +29,20 @@ namespace AutoMoq
         }
 
         /// <summary>
-        ///   Creates an instance of type T. Any interface dependencies will be replaced with mocks.
+        ///     Creates an instance of type T. Any interface dependencies will be replaced with mocks.
         /// </summary>
-        /// <typeparam name = "T"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>An instance of T.</returns>
         public virtual T Resolve<T>()
         {
             return Create<T>();
         }
 
         /// <summary>
-        ///   Creates an instance of type T. Any interface dependencies will be replaced with mocks.
+        ///     Creates an instance of type T. Any interface dependencies will be replaced with mocks.
         /// </summary>
-        /// <typeparam name = "T"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>An instance of T.</returns>
         public virtual T Create<T>()
         {
             ResolveType = typeof (T);
@@ -52,10 +52,11 @@ namespace AutoMoq
         }
 
         /// <summary>
-        ///   Creates an instance of type. Any interface dependencies will be replaced with mocks.
+        ///     Creates an instance of type. Any interface dependencies will be replaced with mocks.
         /// </summary>
-        /// <param name = "type">The type to create</typeparam>
-        /// <returns></returns>
+        /// <param name="type">
+        ///     The type to create</param>
+        ///     <returns>An object of the requested type</returns>
         public virtual object Create(Type type)
         {
             ResolveType = type;
@@ -65,10 +66,10 @@ namespace AutoMoq
         }
 
         /// <summary>
-        ///   Gets the mock that was or will be passed to any object created by Create/Resolve.
+        ///     Gets the mock that was or will be passed to any object created by Create/Resolve.
         /// </summary>
-        /// <typeparam name = "T"></typeparam>
-        /// <returns></returns>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>A mock object of type T.</returns>
         public virtual Mock<T> GetMock<T>() where T : class
         {
             ResolveType = null;
@@ -90,47 +91,6 @@ namespace AutoMoq
             container.RegisterInstance(instance);
             SetMock(GetTheMockType<T>(), null);
         }
-
-        #region private methods
-
-        private void SetupAutoMoqer(IUnityContainer container)
-        {
-            this.container = container;
-            registeredMocks = new Dictionary<Type, object>();
-
-            AddTheAutoMockingContainerExtensionToTheContainer(container);
-            container.RegisterInstance(this);
-        }
-
-        private static void AddTheAutoMockingContainerExtensionToTheContainer(IUnityContainer container)
-        {
-            container.AddNewExtension<AutoMockingContainerExtension>();
-            return;
-        }
-
-        private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class
-        {
-            return (Mock<T>) registeredMocks.Where(x => x.Key == type).First().Value;
-        }
-
-        private void CreateANewMockAndRegisterIt<T>(Type type) where T : class
-        {
-            var mock = new Mock<T>();
-            container.RegisterInstance(mock.Object);
-            SetMock(type, mock);
-        }
-
-        private bool GetMockHasNotBeenCalledForThisType(Type type)
-        {
-            return registeredMocks.ContainsKey(type) == false;
-        }
-
-        private static Type GetTheMockType<T>() where T : class
-        {
-            return typeof (T);
-        }
-
-        #endregion
 
         public ISetup<T> Setup<T>(Expression<Action<T>> expression) where T : class
         {
@@ -160,6 +120,42 @@ namespace AutoMoq
         public void Verify<T>(Expression<Action<T>> expression, Times times, string failMessage) where T : class
         {
             GetMock<T>().Verify(expression, times, failMessage);
+        }
+
+        private void SetupAutoMoqer(IUnityContainer container)
+        {
+            this.container = container;
+            registeredMocks = new Dictionary<Type, object>();
+
+            AddTheAutoMockingContainerExtensionToTheContainer(container);
+            container.RegisterInstance(this);
+        }
+
+        private static void AddTheAutoMockingContainerExtensionToTheContainer(IUnityContainer container)
+        {
+            container.AddNewExtension<AutoMockingContainerExtension>();
+        }
+
+        private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class
+        {
+            return (Mock<T>) registeredMocks.First(x => x.Key == type).Value;
+        }
+
+        private void CreateANewMockAndRegisterIt<T>(Type type) where T : class
+        {
+            var mock = new Mock<T>();
+            container.RegisterInstance(mock.Object);
+            SetMock(type, mock);
+        }
+
+        private bool GetMockHasNotBeenCalledForThisType(Type type)
+        {
+            return registeredMocks.ContainsKey(type) == false;
+        }
+
+        private static Type GetTheMockType<T>() where T : class
+        {
+            return typeof (T);
         }
     }
 }
