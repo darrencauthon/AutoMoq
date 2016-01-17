@@ -90,7 +90,7 @@ namespace AutoMoq.Unity
 
         private bool ThisTypeIsNotRegistered(Type type)
         {
-            return registeredTypes.Any(x => x.Equals(type)) == false;
+            return registeredTypes.Any(x => x == type) == false;
         }
     }
 }
