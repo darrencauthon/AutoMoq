@@ -34,7 +34,7 @@ namespace AutoMoq.Unity
             LoadAbstractDependenciesInTheGreediestConstructor(type);
         }
 
-        internal void LoadAbstractDependenciesInTheGreediestConstructor(Type type)
+        private void LoadAbstractDependenciesInTheGreediestConstructor(Type type)
         {
             var constructor = type.GetConstructors().OrderByDescending(x => x.GetParameters().Count()).First();
             var abstractParameters = constructor.GetParameters()
@@ -57,7 +57,7 @@ namespace AutoMoq.Unity
             }
         }
 
-        internal dynamic CreateAMockTrackedByAutoMoq(Type type)
+        private dynamic CreateAMockTrackedByAutoMoq(Type type)
         {
             var mock = CreateAMockObject(type);
             var autoMoqer = container.Resolve<AutoMoqer>();
@@ -65,37 +65,32 @@ namespace AutoMoq.Unity
             return mock;
         }
 
-        internal bool AMockObjectShouldBeCreatedForThisType(Type type)
+        private bool AMockObjectShouldBeCreatedForThisType(Type type)
         {
             return ThisTypeIsNotAFunction(type) &&
                    ThisTypeIsNotRegistered(type) &&
                    ThisIsNotTheTypeThatIsBeingResolvedForTesting(type);
         }
 
-        internal bool ThisIsNotTheTypeThatIsBeingResolvedForTesting(Type type)
+        private bool ThisIsNotTheTypeThatIsBeingResolvedForTesting(Type type)
         {
             var mocker = container.Resolve<AutoMoqer>();
             return (mocker.ResolveType == null || mocker.ResolveType != type);
         }
 
-        internal static bool ThisTypeIsNotAFunction(Type type)
+        private static bool ThisTypeIsNotAFunction(Type type)
         {
             return type.Name != "Func`1";
         }
 
-        internal static Type GetTheTypeFromTheBuilderContext(IBuilderContext context)
+        private static Type GetTheTypeFromTheBuilderContext(IBuilderContext context)
         {
             return (context.OriginalBuildKey).Type;
         }
 
-        internal bool ThisTypeIsNotRegistered(Type type)
+        private bool ThisTypeIsNotRegistered(Type type)
         {
             return registeredTypes.Any(x => x.Equals(type)) == false;
-        }
-
-        internal static Type[] EmptyArgumentList()
-        {
-            return new[] {typeof (object[])};
         }
     }
 }

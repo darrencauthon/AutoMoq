@@ -33,5 +33,10 @@ namespace AutoMoq.Unity
         {
             return (Mock) createMethod.Invoke(mockRepository, new object[] {new List<object>().ToArray()});
         }
+
+        private static Type[] EmptyArgumentList()
+        {
+            return new[] {typeof (object[])};
+        }
     }
 }
