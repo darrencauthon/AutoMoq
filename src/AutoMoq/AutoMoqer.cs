@@ -29,9 +29,9 @@ namespace AutoMoq
         }
 
         /// <summary>
-        ///     Creates an instance of type T. Any interface dependencies will be replaced with mocks.
+        ///     Alias of Create.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type to create.</typeparam>
         /// <returns>An instance of T.</returns>
         public virtual T Resolve<T>()
         {
@@ -41,7 +41,7 @@ namespace AutoMoq
         /// <summary>
         ///     Creates an instance of type T. Any interface dependencies will be replaced with mocks.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type to create.</typeparam>
         /// <returns>An instance of T.</returns>
         public virtual T Create<T>()
         {
@@ -54,9 +54,8 @@ namespace AutoMoq
         /// <summary>
         ///     Creates an instance of type. Any interface dependencies will be replaced with mocks.
         /// </summary>
-        /// <param name="type">
-        ///     The type to create</param>
-        ///     <returns>An object of the requested type</returns>
+        /// <param name="type">The type to create.</param>
+        /// <returns>An object of the requested type.</returns>
         public virtual object Create(Type type)
         {
             ResolveType = type;
@@ -68,7 +67,7 @@ namespace AutoMoq
         /// <summary>
         ///     Gets the mock that was or will be passed to any object created by Create/Resolve.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type of mock to build.</typeparam>
         /// <returns>A mock object of type T.</returns>
         public virtual Mock<T> GetMock<T>() where T : class
         {
@@ -86,6 +85,11 @@ namespace AutoMoq
                 registeredMocks.Add(type, mock);
         }
 
+        /// <summary>
+        /// Set an instance of type T to be used when resolving an object that needs T.
+        /// </summary>
+        /// <typeparam name="T">The type of T to register the instance as.</typeparam>
+        /// <param name="instance">The instance of type T to use.</param>
         public virtual void SetInstance<T>(T instance) where T : class
         {
             container.RegisterInstance(instance);
