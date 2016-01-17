@@ -11,4 +11,4 @@ csproj.user
 TestResults
 LocalTestRun.testrunconfig
 AutoMoq/TestResult
-AutoMoq.sln.DotSettings.user
+*.user

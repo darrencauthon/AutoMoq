@@ -30,7 +30,7 @@ namespace AutoMoq.Unity
 
         private void SetBuildingStrategyForBuildingUnregisteredTypes()
         {
-            var strategy = new AutoMockingBuilderStrategy(registeredTypes, Container);
+            var strategy = new MoqBuilderStrategy(registeredTypes, Container);
             Context.Strategies.Add(strategy, UnityBuildStage.PreCreation);
         }
 
