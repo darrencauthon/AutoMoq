@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoMoqer.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="Helpers\AutoMoqTestFixture.cs" />
     <Compile Include="Helpers\with_automoqer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
