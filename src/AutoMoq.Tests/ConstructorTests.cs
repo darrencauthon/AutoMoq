@@ -36,6 +36,21 @@ namespace AutoMoq.Tests
             bar.Foo.ShouldBeSameAs(foo);
         }
 
+        [Test]
+        public void I_can_replace_the_unity_container_with_my_own_through_config()
+        {
+            var container = new UnityContainer();
+            var config = new Config() {Container = container};
+
+            var foo = new Mock<IFoo>().Object;
+            container.RegisterInstance(foo);
+
+            var mocker = new AutoMoqer(config);
+
+            var bar = mocker.Create<Bar>();
+            bar.Foo.ShouldBeSameAs(foo);
+        }
+
         public interface IFoo
         {
         }

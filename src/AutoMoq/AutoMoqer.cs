@@ -30,7 +30,7 @@ namespace AutoMoq
 
         public AutoMoqer(Config config)
         {
-            SetupAutoMoqer(new UnityContainer(), config);
+            SetupAutoMoqer(config.Container ?? new UnityContainer(), config);
         }
 
         /// <summary>
