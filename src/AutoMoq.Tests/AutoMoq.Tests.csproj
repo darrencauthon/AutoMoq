@@ -87,6 +87,7 @@
     <Compile Include="EnsureMoqTests.cs" />
     <Compile Include="QuestionsAboutMockerGettingCalledTwice.cs" />
     <Compile Include="Scenario\HttpContextBaseExample.cs" />
+    <Compile Include="MockingBehaviorTests.cs" />
     <Compile Include="with_automoqer_tests.cs" />
     <Compile Include="AutoMoqListTests.cs" />
   </ItemGroup>
