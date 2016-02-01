@@ -1,10 +1,53 @@
 ﻿using System;
+using System.CodeDom;
 using Moq;
 using NUnit.Framework;
 using Should;
 
 namespace AutoMoq.Tests
 {
+    [TestFixture]
+    public class StrictMockTests
+    {
+        private AutoMoqer mocker;
+
+        [SetUp]
+        public void Setup()
+        {
+            mocker = new AutoMoqer();
+        }
+
+        [Test]
+        public void It_should_support_loose_mocking()
+        {
+            var bar = mocker.Create<Bar>();
+            bar.Throw();
+            // an error should not be thrown, as this
+            // is a loose mock
+        }
+
+        public class Bar
+        {
+            private readonly IFoo foo;
+
+            public Bar(IFoo foo)
+            {
+                this.foo = foo;
+            }
+
+            public void Throw()
+            {
+                foo.Catch();
+            }
+        }
+
+        public interface IFoo
+        {
+            void Catch();
+        }
+        
+    }
+
     [TestFixture]
     public class AutoMoqerTests
     {
