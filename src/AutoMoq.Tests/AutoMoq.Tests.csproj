@@ -84,6 +84,7 @@
     <Compile Include="AutoMoqerTests.cs" />
     <Compile Include="AutoMoqTestFixtureTests.cs" />
     <Compile Include="ConfigTests.cs" />
+    <Compile Include="ConstructorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EnsureMoqTests.cs" />
     <Compile Include="QuestionsAboutMockerGettingCalledTwice.cs" />
