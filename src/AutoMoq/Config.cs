@@ -11,6 +11,7 @@ namespace AutoMoq
         public Config()
         {
             MockBehavior = MockBehavior.Loose;
+            Container = new UnityContainer();
         }
     }
 }

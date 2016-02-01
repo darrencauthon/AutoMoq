@@ -20,17 +20,18 @@ namespace AutoMoq
 
         public AutoMoqer()
         {
-            SetupAutoMoqer(new UnityContainer(), new Config());
+            SetupAutoMoqer(new Config());
         }
 
         public AutoMoqer(IUnityContainer container)
         {
-            SetupAutoMoqer(container, new Config());
+            var config = new Config {Container = container};
+            SetupAutoMoqer(config);
         }
 
         public AutoMoqer(Config config)
         {
-            SetupAutoMoqer(config.Container ?? new UnityContainer(), config);
+            SetupAutoMoqer(config);
         }
 
         /// <summary>
@@ -167,9 +168,9 @@ namespace AutoMoq
             GetMock<T>().Verify(expression, times, failMessage);
         }
 
-        private void SetupAutoMoqer(IUnityContainer container, Config config)
+        private void SetupAutoMoqer(Config config)
         {
-            this.container = container;
+            this.container = config.Container;
             registeredMocks = new Dictionary<Type, object>();
 
             AddTheAutoMockingContainerExtensionToTheContainer(container, config);
