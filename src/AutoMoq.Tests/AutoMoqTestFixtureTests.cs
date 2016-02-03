@@ -3,6 +3,7 @@ using AutoMoq.Helpers;
 using Microsoft.Practices.Unity;
 using Moq;
 using NUnit.Framework;
+using Should;
 
 namespace AutoMoq.Tests
 {
@@ -63,6 +64,31 @@ namespace AutoMoq.Tests
             Assert.AreNotSame(origDependency, fixture.Mocked<IDependency>());
 		}
 
+        [Test]
+        public void ResetSubject_should_allow_a_different_config_to_be_passed()
+        {
+            var fixture = new AutoMoqTestFixture<Apple>();
+
+            var looseConfig = new Config {MockBehavior = MockBehavior.Loose};
+            fixture.ResetSubject(looseConfig);
+
+            fixture.Subject.DoSomething(); // expecting no error
+
+            var strictConfig = new Config {MockBehavior = MockBehavior.Strict};
+            fixture.ResetSubject(strictConfig);
+
+            var errorHit = false;
+            try
+            {
+                fixture.Subject.DoSomething(); // expecting an error
+            }
+            catch
+            {
+                errorHit = true;
+            }
+            errorHit.ShouldBeTrue();
+        }
+
 		[Test]
 		public void Mocker_should_be_set()
 		{
@@ -70,5 +96,25 @@ namespace AutoMoq.Tests
 
 			Assert.IsNotNull(fixture.Mocker);
 		}
+
+        public class Apple
+        {
+            private readonly IOrange orange;
+
+            public Apple(IOrange orange)
+            {
+                this.orange = orange;
+            }
+
+            public void DoSomething()
+            {
+                orange.Something();
+            }
+        }
+
+        public interface IOrange
+        {
+            void Something();
+        }
     }
 }
