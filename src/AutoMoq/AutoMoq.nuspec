@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>AutoMoq/id>
+    <version>1.7.0.0/version>
+    <title>AutoMoq</title>
+    <authors>Darren Cauthon/authors>
+    <owners>Darren Cauthon</owners>
+    <licenseUrl>https://github.com/darrencauthon/AutoMoq/blob/master/license.txt</licenseUrl>
+    <projectUrl>https://github.com/darrencauthon/AutoMoq</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Auto-mocking container</description>
+    <releaseNotes>Added support for strict-mocking.</releaseNotes>
+    <copyright>Copyright 2010-2016</copyright>
+    <tags>moq unity tdd testing test</tags>
+  </metadata>
+</package>
