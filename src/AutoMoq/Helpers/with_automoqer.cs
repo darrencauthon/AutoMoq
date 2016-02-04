@@ -11,6 +11,11 @@ namespace AutoMoq.Helpers
             mocker = new AutoMoqer();
         }
 
+        public with_automoqer(Config config)
+        {
+            mocker = new AutoMoqer(config);
+        }
+
         public static Mock<T> GetMock<T>() where T : class
         {
             return mocker.GetMock<T>();

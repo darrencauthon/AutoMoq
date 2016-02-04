@@ -70,5 +70,15 @@ namespace AutoMoq.Helpers
             Mocker = new AutoMoqer();
             subject = null;
         }
+
+        /// <summary>
+        ///     Resets Subject instance.  A new instance will be created, with new depenencies auto-injected.
+        /// </summary>
+        /// <param name="config"></param>
+        public void ResetSubject(Config config)
+        {
+            Mocker = new AutoMoqer(config);
+            subject = null;
+        }
     }
 }

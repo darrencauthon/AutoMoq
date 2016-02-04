@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("AutoMoq")]
 [assembly: AssemblyDescription("Automocker for Moq.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("DEG")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("AutoMoq")]
-[assembly: AssemblyCopyright("Copyright © Darren Cauthon 2010")]
+[assembly: AssemblyCopyright("Copyright © Darren Cauthon 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -35,5 +35,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.6.2.0")]
-[assembly: AssemblyFileVersion("1.6.2.0")]
+[assembly: AssemblyVersion("1.7.0.0")]
+[assembly: AssemblyFileVersion("1.7.0.0")]

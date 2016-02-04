@@ -7,7 +7,13 @@ namespace AutoMoq.Unity
 {
     internal class AutoMockingContainerExtension : UnityContainerExtension
     {
+        private readonly Config config;
         private readonly IList<Type> registeredTypes = new List<Type>();
+
+        public AutoMockingContainerExtension(Config config)
+        {
+            this.config = config;
+        }
 
         protected override void Initialize()
         {
@@ -30,7 +36,7 @@ namespace AutoMoq.Unity
 
         private void SetBuildingStrategyForBuildingUnregisteredTypes()
         {
-            var strategy = new MoqBuilderStrategy(registeredTypes, Container);
+            var strategy = new MoqBuilderStrategy(registeredTypes, Container, config);
             Context.Strategies.Add(strategy, UnityBuildStage.PreCreation);
         }
 

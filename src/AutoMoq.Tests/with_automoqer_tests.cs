@@ -25,6 +25,27 @@ namespace AutoMoq.Tests
         }
 
         [Test]
+        public void A_config_option_can_be_provided_when_setting_up()
+        {
+            with_automoqer.mocker = null;
+            new with_automoqer(new Config {MockBehavior = MockBehavior.Loose});
+
+            with_automoqer.Create<Test>().DoSomething(); // should not fail
+
+            new with_automoqer(new Config {MockBehavior = MockBehavior.Strict});
+            var errorHit = false;
+            try
+            {
+                with_automoqer.Create<Test>().DoSomething(); // should fail
+            }
+            catch
+            {
+                errorHit = true;
+            }
+            errorHit.ShouldBeTrue();
+        }
+
+        [Test]
         public void GetMock_returns_the_mock()
         {
             var test = new with_automoqer();
@@ -56,6 +77,7 @@ namespace AutoMoq.Tests
 
         public interface IDependency
         {
+            void DoSomething();
         }
 
         public class Test
@@ -65,6 +87,11 @@ namespace AutoMoq.Tests
             public Test(IDependency Dependency)
             {
                 this.Dependency = Dependency;
+            }
+
+            public void DoSomething()
+            {
+                Dependency.DoSomething();
             }
         }
     }
