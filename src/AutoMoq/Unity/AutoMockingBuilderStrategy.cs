@@ -64,9 +64,7 @@ namespace AutoMoq.Unity
 
         private MockCreationResult CreateAMockTrackedByAutoMoq(Type type)
         {
-            var mock = mocking.CreateAMockObjectFor(type);
-            ioc.Resolve<AutoMoqer>().SetMock(type, mock.MockObject);
-            return mock;
+            return mocking.CreateANewMockObjectAndRegisterIt(type);
         }
 
         private bool AMockObjectShouldBeCreatedForThisType(Type type)
