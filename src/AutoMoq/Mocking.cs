@@ -10,7 +10,6 @@ namespace AutoMoq
     // ReSharper disable once InconsistentNaming
     public interface Mocking
     {
-        //IDictionary<Type, object> RegisteredMocks { get; }
         bool AMockHasNotBeenRegisteredFor(Type type);
         void RegisterThisMock(object mock, Type type);
         object GetTheMockFor(Type type);
