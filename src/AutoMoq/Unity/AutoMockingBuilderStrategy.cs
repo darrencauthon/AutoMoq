@@ -7,18 +7,21 @@ using Microsoft.Practices.Unity;
 
 namespace AutoMoq.Unity
 {
-    public abstract class AutoMockingBuilderStrategy : BuilderStrategy
+    public class AutoMockingBuilderStrategy : BuilderStrategy
     {
         private readonly Mocking mocking;
-        private readonly IUnityContainer container;
+        private readonly IoC ioc;
 
-        protected AutoMockingBuilderStrategy(Mocking mocking, IUnityContainer container)
+        public AutoMockingBuilderStrategy(Mocking mocking, IoC ioc)
         {
             this.mocking = mocking;
-            this.container = container;
+            this.ioc = ioc;
         }
 
-        public abstract MockCreationResult CreateAMockObject(Type type);
+        public MockCreationResult CreateAMockObject(Type type)
+        {
+            return mocking.CreateAMockObjectFor(type);
+        }
 
         public override void PreBuildUp(IBuilderContext context)
         {
@@ -41,12 +44,12 @@ namespace AutoMoq.Unity
                 var mock = CreateAMockTrackedByAutoMoq(abstractParameter);
                 try
                 {
-                    container.Resolve(abstractParameter);
+                    ioc.Resolve(abstractParameter);
                 }
                 catch
                 {
                     var mockObject = mock.ActualObject as object;
-                    container.RegisterInstance(abstractParameter, mockObject);
+                    ioc.RegisterInstance(mockObject, abstractParameter);
                 }
             }
         }
@@ -65,7 +68,7 @@ namespace AutoMoq.Unity
         private MockCreationResult CreateAMockTrackedByAutoMoq(Type type)
         {
             var mock = CreateAMockObject(type);
-            var autoMoqer = container.Resolve<AutoMoqer>();
+            var autoMoqer = ioc.Resolve<AutoMoqer>();
             autoMoqer.SetMock(type, mock.MockObject);
             return mock;
         }
@@ -79,7 +82,7 @@ namespace AutoMoq.Unity
 
         private bool ThisIsNotTheTypeThatIsBeingResolvedForTesting(Type type)
         {
-            var mocker = container.Resolve<AutoMoqer>();
+            var mocker = ioc.Resolve<AutoMoqer>();
             return (mocker.ResolveType == null || mocker.ResolveType != type);
         }
 

@@ -79,7 +79,6 @@
     <Compile Include="Mocking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unity\MockCreationResult.cs" />
-    <Compile Include="Unity\MoqBuilderStrategy.cs" />
     <Compile Include="Unity\AutoMockingContainerExtension.cs" />
     <Compile Include="Unity\AutoMockingBuilderStrategy.cs" />
   </ItemGroup>

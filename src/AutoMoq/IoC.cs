@@ -4,12 +4,13 @@ using Microsoft.Practices.Unity;
 
 namespace AutoMoq
 {
-    internal interface IoC
+    public interface IoC
     {
         T Resolve<T>();
         object Resolve(Type type);
         void RegisterInstance<T>(T instance);
         void RegisterInstance(object instance);
+        void RegisterInstance(object instance, Type type);
         object Container { get; }
         void Setup(AutoMoqer autoMoqer, Config config, Mocking mocking);
     }
@@ -46,6 +47,11 @@ namespace AutoMoq
         public void RegisterInstance(object instance)
         {
             container.RegisterInstance(instance);
+        }
+
+        public void RegisterInstance(object instance, Type type)
+        {
+            container.RegisterInstance(type, instance);
         }
 
         public object Container { get { return container;  } }

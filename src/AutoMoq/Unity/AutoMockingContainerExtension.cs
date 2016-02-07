@@ -23,7 +23,7 @@ namespace AutoMoq.Unity
 
         private void SetBuildingStrategyForBuildingUnregisteredTypes()
         {
-            var strategy = new MoqBuilderStrategy(ioc, mocking);
+            var strategy = new AutoMockingBuilderStrategy(mocking, ioc);
             Context.Strategies.Add(strategy, UnityBuildStage.PreCreation);
         }
     }
