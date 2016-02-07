@@ -75,11 +75,7 @@ namespace AutoMoq
         public virtual Mock<T> GetMock<T>() where T : class
         {
             ResolveType = null;
-            var type = GetTheMockType<T>();
-            if (GetMockHasNotBeenCalledForThisType(type))
-                CreateANewMockAndRegisterIt<T>(type);
-
-            return TheRegisteredMockForThisType<T>(type);
+            return mocking.GetMockByCreatingAMockIfOneHasNotAlreadyBeenCreated<T>();
         }
 
         /// <summary>
@@ -169,26 +165,6 @@ namespace AutoMoq
         internal virtual void SetMock(Type type, Object mock)
         {
             mocking.SetMock(type, mock);
-        }
-
-        private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class
-        {
-            return (Mock<T>) mocking.GetTheMockFor(type);
-        }
-
-        private void CreateANewMockAndRegisterIt<T>(Type type) where T : class
-        {
-            mocking.CreateANewMockObjectAndRegisterIt<T>(type);
-        }
-
-        private bool GetMockHasNotBeenCalledForThisType(Type type)
-        {
-            return mocking.AMockHasNotBeenRegisteredFor(type);
-        }
-
-        private static Type GetTheMockType<T>() where T : class
-        {
-            return typeof (T);
         }
     }
 }

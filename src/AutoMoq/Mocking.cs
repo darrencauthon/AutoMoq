@@ -18,6 +18,7 @@ namespace AutoMoq
         void CreateANewMockObjectAndRegisterIt<T>(Type type) where T : class;
         void SetMock(Type type, object mock);
         void SetInstance<T>(T instance) where T : class;
+        Mock<T> GetMockByCreatingAMockIfOneHasNotAlreadyBeenCreated<T>() where T : class;
     }
 
     public class MockingWithMoq : Mocking
@@ -75,6 +76,15 @@ namespace AutoMoq
             SetMock(typeof (T), null);
         }
 
+        public Mock<T> GetMockByCreatingAMockIfOneHasNotAlreadyBeenCreated<T>() where T : class
+        {
+            var type = typeof (T);
+            if (GetMockHasNotBeenCalledForThisType(type))
+                CreateANewMockAndRegisterIt<T>(type);
+
+            return TheRegisteredMockForThisType<T>(type);
+        }
+
         private MethodInfo GenerateAnInterfaceMockCreationMethod(Type type)
         {
             var createMethodWithNoParameters = mockRepository.GetType().GetMethod("Create", EmptyArgumentList());
@@ -95,6 +105,21 @@ namespace AutoMoq
         private static Type[] EmptyArgumentList()
         {
             return new[] {typeof (object[])};
+        }
+
+        private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class
+        {
+            return (Mock<T>) GetTheMockFor(type);
+        }
+
+        private void CreateANewMockAndRegisterIt<T>(Type type) where T : class
+        {
+            CreateANewMockObjectAndRegisterIt<T>(type);
+        }
+
+        private bool GetMockHasNotBeenCalledForThisType(Type type)
+        {
+            return AMockHasNotBeenRegisteredFor(type);
         }
     }
 }
