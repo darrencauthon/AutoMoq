@@ -14,7 +14,7 @@ namespace AutoMoq
         void RegisterThisMock(object mock, Type type);
         object GetTheRegisteredMockFor(Type type);
         MockCreationResult CreateAMockObjectFor(Type type);
-        void CreateANewMockObjectAndRegisterIt<T>(Type type) where T : class;
+        MockCreationResult CreateANewMockObjectAndRegisterIt<T>(Type type) where T : class;
         void SetMock(Type type, object mock);
         void SetInstance<T>(T instance) where T : class;
         Mock<T> GetMockByCreatingAMockIfOneHasNotAlreadyBeenCreated<T>() where T : class;
@@ -63,11 +63,13 @@ namespace AutoMoq
             };
         }
 
-        public void CreateANewMockObjectAndRegisterIt<T>(Type type) where T : class
+        public MockCreationResult CreateANewMockObjectAndRegisterIt<T>(Type type) where T : class
         {
-            var mock = CreateAMockObjectFor(typeof(T)).MockObject as Mock<T>;
+            var result = CreateAMockObjectFor(typeof(T));
+            var mock = result.MockObject as Mock<T>;
             ioc.RegisterInstance(mock.Object);
             ioc.Resolve<AutoMoqer>().SetMock(type, mock);
+            return result;
         }
 
         public void SetMock(Type type, object mock)
