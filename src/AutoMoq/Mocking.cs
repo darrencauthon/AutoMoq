@@ -23,7 +23,7 @@ namespace AutoMoq
     public class MockingWithMoq : Mocking
     {
         private readonly IoC ioc;
-        private MockRepository mockRepository;
+        private readonly MockRepository mockRepository;
 
         public MockingWithMoq(Config config, IoC ioc)
         {
@@ -94,7 +94,7 @@ namespace AutoMoq
         {
             var mock = (Mock) createMethod.Invoke(mockRepository, new object[] {new List<object>().ToArray()});
 
-            return new MockCreationResult()
+            return new MockCreationResult
             {
                 ActualObject = mock.Object,
                 MockObject = mock
