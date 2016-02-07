@@ -12,7 +12,7 @@ namespace AutoMoq
     {
         bool AMockHasNotBeenRegisteredFor(Type type);
         void RegisterThisMock(object mock, Type type);
-        object GetTheMockFor(Type type);
+        object GetTheRegisteredMockFor(Type type);
         MockCreationResult CreateAMockObjectFor(Type type);
         void CreateANewMockObjectAndRegisterIt<T>(Type type) where T : class;
         void SetMock(Type type, object mock);
@@ -44,7 +44,7 @@ namespace AutoMoq
             RegisteredMocks.Add(type, mock);
         }
 
-        public object GetTheMockFor(Type type)
+        public object GetTheRegisteredMockFor(Type type)
         {
             return RegisteredMocks.First(x => x.Key == type).Value;
         }
@@ -108,7 +108,7 @@ namespace AutoMoq
 
         private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class
         {
-            return (Mock<T>) GetTheMockFor(type);
+            return (Mock<T>) GetTheRegisteredMockFor(type);
         }
 
         private void CreateANewMockAndRegisterIt<T>(Type type) where T : class
