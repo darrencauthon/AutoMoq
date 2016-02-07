@@ -9,12 +9,14 @@ namespace AutoMoq.Unity
     {
         private readonly Config config;
         private readonly IoC ioc;
+        private readonly Mocking mocking;
         private readonly IList<Type> registeredTypes = new List<Type>();
 
-        public AutoMockingContainerExtension(Config config, IoC ioc)
+        public AutoMockingContainerExtension(Config config, IoC ioc, Mocking mocking)
         {
             this.config = config;
             this.ioc = ioc;
+            this.mocking = mocking;
         }
 
         protected override void Initialize()
@@ -38,7 +40,7 @@ namespace AutoMoq.Unity
 
         private void SetBuildingStrategyForBuildingUnregisteredTypes()
         {
-            var strategy = new MoqBuilderStrategy(registeredTypes, ioc, config);
+            var strategy = new MoqBuilderStrategy(ioc, config, mocking);
             Context.Strategies.Add(strategy, UnityBuildStage.PreCreation);
         }
 

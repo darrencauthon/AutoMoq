@@ -9,12 +9,12 @@ namespace AutoMoq.Unity
 {
     public abstract class AutoMockingBuilderStrategy : BuilderStrategy
     {
+        private readonly Mocking mocking;
         private readonly IUnityContainer container;
-        private readonly IEnumerable<Type> registeredTypes;
 
-        public AutoMockingBuilderStrategy(IEnumerable<Type> registeredTypes, IUnityContainer container)
+        protected AutoMockingBuilderStrategy(Mocking mocking, IUnityContainer container)
         {
-            this.registeredTypes = registeredTypes;
+            this.mocking = mocking;
             this.container = container;
         }
 
@@ -95,7 +95,7 @@ namespace AutoMoq.Unity
 
         private bool ThisTypeIsNotRegistered(Type type)
         {
-            return registeredTypes.Any(x => x == type) == false;
+            return mocking.AMockHasNotBeenRegisteredFor(type);
         }
     }
 }

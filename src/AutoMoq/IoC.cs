@@ -11,7 +11,7 @@ namespace AutoMoq
         void RegisterInstance<T>(T instance);
         void RegisterInstance(object instance);
         object Container { get; }
-        void Setup(AutoMoqer autoMoqer, Config config);
+        void Setup(AutoMoqer autoMoqer, Config config, Mocking mocking);
     }
 
     public class UnityIoC : IoC
@@ -50,18 +50,19 @@ namespace AutoMoq
 
         public object Container { get { return container;  } }
 
-        public void Setup(AutoMoqer autoMoqer, Config config)
+        public void Setup(AutoMoqer autoMoqer, Config config, Mocking mocking)
         {
-            AddTheAutoMockingContainerExtensionToTheContainer(autoMoqer, config);
+            AddTheAutoMockingContainerExtensionToTheContainer(autoMoqer, config, mocking);
             RegisterInstance(this);
         }
 
-        private void AddTheAutoMockingContainerExtensionToTheContainer(AutoMoqer automoqer, Config config)
+        private void AddTheAutoMockingContainerExtensionToTheContainer(AutoMoqer automoqer, Config config, Mocking mocking)
         {
             var container = config.Container;
             container.RegisterInstance(config);
             container.RegisterInstance(automoqer);
             container.RegisterInstance<IoC>(this);
+            container.RegisterInstance<Mocking>(mocking);
             container.AddNewExtension<AutoMockingContainerExtension>();
         }
     }

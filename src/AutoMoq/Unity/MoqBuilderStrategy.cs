@@ -10,8 +10,8 @@ namespace AutoMoq.Unity
     {
         private readonly MockRepository mockRepository;
 
-        public MoqBuilderStrategy(IEnumerable<Type> registeredTypes, IoC ioc, Config config)
-            : base(registeredTypes, ioc.Container as IUnityContainer)
+        public MoqBuilderStrategy(IoC ioc, Config config, Mocking mocking)
+            : base(mocking, ioc.Container as IUnityContainer)
         {
             mockRepository = new MockRepository(config.MockBehavior);
         }

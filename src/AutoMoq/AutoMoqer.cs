@@ -173,7 +173,7 @@ namespace AutoMoq
             this.ioc = new UnityIoC(config.Container);
             this.mocking = new MockingWithMoq();
 
-            ioc.Setup(this, config);
+            ioc.Setup(this, config, mocking);
         }
 
         private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class

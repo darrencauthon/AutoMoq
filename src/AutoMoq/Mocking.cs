@@ -6,7 +6,7 @@ using Moq;
 namespace AutoMoq
 {
     // ReSharper disable once InconsistentNaming
-    internal interface Mocking
+    public interface Mocking
     {
         //IDictionary<Type, object> RegisteredMocks { get; }
         bool AMockHasNotBeenRegisteredFor(Type type);
