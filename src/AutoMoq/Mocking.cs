@@ -17,6 +17,7 @@ namespace AutoMoq
         MockCreationResult CreateAMockObjectFor(Type type);
         void CreateANewMockObjectAndRegisterIt<T>(Type type) where T : class;
         void SetMock(Type type, object mock);
+        void SetInstance<T>(T instance) where T : class;
     }
 
     public class MockingWithMoq : Mocking
@@ -66,6 +67,12 @@ namespace AutoMoq
         {
             if (AMockHasNotBeenRegisteredFor(type) == false) return;
             RegisterThisMock(mock, type);
+        }
+
+        public void SetInstance<T>(T instance) where T : class
+        {
+            ioc.RegisterInstance(instance);
+            SetMock(typeof (T), null);
         }
 
         private MethodInfo GenerateAnInterfaceMockCreationMethod(Type type)

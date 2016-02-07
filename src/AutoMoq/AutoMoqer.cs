@@ -89,8 +89,7 @@ namespace AutoMoq
         /// <param name="instance">The instance of type T to use.</param>
         public virtual void SetInstance<T>(T instance) where T : class
         {
-            ioc.RegisterInstance(instance);
-            SetMock(GetTheMockType<T>(), null);
+            mocking.SetInstance<T>(instance);
         }
 
         /// <summary>
