@@ -5,13 +5,11 @@ namespace AutoMoq.Unity
 {
     internal class AutoMockingContainerExtension : UnityContainerExtension
     {
-        private readonly Config config;
         private readonly IoC ioc;
         private readonly Mocking mocking;
 
-        public AutoMockingContainerExtension(Config config, IoC ioc, Mocking mocking)
+        public AutoMockingContainerExtension(IoC ioc, Mocking mocking)
         {
-            this.config = config;
             this.ioc = ioc;
             this.mocking = mocking;
         }
