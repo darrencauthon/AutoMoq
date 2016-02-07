@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
-using AutoMoq.Unity;
 using Microsoft.Practices.Unity;
 using Moq;
 using Moq.Language.Flow;
@@ -14,8 +11,8 @@ namespace AutoMoq
 {
     public class AutoMoqer
     {
-        private IUnityContainer container;
-        private IDictionary<Type, object> registeredMocks;
+        private IoC ioc;
+        private Mocking mocking;
         internal Type ResolveType;
 
         public AutoMoqer()
@@ -52,7 +49,7 @@ namespace AutoMoq
         public virtual T Create<T>()
         {
             ResolveType = typeof (T);
-            var result = container.Resolve<T>();
+            var result = ioc.Resolve<T>();
             ResolveType = null;
             return result;
         }
@@ -65,7 +62,7 @@ namespace AutoMoq
         public virtual object Create(Type type)
         {
             ResolveType = type;
-            var result = container.Resolve(type);
+            var result = ioc.Resolve(type);
             ResolveType = null;
             return result;
         }
@@ -78,32 +75,21 @@ namespace AutoMoq
         public virtual Mock<T> GetMock<T>() where T : class
         {
             ResolveType = null;
-            var type = GetTheMockType<T>();
-            if (GetMockHasNotBeenCalledForThisType(type))
-                CreateANewMockAndRegisterIt<T>(type);
-
-            return TheRegisteredMockForThisType<T>(type);
-        }
-
-        internal virtual void SetMock(Type type, Object mock)
-        {
-            if (registeredMocks.ContainsKey(type) == false)
-                registeredMocks.Add(type, mock);
+            return mocking.GetMockByCreatingAMockIfOneHasNotAlreadyBeenCreated<T>();
         }
 
         /// <summary>
-        /// Set an instance of type T to be used when resolving an object that needs T.
+        ///     Set an instance of type T to be used when resolving an object that needs T.
         /// </summary>
         /// <typeparam name="T">The type of T to register the instance as.</typeparam>
         /// <param name="instance">The instance of type T to use.</param>
         public virtual void SetInstance<T>(T instance) where T : class
         {
-            container.RegisterInstance(instance);
-            SetMock(GetTheMockType<T>(), null);
+            mocking.SetInstance(instance);
         }
 
         /// <summary>
-        /// Call Setup on the Mock.
+        ///     Call Setup on the Mock.
         /// </summary>
         /// <typeparam name="T">The type of T to setup some sort of expression.</typeparam>
         /// <param name="expression">The expression passed to the mock object.</param>
@@ -114,7 +100,7 @@ namespace AutoMoq
         }
 
         /// <summary>
-        /// Call Setup on the Mock.
+        ///     Call Setup on the Mock.
         /// </summary>
         /// <typeparam name="T">The type of T to setup some sort of expression.</typeparam>
         /// <param name="expression">The expression passed to the mock object.</param>
@@ -125,7 +111,7 @@ namespace AutoMoq
         }
 
         /// <summary>
-        /// Call Verify on the Mock.
+        ///     Call Verify on the Mock.
         /// </summary>
         /// <typeparam name="T">The type of T to verify some sort of expression.</typeparam>
         /// <param name="expression">The expression to verify.</param>
@@ -135,7 +121,7 @@ namespace AutoMoq
         }
 
         /// <summary>
-        /// Call Verify on the Mock.
+        ///     Call Verify on the Mock.
         /// </summary>
         /// <typeparam name="T">The type of T to verify some sort of expression.</typeparam>
         /// <param name="expression">The expression to verify.</param>
@@ -146,7 +132,7 @@ namespace AutoMoq
         }
 
         /// <summary>
-        /// Call Verify on the Mock.
+        ///     Call Verify on the Mock.
         /// </summary>
         /// <typeparam name="T">The type of T to verify some sort of expression.</typeparam>
         /// <param name="expression">The expression to verify.</param>
@@ -157,7 +143,7 @@ namespace AutoMoq
         }
 
         /// <summary>
-        /// Call Verify on the Mock.
+        ///     Call Verify on the Mock.
         /// </summary>
         /// <typeparam name="T">The type of T to verify some sort of expression.</typeparam>
         /// <param name="expression">The expression to verify.</param>
@@ -170,39 +156,15 @@ namespace AutoMoq
 
         private void SetupAutoMoqer(Config config)
         {
-            this.container = config.Container;
-            registeredMocks = new Dictionary<Type, object>();
+            ioc = new UnityIoC(config.Container);
+            mocking = new MockingWithMoq(config, ioc);
 
-            AddTheAutoMockingContainerExtensionToTheContainer(container, config);
-            container.RegisterInstance(this);
+            ioc.Setup(this, config, mocking);
         }
 
-        private static void AddTheAutoMockingContainerExtensionToTheContainer(IUnityContainer container, Config config)
+        internal virtual void SetMock(Type type, object mock)
         {
-            container.RegisterInstance(config);
-            container.AddNewExtension<AutoMockingContainerExtension>();
-        }
-
-        private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class
-        {
-            return (Mock<T>) registeredMocks.First(x => x.Key == type).Value;
-        }
-
-        private void CreateANewMockAndRegisterIt<T>(Type type) where T : class
-        {
-            var mock = new Mock<T>();
-            container.RegisterInstance(mock.Object);
-            SetMock(type, mock);
-        }
-
-        private bool GetMockHasNotBeenCalledForThisType(Type type)
-        {
-            return registeredMocks.ContainsKey(type) == false;
-        }
-
-        private static Type GetTheMockType<T>() where T : class
-        {
-            return typeof (T);
+            mocking.SetMock(type, mock);
         }
     }
 }
