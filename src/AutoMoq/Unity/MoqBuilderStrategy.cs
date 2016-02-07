@@ -1,48 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
 using Microsoft.Practices.Unity;
-using Moq;
 
 namespace AutoMoq.Unity
 {
     internal class MoqBuilderStrategy : AutoMockingBuilderStrategy
     {
-        private readonly MockRepository mockRepository;
+        private readonly Mocking mocking;
 
-        public MoqBuilderStrategy(IoC ioc, Config config, Mocking mocking)
+        public MoqBuilderStrategy(IoC ioc, Mocking mocking)
             : base(mocking, ioc.Container as IUnityContainer)
         {
-            mockRepository = new MockRepository(config.MockBehavior);
+            this.mocking = mocking;
         }
 
         public override MockCreationResult CreateAMockObject(Type type)
         {
-            var createMethod = GenerateAnInterfaceMockCreationMethod(type);
-
-            return InvokeTheMockCreationMethod(createMethod);
-        }
-
-        private MethodInfo GenerateAnInterfaceMockCreationMethod(Type type)
-        {
-            var createMethodWithNoParameters = mockRepository.GetType().GetMethod("Create", EmptyArgumentList());
-            return createMethodWithNoParameters.MakeGenericMethod(type);
-        }
-
-        private MockCreationResult InvokeTheMockCreationMethod(MethodInfo createMethod)
-        {
-            var mock = (Mock) createMethod.Invoke(mockRepository, new object[] {new List<object>().ToArray()});
-
-            return new MockCreationResult()
-            {
-                ActualObject = mock.Object,
-                MockObject = mock
-            };
-        }
-
-        private static Type[] EmptyArgumentList()
-        {
-            return new[] {typeof (object[])};
+            return mocking.CreateAMockObjectFor(type);
         }
     }
 }

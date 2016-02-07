@@ -171,7 +171,7 @@ namespace AutoMoq
         private void SetupAutoMoqer(Config config)
         {
             this.ioc = new UnityIoC(config.Container);
-            this.mocking = new MockingWithMoq();
+            this.mocking = new MockingWithMoq(config);
 
             ioc.Setup(this, config, mocking);
         }
