@@ -66,7 +66,7 @@ namespace AutoMoq
         public virtual object Create(Type type)
         {
             ResolveType = type;
-            var result = container.Resolve(type);
+            var result = ioc.Resolve(type);
             ResolveType = null;
             return result;
         }
