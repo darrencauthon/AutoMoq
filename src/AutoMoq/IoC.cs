@@ -56,11 +56,12 @@ namespace AutoMoq
             RegisterInstance(this);
         }
 
-        private static void AddTheAutoMockingContainerExtensionToTheContainer(AutoMoqer automoqer, Config config)
+        private void AddTheAutoMockingContainerExtensionToTheContainer(AutoMoqer automoqer, Config config)
         {
             var container = config.Container;
             container.RegisterInstance(config);
             container.RegisterInstance(automoqer);
+            container.RegisterInstance<IoC>(this);
             container.AddNewExtension<AutoMockingContainerExtension>();
         }
     }
