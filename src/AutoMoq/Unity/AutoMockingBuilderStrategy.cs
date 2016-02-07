@@ -1,16 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Microsoft.Practices.ObjectBuilder2;
-using Microsoft.Practices.Unity;
 
 namespace AutoMoq.Unity
 {
     public class AutoMockingBuilderStrategy : BuilderStrategy
     {
-        private readonly Mocking mocking;
         private readonly IoC ioc;
+        private readonly Mocking mocking;
 
         public AutoMockingBuilderStrategy(Mocking mocking, IoC ioc)
         {
@@ -48,7 +46,7 @@ namespace AutoMoq.Unity
                 }
                 catch
                 {
-                    var mockObject = mock.ActualObject as object;
+                    var mockObject = mock.ActualObject;
                     ioc.RegisterInstance(mockObject, abstractParameter);
                 }
             }
