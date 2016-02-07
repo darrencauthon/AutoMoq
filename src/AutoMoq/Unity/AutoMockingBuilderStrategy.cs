@@ -40,17 +40,24 @@ namespace AutoMoq.Unity
             foreach (var dependency in AbstractDependenciesOf(type))
             {
                 var mock = CreateAMockTrackedByAutoMoq(dependency);
-                try
-                {
-                    ioc.Resolve(dependency);
-                }
-                catch
-                {
-                    var mockObject = mock.ActualObject;
-                    ioc.RegisterInstance(mockObject, dependency);
-                }
+                if (ThisTypeHasBeenRegisteredInIoC(dependency)) continue;
+                ioc.RegisterInstance(mock.ActualObject, dependency);
             }
         }
+
+        private bool ThisTypeHasBeenRegisteredInIoC(Type type)
+        {
+            try
+            {
+                ioc.Resolve(type);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
 
         private static IEnumerable<Type> AbstractDependenciesOf(Type type)
         {
