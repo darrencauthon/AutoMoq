@@ -17,6 +17,7 @@ namespace AutoMoq
         private IUnityContainer container;
         private IDictionary<Type, object> registeredMocks;
         internal Type ResolveType;
+        private IoC ioc;
 
         public AutoMoqer()
         {
@@ -170,6 +171,7 @@ namespace AutoMoq
 
         private void SetupAutoMoqer(Config config)
         {
+            this.ioc = new UnityIoC(config.Container);
             this.container = config.Container;
             registeredMocks = new Dictionary<Type, object>();
 
