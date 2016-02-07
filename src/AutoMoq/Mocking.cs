@@ -51,9 +51,16 @@ namespace AutoMoq
 
         public MockCreationResult CreateAMockObjectFor(Type type)
         {
-            var createMethod = GenerateAnInterfaceMockCreationMethod(type);
+            var createMethodWithNoParameters = mockRepository.GetType().GetMethod("Create", EmptyArgumentList());
+            var createMethod = createMethodWithNoParameters.MakeGenericMethod(type);
 
-            return InvokeTheMockCreationMethod(createMethod);
+            var mock = (Mock) createMethod.Invoke(mockRepository, new object[] {new List<object>().ToArray()});
+
+            return new MockCreationResult
+            {
+                ActualObject = mock.Object,
+                MockObject = mock
+            };
         }
 
         public void CreateANewMockObjectAndRegisterIt<T>(Type type) where T : class
@@ -82,23 +89,6 @@ namespace AutoMoq
                 CreateANewMockAndRegisterIt<T>(type);
 
             return TheRegisteredMockForThisType<T>(type);
-        }
-
-        private MethodInfo GenerateAnInterfaceMockCreationMethod(Type type)
-        {
-            var createMethodWithNoParameters = mockRepository.GetType().GetMethod("Create", EmptyArgumentList());
-            return createMethodWithNoParameters.MakeGenericMethod(type);
-        }
-
-        private MockCreationResult InvokeTheMockCreationMethod(MethodInfo createMethod)
-        {
-            var mock = (Mock) createMethod.Invoke(mockRepository, new object[] {new List<object>().ToArray()});
-
-            return new MockCreationResult
-            {
-                ActualObject = mock.Object,
-                MockObject = mock
-            };
         }
 
         private static Type[] EmptyArgumentList()
