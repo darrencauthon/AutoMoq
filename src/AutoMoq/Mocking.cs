@@ -14,7 +14,7 @@ namespace AutoMoq
         void RegisterThisMock(object mock, Type type);
         object GetTheRegisteredMockFor(Type type);
         MockCreationResult CreateAMockObjectFor(Type type);
-        MockCreationResult CreateANewMockObjectAndRegisterIt<T>(Type type) where T : class;
+        MockCreationResult CreateANewMockObjectAndRegisterIt<T>() where T : class;
         void SetMock(Type type, object mock);
         void SetInstance<T>(T instance) where T : class;
         Mock<T> GetMockByCreatingAMockIfOneHasNotAlreadyBeenCreated<T>() where T : class;
@@ -63,12 +63,12 @@ namespace AutoMoq
             };
         }
 
-        public MockCreationResult CreateANewMockObjectAndRegisterIt<T>(Type type) where T : class
+        public MockCreationResult CreateANewMockObjectAndRegisterIt<T>() where T : class
         {
-            var result = CreateAMockObjectFor(typeof(T));
-            var mock = result.MockObject as Mock<T>;
+            var result = CreateAMockObjectFor(typeof (T));
+            var mock = (Mock<T>) result.MockObject;
             ioc.RegisterInstance(mock.Object);
-            ioc.Resolve<AutoMoqer>().SetMock(type, mock);
+            ioc.Resolve<AutoMoqer>().SetMock(typeof (T), mock);
             return result;
         }
 
@@ -88,7 +88,7 @@ namespace AutoMoq
         {
             var type = typeof (T);
             if (GetMockHasNotBeenCalledForThisType(type))
-                CreateANewMockAndRegisterIt<T>(type);
+                CreateANewMockAndRegisterIt<T>();
 
             return TheRegisteredMockForThisType<T>(type);
         }
@@ -103,9 +103,9 @@ namespace AutoMoq
             return (Mock<T>) GetTheRegisteredMockFor(type);
         }
 
-        private void CreateANewMockAndRegisterIt<T>(Type type) where T : class
+        private void CreateANewMockAndRegisterIt<T>() where T : class
         {
-            CreateANewMockObjectAndRegisterIt<T>(type);
+            CreateANewMockObjectAndRegisterIt<T>();
         }
 
         private bool GetMockHasNotBeenCalledForThisType(Type type)
