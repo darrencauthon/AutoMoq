@@ -76,6 +76,7 @@
     <Compile Include="Helpers\AutoMoqTestFixture.cs" />
     <Compile Include="Helpers\with_automoqer.cs" />
     <Compile Include="IoC.cs" />
+    <Compile Include="Mocking.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unity\MockCreationResult.cs" />
     <Compile Include="Unity\MoqBuilderStrategy.cs" />

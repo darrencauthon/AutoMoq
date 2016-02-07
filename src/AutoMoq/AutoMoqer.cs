@@ -14,9 +14,9 @@ namespace AutoMoq
 {
     public class AutoMoqer
     {
-        private IDictionary<Type, object> registeredMocks;
         internal Type ResolveType;
         private IoC ioc;
+        private Mocking mocking;
 
         public AutoMoqer()
         {
@@ -87,8 +87,8 @@ namespace AutoMoq
 
         internal virtual void SetMock(Type type, Object mock)
         {
-            if (registeredMocks.ContainsKey(type) == false)
-                registeredMocks.Add(type, mock);
+            if (mocking.RegisteredMocks.ContainsKey(type) == false)
+                mocking.RegisteredMocks.Add(type, mock);
         }
 
         /// <summary>
@@ -171,14 +171,14 @@ namespace AutoMoq
         private void SetupAutoMoqer(Config config)
         {
             this.ioc = new UnityIoC(config.Container);
-            registeredMocks = new Dictionary<Type, object>();
+            this.mocking = new MockingWithMoq();
 
             ioc.Setup(this, config);
         }
 
         private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class
         {
-            return (Mock<T>) registeredMocks.First(x => x.Key == type).Value;
+            return (Mock<T>) mocking.RegisteredMocks.First(x => x.Key == type).Value;
         }
 
         private void CreateANewMockAndRegisterIt<T>(Type type) where T : class
@@ -190,7 +190,7 @@ namespace AutoMoq
 
         private bool GetMockHasNotBeenCalledForThisType(Type type)
         {
-            return registeredMocks.ContainsKey(type) == false;
+            return mocking.RegisteredMocks.ContainsKey(type) == false;
         }
 
         private static Type GetTheMockType<T>() where T : class
