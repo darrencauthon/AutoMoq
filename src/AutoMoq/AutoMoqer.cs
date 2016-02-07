@@ -173,14 +173,7 @@ namespace AutoMoq
             this.ioc = new UnityIoC(config.Container);
             registeredMocks = new Dictionary<Type, object>();
 
-            AddTheAutoMockingContainerExtensionToTheContainer(ioc.Container as IUnityContainer, config);
-            ioc.RegisterInstance(this);
-        }
-
-        private static void AddTheAutoMockingContainerExtensionToTheContainer(IUnityContainer container, Config config)
-        {
-            container.RegisterInstance(config);
-            container.AddNewExtension<AutoMockingContainerExtension>();
+            ioc.Setup(this, config);
         }
 
         private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class

@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoMoq.Unity;
 using Microsoft.Practices.Unity;
 
 namespace AutoMoq
@@ -10,6 +11,7 @@ namespace AutoMoq
         void RegisterInstance<T>(T instance);
         void RegisterInstance(object instance);
         object Container { get; }
+        void Setup(AutoMoqer autoMoqer, Config config);
     }
 
     public class UnityIoC : IoC
@@ -47,5 +49,19 @@ namespace AutoMoq
         }
 
         public object Container { get { return container;  } }
+
+        public void Setup(AutoMoqer autoMoqer, Config config)
+        {
+            AddTheAutoMockingContainerExtensionToTheContainer(autoMoqer, config);
+            RegisterInstance(this);
+        }
+
+        private static void AddTheAutoMockingContainerExtensionToTheContainer(AutoMoqer automoqer, Config config)
+        {
+            var container = config.Container;
+            container.RegisterInstance(config);
+            container.RegisterInstance(automoqer);
+            container.AddNewExtension<AutoMockingContainerExtension>();
+        }
     }
 }
