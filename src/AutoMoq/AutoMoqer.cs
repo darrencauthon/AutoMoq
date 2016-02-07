@@ -169,8 +169,7 @@ namespace AutoMoq
 
         internal virtual void SetMock(Type type, Object mock)
         {
-            if (mocking.AMockHasNotBeenRegisteredFor(type))
-                mocking.RegisterThisMock(mock, type);
+            mocking.SetMock(type, mock);
         }
 
         private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class
