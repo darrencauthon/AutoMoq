@@ -82,12 +82,6 @@ namespace AutoMoq
             return TheRegisteredMockForThisType<T>(type);
         }
 
-        internal virtual void SetMock(Type type, Object mock)
-        {
-            if (mocking.AMockHasNotBeenRegisteredFor(type))
-                mocking.RegisterThisMock(mock, type);
-        }
-
         /// <summary>
         /// Set an instance of type T to be used when resolving an object that needs T.
         /// </summary>
@@ -171,6 +165,12 @@ namespace AutoMoq
             this.mocking = new MockingWithMoq(config);
 
             ioc.Setup(this, config, mocking);
+        }
+
+        internal virtual void SetMock(Type type, Object mock)
+        {
+            if (mocking.AMockHasNotBeenRegisteredFor(type))
+                mocking.RegisterThisMock(mock, type);
         }
 
         private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class
