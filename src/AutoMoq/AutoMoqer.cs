@@ -87,8 +87,8 @@ namespace AutoMoq
 
         internal virtual void SetMock(Type type, Object mock)
         {
-            if (mocking.RegisteredMocks.ContainsKey(type) == false)
-                mocking.RegisteredMocks.Add(type, mock);
+            if (mocking.AMockHasNotBeenRegisteredFor(type))
+                mocking.RegisterThisMock(mock, type);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace AutoMoq
 
         private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class
         {
-            return (Mock<T>) mocking.RegisteredMocks.First(x => x.Key == type).Value;
+            return (Mock<T>) mocking.GetTheMockFor(type);
         }
 
         private void CreateANewMockAndRegisterIt<T>(Type type) where T : class
@@ -190,7 +190,7 @@ namespace AutoMoq
 
         private bool GetMockHasNotBeenCalledForThisType(Type type)
         {
-            return mocking.RegisteredMocks.ContainsKey(type) == false;
+            return mocking.AMockHasNotBeenRegisteredFor(type);
         }
 
         private static Type GetTheMockType<T>() where T : class
