@@ -11,9 +11,9 @@ namespace AutoMoq
 {
     public class AutoMoqer
     {
-        internal Type ResolveType;
         private IoC ioc;
         private Mocking mocking;
+        internal Type ResolveType;
 
         public AutoMoqer()
         {
@@ -79,17 +79,17 @@ namespace AutoMoq
         }
 
         /// <summary>
-        /// Set an instance of type T to be used when resolving an object that needs T.
+        ///     Set an instance of type T to be used when resolving an object that needs T.
         /// </summary>
         /// <typeparam name="T">The type of T to register the instance as.</typeparam>
         /// <param name="instance">The instance of type T to use.</param>
         public virtual void SetInstance<T>(T instance) where T : class
         {
-            mocking.SetInstance<T>(instance);
+            mocking.SetInstance(instance);
         }
 
         /// <summary>
-        /// Call Setup on the Mock.
+        ///     Call Setup on the Mock.
         /// </summary>
         /// <typeparam name="T">The type of T to setup some sort of expression.</typeparam>
         /// <param name="expression">The expression passed to the mock object.</param>
@@ -100,7 +100,7 @@ namespace AutoMoq
         }
 
         /// <summary>
-        /// Call Setup on the Mock.
+        ///     Call Setup on the Mock.
         /// </summary>
         /// <typeparam name="T">The type of T to setup some sort of expression.</typeparam>
         /// <param name="expression">The expression passed to the mock object.</param>
@@ -111,7 +111,7 @@ namespace AutoMoq
         }
 
         /// <summary>
-        /// Call Verify on the Mock.
+        ///     Call Verify on the Mock.
         /// </summary>
         /// <typeparam name="T">The type of T to verify some sort of expression.</typeparam>
         /// <param name="expression">The expression to verify.</param>
@@ -121,7 +121,7 @@ namespace AutoMoq
         }
 
         /// <summary>
-        /// Call Verify on the Mock.
+        ///     Call Verify on the Mock.
         /// </summary>
         /// <typeparam name="T">The type of T to verify some sort of expression.</typeparam>
         /// <param name="expression">The expression to verify.</param>
@@ -132,7 +132,7 @@ namespace AutoMoq
         }
 
         /// <summary>
-        /// Call Verify on the Mock.
+        ///     Call Verify on the Mock.
         /// </summary>
         /// <typeparam name="T">The type of T to verify some sort of expression.</typeparam>
         /// <param name="expression">The expression to verify.</param>
@@ -143,7 +143,7 @@ namespace AutoMoq
         }
 
         /// <summary>
-        /// Call Verify on the Mock.
+        ///     Call Verify on the Mock.
         /// </summary>
         /// <typeparam name="T">The type of T to verify some sort of expression.</typeparam>
         /// <param name="expression">The expression to verify.</param>
@@ -156,13 +156,13 @@ namespace AutoMoq
 
         private void SetupAutoMoqer(Config config)
         {
-            this.ioc = new UnityIoC(config.Container);
-            this.mocking = new MockingWithMoq(config, ioc);
+            ioc = new UnityIoC(config.Container);
+            mocking = new MockingWithMoq(config, ioc);
 
             ioc.Setup(this, config, mocking);
         }
 
-        internal virtual void SetMock(Type type, Object mock)
+        internal virtual void SetMock(Type type, object mock)
         {
             mocking.SetMock(type, mock);
         }
