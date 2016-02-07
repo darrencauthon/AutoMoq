@@ -30,10 +30,10 @@ namespace AutoMoq.Unity
                 context.Existing = mock.ActualObject;
             }
 
-            LoadAnyAbstractDependenciesInTheGreediestConstructor(type);
+            LoadAnyAbstractDependenciesOf(type);
         }
 
-        private void LoadAnyAbstractDependenciesInTheGreediestConstructor(Type type)
+        private void LoadAnyAbstractDependenciesOf(Type type)
         {
             foreach (var dependency in AbstractDependenciesOf(type))
             {
@@ -59,11 +59,9 @@ namespace AutoMoq.Unity
 
         private static IEnumerable<Type> AbstractDependenciesOf(Type type)
         {
-            var greediestConstructor = type.GetConstructors()
-                .OrderByDescending(x => x.GetParameters().Count())
-                .FirstOrDefault();
-            if (greediestConstructor == null) return new Type[] {};
-            return greediestConstructor.GetParameters()
+            return type.GetConstructors()
+                .SelectMany(x => x.GetParameters())
+                .Distinct()
                 .Where(x => x.ParameterType.IsAbstract)
                 .Where(x => x.ParameterType.IsInterface == false)
                 .Select(x => x.ParameterType);
