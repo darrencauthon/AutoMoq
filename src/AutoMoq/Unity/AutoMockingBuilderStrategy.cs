@@ -16,11 +16,6 @@ namespace AutoMoq.Unity
             this.ioc = ioc;
         }
 
-        public MockCreationResult CreateAMockObject(Type type)
-        {
-            return mocking.CreateAMockObjectFor(type);
-        }
-
         public override void PreBuildUp(IBuilderContext context)
         {
             var type = GetTheTypeFromTheBuilderContext(context);
@@ -69,7 +64,7 @@ namespace AutoMoq.Unity
 
         private MockCreationResult CreateAMockTrackedByAutoMoq(Type type)
         {
-            var mock = CreateAMockObject(type);
+            var mock = mocking.CreateAMockObjectFor(type);
             ioc.Resolve<AutoMoqer>().SetMock(type, mock.MockObject);
             return mock;
         }
