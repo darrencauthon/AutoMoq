@@ -15,14 +15,17 @@ namespace AutoMoq
         void RegisterThisMock(object mock, Type type);
         object GetTheMockFor(Type type);
         MockCreationResult CreateAMockObjectFor(Type type);
+        void CreateANewMockObjectAndRegisterIt<T>(Type type) where T : class;
     }
 
     public class MockingWithMoq : Mocking
     {
+        private readonly IoC ioc;
         private MockRepository mockRepository;
 
-        public MockingWithMoq(Config config)
+        public MockingWithMoq(Config config, IoC ioc)
         {
+            this.ioc = ioc;
             RegisteredMocks = new Dictionary<Type, object>();
             mockRepository = new MockRepository(config.MockBehavior);
         }
@@ -49,6 +52,13 @@ namespace AutoMoq
             var createMethod = GenerateAnInterfaceMockCreationMethod(type);
 
             return InvokeTheMockCreationMethod(createMethod);
+        }
+
+        public void CreateANewMockObjectAndRegisterIt<T>(Type type) where T : class
+        {
+            var mock = new Mock<T>();
+            ioc.RegisterInstance(mock.Object);
+            ioc.Resolve<AutoMoqer>().SetMock(type, mock);
         }
 
         private MethodInfo GenerateAnInterfaceMockCreationMethod(Type type)

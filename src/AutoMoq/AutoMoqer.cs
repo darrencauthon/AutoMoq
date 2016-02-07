@@ -162,7 +162,7 @@ namespace AutoMoq
         private void SetupAutoMoqer(Config config)
         {
             this.ioc = new UnityIoC(config.Container);
-            this.mocking = new MockingWithMoq(config);
+            this.mocking = new MockingWithMoq(config, ioc);
 
             ioc.Setup(this, config, mocking);
         }
@@ -180,9 +180,7 @@ namespace AutoMoq
 
         private void CreateANewMockAndRegisterIt<T>(Type type) where T : class
         {
-            var mock = new Mock<T>();
-            ioc.RegisterInstance(mock.Object);
-            SetMock(type, mock);
+            mocking.CreateANewMockObjectAndRegisterIt<T>(type);
         }
 
         private bool GetMockHasNotBeenCalledForThisType(Type type)
