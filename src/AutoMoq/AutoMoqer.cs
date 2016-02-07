@@ -100,6 +100,7 @@ namespace AutoMoq
         public virtual void SetInstance<T>(T instance) where T : class
         {
             container.RegisterInstance(instance);
+            ioc.RegisterInstance(instance);
             SetMock(GetTheMockType<T>(), null);
         }
 
