@@ -4,6 +4,7 @@ namespace AutoMoq
 {
     internal interface IoC
     {
+        T Resolve<T>();
     }
 
     public class UnityIoC : IoC
@@ -18,6 +19,11 @@ namespace AutoMoq
         public UnityIoC(IUnityContainer container)
         {
             this.container = container;
+        }
+
+        public T Resolve<T>()
+        {
+            return this.container.Resolve<T>();
         }
     }
 }

@@ -53,7 +53,7 @@ namespace AutoMoq
         public virtual T Create<T>()
         {
             ResolveType = typeof (T);
-            var result = container.Resolve<T>();
+            var result = ioc.Resolve<T>();
             ResolveType = null;
             return result;
         }
