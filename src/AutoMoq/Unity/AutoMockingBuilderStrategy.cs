@@ -37,22 +37,22 @@ namespace AutoMoq.Unity
 
         private void LoadAbstractDependenciesInTheGreediestConstructor(Type type)
         {
-            foreach (var abstractParameter in AbstractParameters(type))
+            foreach (var dependency in AbstractDependenciesOf(type))
             {
-                var mock = CreateAMockTrackedByAutoMoq(abstractParameter);
+                var mock = CreateAMockTrackedByAutoMoq(dependency);
                 try
                 {
-                    ioc.Resolve(abstractParameter);
+                    ioc.Resolve(dependency);
                 }
                 catch
                 {
                     var mockObject = mock.ActualObject;
-                    ioc.RegisterInstance(mockObject, abstractParameter);
+                    ioc.RegisterInstance(mockObject, dependency);
                 }
             }
         }
 
-        private static IEnumerable<Type> AbstractParameters(Type type)
+        private static IEnumerable<Type> AbstractDependenciesOf(Type type)
         {
             var greediestConstructor = type.GetConstructors()
                 .OrderByDescending(x => x.GetParameters().Count())
