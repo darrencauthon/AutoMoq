@@ -14,7 +14,6 @@ namespace AutoMoq
 {
     public class AutoMoqer
     {
-        private IUnityContainer container;
         private IDictionary<Type, object> registeredMocks;
         internal Type ResolveType;
         private IoC ioc;
@@ -99,7 +98,6 @@ namespace AutoMoq
         /// <param name="instance">The instance of type T to use.</param>
         public virtual void SetInstance<T>(T instance) where T : class
         {
-            container.RegisterInstance(instance);
             ioc.RegisterInstance(instance);
             SetMock(GetTheMockType<T>(), null);
         }
@@ -173,11 +171,10 @@ namespace AutoMoq
         private void SetupAutoMoqer(Config config)
         {
             this.ioc = new UnityIoC(config.Container);
-            this.container = config.Container;
             registeredMocks = new Dictionary<Type, object>();
 
-            AddTheAutoMockingContainerExtensionToTheContainer(container, config);
-            container.RegisterInstance(this);
+            AddTheAutoMockingContainerExtensionToTheContainer(ioc.Container as IUnityContainer, config);
+            ioc.RegisterInstance(this);
         }
 
         private static void AddTheAutoMockingContainerExtensionToTheContainer(IUnityContainer container, Config config)
@@ -194,7 +191,7 @@ namespace AutoMoq
         private void CreateANewMockAndRegisterIt<T>(Type type) where T : class
         {
             var mock = new Mock<T>();
-            container.RegisterInstance(mock.Object);
+            ioc.RegisterInstance(mock.Object);
             SetMock(type, mock);
         }
 

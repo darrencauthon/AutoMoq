@@ -8,6 +8,8 @@ namespace AutoMoq
         T Resolve<T>();
         object Resolve(Type type);
         void RegisterInstance<T>(T instance);
+        void RegisterInstance(object instance);
+        object Container { get; }
     }
 
     public class UnityIoC : IoC
@@ -38,5 +40,12 @@ namespace AutoMoq
         {
             container.RegisterInstance<T>(instance);
         }
+
+        public void RegisterInstance(object instance)
+        {
+            container.RegisterInstance(instance);
+        }
+
+        public object Container { get { return container;  } }
     }
 }
