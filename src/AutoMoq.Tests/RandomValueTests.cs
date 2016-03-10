@@ -52,6 +52,30 @@ namespace AutoMoq.Tests
                 list.Count.ShouldEqual(1);
             }
 
+            [Test]
+            public void It_should_return_different_values_for_different_keys()
+            {
+                var list = new List<int>
+                {
+                    mocker.GetInt("x"),
+                    mocker.GetInt("y"),
+                    mocker.GetInt("z"),
+                    mocker.GetInt("a"),
+                    mocker.GetInt("b"),
+                    mocker.GetInt("c"),
+                    mocker.GetInt("d")
+                };
+                list.GroupBy(x => x).Count().ShouldEqual(7);
+            }
+
+            [Test]
+            public void It_should_not_let_duplicate_values_in_the_dictionary()
+            {
+                var list = new Dictionary<string, int> {["x"] = 4};
+
+                mocker.SetList(list);
+            }
+
         }
     }
 }

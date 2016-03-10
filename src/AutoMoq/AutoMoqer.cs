@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
@@ -15,7 +16,6 @@ namespace AutoMoq
         private IoC ioc;
         private Mocking mocking;
         internal Type ResolveType;
-        private int? result;
 
         public AutoMoqer()
         {
@@ -169,14 +169,19 @@ namespace AutoMoq
             mocking.SetMock(type, mock);
         }
 
+
+        private IDictionary<string, int> list = new Dictionary<string, int>();
         public int GetInt(string name)
         {
-            if (result == null)
-            {
-                var random = (new Random(Guid.NewGuid().GetHashCode()));
-                result = random.Next();
-            }
-            return result.Value;
+            if (list.ContainsKey(name))
+                return list[name];
+            var random = (new Random(Guid.NewGuid().GetHashCode()));
+            return list[name] = random.Next();
+        }
+
+        internal void SetList(IDictionary<string, int> list)
+        {
+            this.list = list;
         }
     }
 }
