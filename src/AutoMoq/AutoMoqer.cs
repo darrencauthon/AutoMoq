@@ -15,6 +15,7 @@ namespace AutoMoq
         private IoC ioc;
         private Mocking mocking;
         internal Type ResolveType;
+        private int? result;
 
         public AutoMoqer()
         {
@@ -170,7 +171,12 @@ namespace AutoMoq
 
         public int GetInt(string name)
         {
-            return (new Random()).Next();
+            if (result == null)
+            {
+                var random = (new Random(Guid.NewGuid().GetHashCode()));
+                result = random.Next();
+            }
+            return result.Value;
         }
     }
 }
