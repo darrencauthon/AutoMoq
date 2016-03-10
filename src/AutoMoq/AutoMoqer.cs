@@ -1,6 +1,7 @@
 using System;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using Microsoft.Practices.Unity;
 using Moq;
 using Moq.Language.Flow;
@@ -165,6 +166,11 @@ namespace AutoMoq
         internal virtual void SetMock(Type type, object mock)
         {
             mocking.SetMock(type, mock);
+        }
+
+        public int GetInt(string name)
+        {
+            return (new Random()).Next();
         }
     }
 }
