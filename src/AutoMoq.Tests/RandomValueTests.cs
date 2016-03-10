@@ -9,7 +9,7 @@ namespace AutoMoq.Tests
     public class RandomValueTests
     {
         [TestFixture]
-        public class IntegerTests
+        public class RandomIntegerTests
         {
             [SetUp]
             public void Setup()
