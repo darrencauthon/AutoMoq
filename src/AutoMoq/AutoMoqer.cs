@@ -175,8 +175,30 @@ namespace AutoMoq
         {
             if (list.ContainsKey(name))
                 return list[name];
+            var next = GetNextRandomValue();
+            while (list.Values.Contains(next))
+                next = GetNextRandomValue();
+            return list[name] = next;
+        }
+
+        internal int GetNextRandomValue()
+        {
+            if (nextRandomValue != null)
+            {
+                var valueToReturn = nextRandomValue.Value;
+                nextRandomValue = null;
+                return valueToReturn;
+            }
             var random = (new Random(Guid.NewGuid().GetHashCode()));
-            return list[name] = random.Next();
+            var next = random.Next();
+            return next;
+        }
+
+        private int? nextRandomValue = null;
+
+        internal void SetNextRandomValue(int value)
+        {
+            nextRandomValue = value;
         }
 
         internal void SetList(IDictionary<string, int> list)

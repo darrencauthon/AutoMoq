@@ -72,8 +72,16 @@ namespace AutoMoq.Tests
             public void It_should_not_let_duplicate_values_in_the_dictionary()
             {
                 var list = new Dictionary<string, int> {["x"] = 4};
-
                 mocker.SetList(list);
+            }
+
+            [Test]
+            public void It_should_not_let_values_overlap_between_keys()
+            {
+                mocker.SetNextRandomValue(5);
+                var dictionary = new Dictionary<string, int> {["y"] = 5};
+                mocker.SetList(dictionary);
+                mocker.GetInt("x").ShouldNotEqual(5);
             }
 
         }
