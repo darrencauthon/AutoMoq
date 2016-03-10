@@ -22,7 +22,7 @@ namespace AutoMoq.Tests
             [Test]
             public void It_should_return_an_integer_when_asked()
             {
-                mocker.GetInt("x")
+                mocker.Get<int>("x")
                     .ShouldBeInRange(int.MinValue, int.MaxValue);
             }
 
@@ -32,7 +32,7 @@ namespace AutoMoq.Tests
                 var list = new List<int>();
                 foreach (var _ in Enumerable.Range(1, 100))
                 {
-                    var value = (new AutoMoqer()).GetInt("x");
+                    var value = (int)(new AutoMoqer()).Get<int>("x");
                     if (list.Contains(value) == false)
                         list.Add(value);
                 }
@@ -45,7 +45,7 @@ namespace AutoMoq.Tests
                 var list = new List<int>();
                 foreach (var _ in Enumerable.Range(1, 100))
                 {
-                    var value = mocker.GetInt("x");
+                    var value = (int)mocker.Get<int>("x");
                     if (list.Contains(value) == false)
                         list.Add(value);
                 }
@@ -57,13 +57,13 @@ namespace AutoMoq.Tests
             {
                 var list = new List<int>
                 {
-                    mocker.GetInt("x"),
-                    mocker.GetInt("y"),
-                    mocker.GetInt("z"),
-                    mocker.GetInt("a"),
-                    mocker.GetInt("b"),
-                    mocker.GetInt("c"),
-                    mocker.GetInt("d")
+                    (int)mocker.Get<int>("x"),
+                    (int)mocker.Get<int>("y"),
+                    (int)mocker.Get<int>("z"),
+                    (int)mocker.Get<int>("a"),
+                    (int)mocker.Get<int>("b"),
+                    (int)mocker.Get<int>("c"),
+                    (int)mocker.Get<int>("d")
                 };
                 list.GroupBy(x => x).Count().ShouldEqual(7);
             }
@@ -81,7 +81,7 @@ namespace AutoMoq.Tests
                 mocker.SetNextRandomValue(5);
                 var dictionary = new Dictionary<string, int> {["y"] = 5};
                 mocker.SetRandomValueDictionary(dictionary);
-                mocker.GetInt("x").ShouldNotEqual(5);
+                mocker.Get<int>("x").ShouldNotEqual(5);
             }
 
         }

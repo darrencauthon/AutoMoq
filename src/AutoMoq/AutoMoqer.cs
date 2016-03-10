@@ -181,6 +181,15 @@ namespace AutoMoq
             return randomIntDictionary[name] = next;
         }
 
+        public object Get<T>(string name)
+        {
+            if (typeof (T) == typeof(int))
+                return GetInt(name);
+            if (typeof (T) == typeof (double))
+                return GetDouble(name);
+            return default(T);
+        }
+
         private IDictionary<string, double> randomDoubleDictionary = new Dictionary<string, double>();
         public double GetDouble(string name)
         {
