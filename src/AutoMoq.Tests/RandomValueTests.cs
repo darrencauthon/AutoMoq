@@ -85,5 +85,83 @@ namespace AutoMoq.Tests
             }
 
         }
+
+        [TestFixture]
+        public class RandomDoubleTests
+        {
+            [SetUp]
+            public void Setup()
+            {
+                mocker = new AutoMoqer();
+            }
+
+            private AutoMoqer mocker;
+
+            [Test]
+            public void It_should_return_an_integer_when_asked()
+            {
+                mocker.GetDouble("x")
+                    .ShouldBeInRange(double.MinValue, double.MaxValue);
+            }
+
+            [Test]
+            public void It_should_return_different_values_somehow()
+            {
+                var list = new List<double>();
+                foreach (var _ in Enumerable.Range(1, 100))
+                {
+                    var value = (new AutoMoqer()).GetDouble("x");
+                    if (list.Contains(value) == false)
+                        list.Add(value);
+                }
+                list.Count.ShouldBeInRange(2, int.MaxValue);
+            }
+
+            [Test]
+            public void It_should_return_the_same_value_with_the_same_key()
+            {
+                var list = new List<double>();
+                foreach (var _ in Enumerable.Range(1, 100))
+                {
+                    var value = mocker.GetDouble("x");
+                    if (list.Contains(value) == false)
+                        list.Add(value);
+                }
+                list.Count.ShouldEqual(1);
+            }
+
+            [Test]
+            public void It_should_return_different_values_for_different_keys()
+            {
+                var list = new List<double>
+                {
+                    mocker.GetDouble("x"),
+                    mocker.GetDouble("y"),
+                    mocker.GetDouble("z"),
+                    mocker.GetDouble("a"),
+                    mocker.GetDouble("b"),
+                    mocker.GetDouble("c"),
+                    mocker.GetDouble("d")
+                };
+                list.GroupBy(x => x).Count().ShouldEqual(7);
+            }
+
+            [Test]
+            public void It_should_not_let_duplicate_values_in_the_dictionary()
+            {
+                var list = new Dictionary<string, double> {["x"] = 4};
+                mocker.SetRandomValueDictionary(list);
+            }
+
+            [Test]
+            public void It_should_not_let_values_overlap_between_keys()
+            {
+                mocker.SetNextRandomValue(5);
+                var dictionary = new Dictionary<string, double> {["y"] = 5};
+                mocker.SetRandomValueDictionary(dictionary);
+                mocker.GetDouble("x").ShouldNotEqual(5);
+            }
+
+        }
     }
 }

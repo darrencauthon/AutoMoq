@@ -170,15 +170,26 @@ namespace AutoMoq
         }
 
 
-        private IDictionary<string, int> randomValueDictionary = new Dictionary<string, int>();
+        private IDictionary<string, int> randomIntDictionary = new Dictionary<string, int>();
         public int GetInt(string name)
         {
-            if (randomValueDictionary.ContainsKey(name))
-                return randomValueDictionary[name];
+            if (randomIntDictionary.ContainsKey(name))
+                return randomIntDictionary[name];
             var next = GetNextRandomValue();
-            while (randomValueDictionary.Values.Contains(next))
+            while (randomIntDictionary.Values.Contains(next))
                 next = GetNextRandomValue();
-            return randomValueDictionary[name] = next;
+            return randomIntDictionary[name] = next;
+        }
+
+        private IDictionary<string, double> randomDoubleDictionary = new Dictionary<string, double>();
+        public double GetDouble(string name)
+        {
+            if (randomDoubleDictionary.ContainsKey(name))
+                return randomDoubleDictionary[name];
+            var next = GetNextRandomValue();
+            while (randomDoubleDictionary.Values.Contains(next))
+                next = GetNextRandomValue();
+            return randomDoubleDictionary[name] = Convert.ToInt64(next.ToString());
         }
 
         internal int GetNextRandomValue()
@@ -199,7 +210,12 @@ namespace AutoMoq
 
         internal void SetRandomValueDictionary(IDictionary<string, int> dictionary)
         {
-            randomValueDictionary = dictionary;
+            randomIntDictionary = dictionary;
+        }
+
+        internal void SetRandomValueDictionary(IDictionary<string, double> dictionary)
+        {
+            randomDoubleDictionary = dictionary;
         }
     }
 }
