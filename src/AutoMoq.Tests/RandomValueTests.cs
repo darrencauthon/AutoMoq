@@ -72,7 +72,7 @@ namespace AutoMoq.Tests
             public void It_should_not_let_duplicate_values_in_the_dictionary()
             {
                 var list = new Dictionary<string, int> {["x"] = 4};
-                mocker.SetList(list);
+                mocker.SetRandomValueDictionary(list);
             }
 
             [Test]
@@ -80,7 +80,7 @@ namespace AutoMoq.Tests
             {
                 mocker.SetNextRandomValue(5);
                 var dictionary = new Dictionary<string, int> {["y"] = 5};
-                mocker.SetList(dictionary);
+                mocker.SetRandomValueDictionary(dictionary);
                 mocker.GetInt("x").ShouldNotEqual(5);
             }
 
