@@ -6,4 +6,4 @@ before_script:
   - nuget restore src/AutoMoq.sln
 script:
   - xbuild /p:Configuration=Release src/AutoMoq.sln
-  - nunit-console /home/travis/build/darrencauthon/AutoMoq/src/AutoMoq.Tests/bin/Release/AutoMoq.Tests.dll
+  - nunit-console /home/travis/build/darrencauthon/AutoMoq/src/AutoMoq.Tests/bin/Release/AutoMoq.Tests.dll /home/travis/build/darrencauthon/AutoMoq/src/AutoMoq.TestFixture.Samples/bin/Release/AutoMoq.TestFixture.Samples.dll
