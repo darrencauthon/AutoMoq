@@ -118,11 +118,6 @@ namespace AutoMoq
             return TheRegisteredMockForThisType<T>(type);
         }
 
-        private static Type[] EmptyArgumentList()
-        {
-            return new[] {typeof (object[])};
-        }
-
         private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class
         {
             return (Mock<T>) GetTheRegisteredMockFor(type);
