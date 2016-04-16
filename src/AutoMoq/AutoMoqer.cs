@@ -72,10 +72,10 @@ namespace AutoMoq
         /// </summary>
         /// <typeparam name="T">The type of mock to build.</typeparam>
         /// <returns>A mock object of type T.</returns>
-        public virtual Mock<T> GetMock<T>() where T : class
+        public virtual Mock<T> GetMock<T>(MockBehavior mockBehavior = MockBehavior.Default) where T : class
         {
             ResolveType = null;
-            return mocking.GetMockByCreatingAMockIfOneHasNotAlreadyBeenCreated<T>();
+            return mocking.GetMockByCreatingAMockIfOneHasNotAlreadyBeenCreated<T>(mockBehavior);
         }
 
         /// <summary>
