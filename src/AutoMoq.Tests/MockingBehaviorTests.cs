@@ -64,6 +64,31 @@ namespace AutoMoq.Tests
 
         }
 
+        [Test]
+        public void It_should_allow_a_mock_to_be_changed_on_a_mock_by_mock_basis_case_2()
+        {
+            var mocker = new AutoMoqer();
+
+            mocker.GetMock<IFoo>(MockBehavior.Strict);
+            mocker.GetMock<IFooFoo>(MockBehavior.Loose);
+
+            var bar = mocker.Create<BarBar>();
+
+            bar.ThrowFooFoo(); // this one is loose, so it should not throw
+
+            var anErrorWasThrown = false;
+            try
+            {
+                bar.ThrowFoo(); // this one is strict, so it should throw
+
+            }
+            catch
+            {
+                anErrorWasThrown = true;
+            }
+            anErrorWasThrown.ShouldBeTrue();
+        }
+
         public class Bar
         {
             private readonly IFoo foo;
