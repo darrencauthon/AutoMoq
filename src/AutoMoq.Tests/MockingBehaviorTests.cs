@@ -39,6 +39,32 @@ namespace AutoMoq.Tests
 
         }
 
+        [Test]
+        public void It_should_allow_a_mock_to_be_changed_on_a_mock_by_mock_basis()
+        {
+
+            var mocker = new AutoMoqer();
+
+            mocker.GetMock<IFoo>(MockBehavior.Loose);
+            mocker.GetMock<IFooFoo>(MockBehavior.Strict);
+
+            var bar = mocker.Create<BarBar>();
+
+            bar.ThrowFoo(); // this one is loose, so it should not throw
+
+            var anErrorWasThrown = false;
+            try
+            {
+                bar.ThrowFooFoo(); // this one is strict, so it should throw
+            }
+            catch
+            {
+                anErrorWasThrown = true;
+            }
+            anErrorWasThrown.ShouldBeTrue();
+
+        }
+
         public class Bar
         {
             private readonly IFoo foo;
@@ -51,6 +77,33 @@ namespace AutoMoq.Tests
             public void Throw()
             {
                 foo.Catch();
+            }
+        }
+
+        public interface IFooFoo
+        {
+            void Catch();
+        }
+
+        public class BarBar
+        {
+            private readonly IFoo foo;
+            private readonly IFooFoo foofoo;
+
+            public BarBar(IFoo foo, IFooFoo foofoo)
+            {
+                this.foo = foo;
+                this.foofoo = foofoo;
+            }
+
+            public void ThrowFoo()
+            {
+                foo.Catch();
+            }
+
+            public void ThrowFooFoo()
+            {
+                foofoo.Catch();
             }
         }
 

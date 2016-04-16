@@ -13,11 +13,13 @@ namespace AutoMoq
         void RegisterThisMock(object mock, Type type);
         object GetTheRegisteredMockFor(Type type);
         MockCreationResult CreateAMockObjectFor(Type type);
+        MockCreationResult CreateAMockObjectFor(Type type, MockBehavior mockBehavior);
         MockCreationResult CreateANewMockObjectAndRegisterIt(Type type);
         MockCreationResult CreateANewMockObjectAndRegisterIt<T>() where T : class;
         void SetMock(Type type, object mock);
         void SetInstance<T>(T instance) where T : class;
         Mock<T> GetMockByCreatingAMockIfOneHasNotAlreadyBeenCreated<T>() where T : class;
+        Mock<T> GetMockByCreatingAMockIfOneHasNotAlreadyBeenCreated<T>(MockBehavior mockBehavior) where T : class;
     }
 
     public class MockingWithMoq : Mocking
@@ -51,10 +53,17 @@ namespace AutoMoq
 
         public MockCreationResult CreateAMockObjectFor(Type type)
         {
-            var createMethodWithNoParameters = mockRepository.GetType().GetMethod("Create", EmptyArgumentList());
+            return CreateAMockObjectFor(type, MockBehavior.Default);
+        }
+
+        public MockCreationResult CreateAMockObjectFor(Type type, MockBehavior mockBehavior = MockBehavior.Default)
+        {
+            var types = new[] {typeof (object[])};
+            var createMethodWithNoParameters = mockRepository.GetType().GetMethod("Create", types);
             var createMethod = createMethodWithNoParameters.MakeGenericMethod(type);
 
-            var mock = (Mock) createMethod.Invoke(mockRepository, new object[] {new List<object>().ToArray()});
+            var objects = new List<object>().ToArray();
+            var mock = (Mock) createMethod.Invoke(mockRepository, new object[] {objects});
 
             return new MockCreationResult
             {
@@ -73,6 +82,11 @@ namespace AutoMoq
         }
 
         public MockCreationResult CreateANewMockObjectAndRegisterIt<T>() where T : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public MockCreationResult CreateANewMockObjectAndRegisterIt<T>(MockBehavior mockBehavior = MockBehavior.Default) where T : class
         {
             var result = CreateAMockObjectFor(typeof (T));
             var mock = (Mock<T>) result.MockObject;
@@ -95,9 +109,14 @@ namespace AutoMoq
 
         public Mock<T> GetMockByCreatingAMockIfOneHasNotAlreadyBeenCreated<T>() where T : class
         {
+            return GetMockByCreatingAMockIfOneHasNotAlreadyBeenCreated<T>(MockBehavior.Default);
+        }
+
+        public Mock<T> GetMockByCreatingAMockIfOneHasNotAlreadyBeenCreated<T>(MockBehavior mockBehavior) where T : class
+        {
             var type = typeof (T);
             if (GetMockHasNotBeenCalledForThisType(type))
-                CreateANewMockAndRegisterIt<T>();
+                CreateANewMockAndRegisterIt<T>(mockBehavior);
 
             return TheRegisteredMockForThisType<T>(type);
         }
@@ -112,9 +131,9 @@ namespace AutoMoq
             return (Mock<T>) GetTheRegisteredMockFor(type);
         }
 
-        private void CreateANewMockAndRegisterIt<T>() where T : class
+        private void CreateANewMockAndRegisterIt<T>(MockBehavior mockBehavior) where T : class
         {
-            CreateANewMockObjectAndRegisterIt<T>();
+            CreateANewMockObjectAndRegisterIt<T>(mockBehavior);
         }
 
         private bool GetMockHasNotBeenCalledForThisType(Type type)
