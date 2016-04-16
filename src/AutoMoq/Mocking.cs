@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using AutoMoq.Unity;
 using Moq;
 
@@ -51,15 +52,12 @@ namespace AutoMoq
 
         public MockCreationResult CreateAMockObjectFor(Type type, MockBehavior mockBehavior = MockBehavior.Default)
         {
-            var types = new[] {typeof (object[])};
-            var createMethodWithNoParameters = mockRepository.GetType().GetMethod("Create", types);
-            var createMethod = createMethodWithNoParameters.MakeGenericMethod(type);
+            var createMethod = mockRepository.GetType()
+                .GetMethod("Create", new[] {typeof (object[])}).MakeGenericMethod(type);
 
-            var list = new List<object>();
-            if (mockBehavior != MockBehavior.Default)
-                list.Add(mockBehavior);
-            var objects = list.ToArray();
-            var mock = (Mock) createMethod.Invoke(mockRepository, new object[] {objects});
+            var parameters = new List<object>();
+            if (mockBehavior != MockBehavior.Default) parameters.Add(mockBehavior);
+            var mock = (Mock) createMethod.Invoke(mockRepository, new object[] {parameters.ToArray()});
 
             return new MockCreationResult
             {
