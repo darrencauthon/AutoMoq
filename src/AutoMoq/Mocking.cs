@@ -62,7 +62,10 @@ namespace AutoMoq
             var createMethodWithNoParameters = mockRepository.GetType().GetMethod("Create", types);
             var createMethod = createMethodWithNoParameters.MakeGenericMethod(type);
 
-            var objects = new List<object>().ToArray();
+            var list = new List<object>();
+            if (mockBehavior != MockBehavior.Default)
+                list.Add(mockBehavior);
+            var objects = list.ToArray();
             var mock = (Mock) createMethod.Invoke(mockRepository, new object[] {objects});
 
             return new MockCreationResult
@@ -88,7 +91,7 @@ namespace AutoMoq
 
         public MockCreationResult CreateANewMockObjectAndRegisterIt<T>(MockBehavior mockBehavior = MockBehavior.Default) where T : class
         {
-            var result = CreateAMockObjectFor(typeof (T));
+            var result = CreateAMockObjectFor(typeof (T), mockBehavior);
             var mock = (Mock<T>) result.MockObject;
             ioc.RegisterInstance(mock.Object);
             ioc.Resolve<AutoMoqer>().SetMock(typeof (T), mock);

@@ -42,7 +42,6 @@ namespace AutoMoq.Tests
         [Test]
         public void It_should_allow_a_mock_to_be_changed_on_a_mock_by_mock_basis()
         {
-
             var mocker = new AutoMoqer();
 
             mocker.GetMock<IFoo>(MockBehavior.Loose);
