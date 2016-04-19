@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace AutoMoq.Tests
 {
@@ -10,7 +11,9 @@ namespace AutoMoq.Tests
         {
             var autoMoq = new AutoMoqer();
 
+            // the second line works... seems to be an issue calling Create twice?
             var child = autoMoq.Create<Child>();
+            //var child = new Mock<IChild>().Object;
             autoMoq.SetInstance<IChild>(child);
 
             var parent = autoMoq.Create<Parent>();
