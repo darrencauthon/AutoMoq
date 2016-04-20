@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.Practices.Unity;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace AutoMoq.Tests
@@ -27,6 +28,18 @@ namespace AutoMoq.Tests
 
             autoMoq.Create<Child>();
             autoMoq.Create<Child>();
+        }
+
+        [TestMethod]
+        public void resolving_the_same_type_twice_with_unity()
+        {
+            var container = new UnityContainer();
+
+            var grandChild = new Mock<IGrandChild>().Object;
+            container.RegisterInstance(grandChild);
+
+            container.Resolve<Child>();
+            container.Resolve<Child>();
         }
 
         [TestMethod]
