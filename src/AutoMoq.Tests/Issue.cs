@@ -19,6 +19,23 @@ namespace AutoMoq.Tests
             var parent = autoMoq.Create<Parent>();
             Assert.IsNotNull(parent);
         }
+
+        [TestMethod]
+        public void creating_the_child_twice()
+        {
+            var autoMoq = new AutoMoqer();
+
+            autoMoq.Create<Child>();
+            autoMoq.Create<Child>();
+        }
+
+        [TestMethod]
+        public void creating_the_child_once()
+        {
+            var autoMoq = new AutoMoqer();
+
+            autoMoq.Create<Child>();
+        }
     }
 
     public interface IParent
