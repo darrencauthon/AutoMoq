@@ -1,24 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using Microsoft.Practices.ObjectBuilder2;
-using Microsoft.Practices.Unity;
 
 namespace AutoMoq.Unity
 {
-    public abstract class AutoMockingBuilderStrategy : BuilderStrategy
+    public class AutoMockingBuilderStrategy : BuilderStrategy
     {
-        private readonly IUnityContainer container;
-        private readonly IEnumerable<Type> registeredTypes;
+        private readonly IoC ioc;
+        private readonly Mocking mocking;
 
-        public AutoMockingBuilderStrategy(IEnumerable<Type> registeredTypes, IUnityContainer container)
+        public AutoMockingBuilderStrategy(Mocking mocking, IoC ioc)
         {
-            this.registeredTypes = registeredTypes;
-            this.container = container;
+            this.mocking = mocking;
+            this.ioc = ioc;
         }
-
-        public abstract MockCreationResult CreateAMockObject(Type type);
 
         public override void PreBuildUp(IBuilderContext context)
         {
@@ -29,34 +25,38 @@ namespace AutoMoq.Unity
                 context.Existing = mock.ActualObject;
             }
 
-            if (type.GetConstructors().Any() == false) return;
-
-            LoadAbstractDependenciesInTheGreediestConstructor(type);
+            LoadAnyAbstractDependenciesOf(type);
         }
 
-        private void LoadAbstractDependenciesInTheGreediestConstructor(Type type)
+        private void LoadAnyAbstractDependenciesOf(Type type)
         {
-            foreach (var abstractParameter in AbstractParameters(type))
+            foreach (var dependency in AbstractDependenciesOf(type))
             {
-                var mock = CreateAMockTrackedByAutoMoq(abstractParameter);
-                try
-                {
-                    container.Resolve(abstractParameter);
-                }
-                catch
-                {
-                    var mockObject = mock.ActualObject as object;
-                    container.RegisterInstance(abstractParameter, mockObject);
-                }
+                var mock = CreateAMockTrackedByAutoMoq(dependency);
+                if (ThisTypeHasBeenRegisteredInIoC(dependency)) continue;
+                ioc.RegisterInstance(mock.ActualObject, dependency);
             }
         }
 
-        private static IEnumerable<Type> AbstractParameters(Type type)
+        private bool ThisTypeHasBeenRegisteredInIoC(Type type)
         {
-            var greediestConstructor = type.GetConstructors()
-                .OrderByDescending(x => x.GetParameters().Count())
-                .First();
-            return greediestConstructor.GetParameters()
+            try
+            {
+                ioc.Resolve(type);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+
+        private static IEnumerable<Type> AbstractDependenciesOf(Type type)
+        {
+            return type.GetConstructors()
+                .SelectMany(x => x.GetParameters())
+                .Distinct()
                 .Where(x => x.ParameterType.IsAbstract)
                 .Where(x => x.ParameterType.IsInterface == false)
                 .Select(x => x.ParameterType);
@@ -64,10 +64,7 @@ namespace AutoMoq.Unity
 
         private MockCreationResult CreateAMockTrackedByAutoMoq(Type type)
         {
-            var mock = CreateAMockObject(type);
-            var autoMoqer = container.Resolve<AutoMoqer>();
-            autoMoqer.SetMock(type, mock.MockObject);
-            return mock;
+            return mocking.CreateANewMockObjectAndRegisterIt(type);
         }
 
         private bool AMockObjectShouldBeCreatedForThisType(Type type)
@@ -79,7 +76,7 @@ namespace AutoMoq.Unity
 
         private bool ThisIsNotTheTypeThatIsBeingResolvedForTesting(Type type)
         {
-            var mocker = container.Resolve<AutoMoqer>();
+            var mocker = ioc.Resolve<AutoMoqer>();
             return (mocker.ResolveType == null || mocker.ResolveType != type);
         }
 
@@ -95,7 +92,7 @@ namespace AutoMoq.Unity
 
         private bool ThisTypeIsNotRegistered(Type type)
         {
-            return registeredTypes.Any(x => x == type) == false;
+            return mocking.AMockHasNotBeenRegisteredFor(type);
         }
     }
 }

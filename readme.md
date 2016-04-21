@@ -1,4 +1,5 @@
 # AutoMoq
+[![Build Status](https://travis-ci.org/darrencauthon/AutoMoq.svg?branch=master)](https://travis-ci.org/darrencauthon/AutoMoq)
 
 AutoMoqer is an "auto-mocking" container that creates objects for you. Just tell it what class to create and it will create it.
 
