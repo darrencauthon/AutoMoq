@@ -70,7 +70,11 @@ namespace AutoMoq
         {
             var result = CreateAMockObjectFor(type);
             var mock = (Mock) result.MockObject;
-            ioc.RegisterInstance(mock.Object);
+
+            var method = ioc.GetType().GetMethods()[2];
+            var registerMethod = method.MakeGenericMethod(type);
+            registerMethod.Invoke(ioc, new[] { mock.Object });
+
             ioc.Resolve<AutoMoqer>().SetMock(type, mock);
             return result;
         }
