@@ -1,13 +1,13 @@
 ﻿using Microsoft.Practices.Unity;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using NUnit.Framework;
 
 namespace AutoMoq.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class CallingCreateTwice
     {
-        [TestMethod]
+        [Test]
         public void can_create_parent_object_when_setInstance_is_called_on_child()
         {
             var autoMoq = new AutoMoqer();
@@ -21,7 +21,7 @@ namespace AutoMoq.Tests
             Assert.IsNotNull(parent);
         }
 
-        [TestMethod]
+        [Test]
         public void creating_the_child_twice()
         {
             var autoMoq = new AutoMoqer();
@@ -30,7 +30,7 @@ namespace AutoMoq.Tests
             autoMoq.Create<Child>();
         }
 
-        [TestMethod]
+        [Test]
         public void resolving_the_same_type_twice_with_unity()
         {
             var container = new UnityContainer();
@@ -42,7 +42,7 @@ namespace AutoMoq.Tests
             container.Resolve<Child>();
         }
 
-        [TestMethod]
+        [Test]
         public void creating_the_child_once()
         {
             var autoMoq = new AutoMoqer();
