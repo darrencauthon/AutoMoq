@@ -34,8 +34,6 @@ namespace AutoMoq.Unity
             {
                 if (ThisTypeHasBeenRegisteredInIoC(dependency)) continue;
                 if (ThisTypeHasBeenRegisteredInIoC(dependency)) continue;
-                var mock = CreateAMockTrackedByAutoMoq(dependency);
-                ioc.RegisterInstance(mock.ActualObject, dependency);
             }
         }
 

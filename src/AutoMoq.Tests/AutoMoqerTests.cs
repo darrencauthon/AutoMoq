@@ -175,7 +175,6 @@ namespace AutoMoq.Tests
     {
         public virtual void Something()
         {
-            
         }
     }
 
