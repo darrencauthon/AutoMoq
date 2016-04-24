@@ -1,3 +1,7 @@
+The details for each version are now kept on the Github releases page here:
+
+https://github.com/darrencauthon/AutoMoq/releases
+
 v 1.6.2
 + Added a non-generic Create method.
 + Expose public mocker in the test fixture.
