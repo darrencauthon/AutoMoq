@@ -49,8 +49,18 @@ namespace AutoMoq.Tests
         }
 
         [Test]
-        public void Can_test_with_an_abstract_dependency()
+        public void Can_test_with_an_abstract_dependency_registered_by_the_create()
         {
+            var concreteClass = mocker.Create<ClassWithAbstractDependenciesAndManyConstructors>();
+            concreteClass.CallSomething();
+            mocker.GetMock<AbstractDependency>()
+                .Verify(x => x.Something(), Times.Once());
+        }
+
+        [Test]
+        public void Can_test_with_an_abstract_dependency_registered_before_the_create()
+        {
+            mocker.GetMock<AbstractDependency>(); // here is the register
             var concreteClass = mocker.Create<ClassWithAbstractDependenciesAndManyConstructors>();
             concreteClass.CallSomething();
             mocker.GetMock<AbstractDependency>()
@@ -165,7 +175,6 @@ namespace AutoMoq.Tests
     {
         public virtual void Something()
         {
-            
         }
     }
 

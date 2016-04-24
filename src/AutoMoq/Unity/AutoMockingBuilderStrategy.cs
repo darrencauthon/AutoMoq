@@ -31,23 +31,18 @@ namespace AutoMoq.Unity
         private void LoadAnyAbstractDependenciesOf(Type type)
         {
             foreach (var dependency in AbstractDependenciesOf(type))
-            {
-                var mock = CreateAMockTrackedByAutoMoq(dependency);
-                if (ThisTypeHasBeenRegisteredInIoC(dependency)) continue;
-                ioc.RegisterInstance(mock.ActualObject, dependency);
-            }
+                BuildThisByAskingTheContainerForIt(dependency);
         }
 
-        private bool ThisTypeHasBeenRegisteredInIoC(Type type)
+        private void BuildThisByAskingTheContainerForIt(Type type)
         {
             try
             {
                 ioc.Resolve(type);
-                return true;
             }
             catch
             {
-                return false;
+                // ignored
             }
         }
 

@@ -69,10 +69,29 @@ namespace AutoMoq
         public MockCreationResult CreateANewMockObjectAndRegisterIt(Type type)
         {
             var result = CreateAMockObjectFor(type);
+
             var mock = (Mock) result.MockObject;
-            ioc.RegisterInstance(mock.Object);
-            ioc.Resolve<AutoMoqer>().SetMock(type, mock);
+
+            RegisterThisObjectInTheIoCContainer(type, mock);
+            RegisterThisMockWithAutoMoq(type, mock);
+
             return result;
+        }
+
+        private void RegisterThisMockWithAutoMoq(Type type, Mock mock)
+        {
+            ioc.Resolve<AutoMoqer>().SetMock(type, mock);
+        }
+
+        private void RegisterThisObjectInTheIoCContainer(Type type, Mock mock)
+        {
+            // this is meant to replicate this generic method call
+            // container.RegisterInstance<T>(mock.Object)
+            ioc.GetType()
+                .GetMethods()
+                .First(x => x.Name == "RegisterInstance" && x.IsGenericMethod)
+                .MakeGenericMethod(type)
+                .Invoke(ioc, new[] {mock.Object});
         }
 
         public MockCreationResult CreateANewMockObjectAndRegisterIt<T>(MockBehavior mockBehavior = MockBehavior.Default) where T : class
