@@ -5,7 +5,7 @@ using Moq;
 namespace AutoMoq.Tests
 {
     [TestClass]
-    public class Issue
+    public class CallingCreateTwice
     {
         [TestMethod]
         public void can_create_parent_object_when_setInstance_is_called_on_child()
