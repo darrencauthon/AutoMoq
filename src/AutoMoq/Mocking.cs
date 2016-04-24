@@ -85,6 +85,8 @@ namespace AutoMoq
 
         private void RegisterThisObjectInTheIoCContainer(Type type, Mock mock)
         {
+            // this is meant to replicate this generic method call
+            // container.RegisterInstance<T>(mock.Object)
             ioc.GetType()
                 .GetMethods()
                 .First(x => x.Name == "RegisterInstance" && x.IsGenericMethod)
