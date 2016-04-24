@@ -49,43 +49,44 @@ namespace AutoMoq.Tests
 
             autoMoq.Create<Child>();
         }
-    }
 
-    public interface IParent
-    {
-    }
-
-    public interface IChild
-    {
-    }
-
-    public interface IGrandChild
-    {
-    }
-
-    public class Parent : IParent
-    {
-        private readonly IChild _child;
-        private readonly IGrandChild _grandChild;
-
-        public Parent(IChild child, IGrandChild grandChild)
+        public interface IParent
         {
-            _child = child;
-            _grandChild = grandChild;
         }
-    }
 
-    public class Child : IChild
-    {
-        private readonly IGrandChild _grandChild;
-
-        public Child(IGrandChild grandChild)
+        public interface IChild
         {
-            _grandChild = grandChild;
         }
-    }
 
-    public class GrandChild : IGrandChild
-    {
+        public interface IGrandChild
+        {
+        }
+
+        public class Parent : IParent
+        {
+            private readonly IChild _child;
+            private readonly IGrandChild _grandChild;
+
+            public Parent(IChild child, IGrandChild grandChild)
+            {
+                _child = child;
+                _grandChild = grandChild;
+            }
+        }
+
+        public class Child : IChild
+        {
+            private readonly IGrandChild _grandChild;
+
+            public Child(IGrandChild grandChild)
+            {
+                _grandChild = grandChild;
+            }
+        }
+
+        public class GrandChild : IGrandChild
+        {
+        }
+
     }
 }
