@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>AutoMoq</id>
-    <version>1.8.1.0</version>
+    <version>2.0.0.0</version>
     <title>AutoMoq</title>
     <authors>Darren Cauthon</authors>
     <owners>Darren Cauthon</owners>
@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/darrencauthon/AutoMoq</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Auto-mocking container</description>
-    <releaseNotes>Added support for strict-mocking.</releaseNotes>
+    <releaseNotes>Upgraded Unity to 4.</releaseNotes>
     <copyright>Copyright 2010-2016</copyright>
     <tags>moq unity tdd testing test</tags>
     <dependencies>
