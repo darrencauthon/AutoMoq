@@ -13,5 +13,9 @@
     <releaseNotes>Added support for strict-mocking.</releaseNotes>
     <copyright>Copyright 2010-2016</copyright>
     <tags>moq unity tdd testing test</tags>
+    <dependencies>
+        <dependency id="Unity" version="(4.0,)" />
+        <dependency id="Moq" version="(4.0,)" />
+    </dependencies>
   </metadata>
 </package>
