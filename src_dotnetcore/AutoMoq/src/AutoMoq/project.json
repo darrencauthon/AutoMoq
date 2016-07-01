@@ -2,6 +2,7 @@
   "version": "1.0.0-*",
 
   "dependencies": {
+    "moq.netcore": "4.4.0-beta8",
     "NETStandard.Library": "1.6.0",
     "Unity-CoreClr": "1.0.0-beta3"
   },
