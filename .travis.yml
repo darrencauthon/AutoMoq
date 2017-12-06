@@ -8,4 +8,4 @@ script:
 solution: src/AutoMoq.sln
 script:
   - dotnet build src/AutoMoq.sln --configuration Release
-  - dotnet test src/Automoq.tests/AutoMoq.Tests.csproj
+  - dotnet test src/Automoq.tests/AutoMoq.Tests.csproj --test-adapter-path ./packages/xunit.console/*/lib/netcoreapp2.0/xunit.console.dll
