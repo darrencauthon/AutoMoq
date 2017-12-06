@@ -4,6 +4,6 @@ dotnet: 2.0.3
 dist: trusty
 solution: src/AutoMoq.sln
 script:
-  - dotnet restore
+  - dotnet add package dotnet-xunit
   - dotnet build src/AutoMoq.sln --configuration Release
-  - dotnet test src/Automoq.tests/AutoMoq.Tests.csproj
+  - dotnet xunit src/Automoq.tests/AutoMoq.Tests.csproj
