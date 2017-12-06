@@ -8,4 +8,4 @@ script:
 solution: src/AutoMoq.sln
 script:
   - dotnet build src/AutoMoq.sln --configuration Release
-  - dotnet test AutoMoq.Tests.csproj
+  - dotnet test src/Automoq.tests/AutoMoq.Tests.csproj
