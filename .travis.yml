@@ -1,5 +1,4 @@
 language: csharp
-mono: none
 dotnet: 2.0.3
 dist: trusty
 script:
@@ -7,4 +6,4 @@ script:
 solution: src/AutoMoq.sln
 script:
   - dotnet build src/AutoMoq.sln --configuration Release
-  - xunit-console /home/travis/build/darrencauthon/AutoMoq/src/AutoMoq.Tests/bin/Release/AutoMoq.Tests.dll
+  - mono ./packages/xunit.runners.*/tools/xunit.console.clr4.exe /home/travis/build/darrencauthon/AutoMoq/src/AutoMoq.Tests/bin/Release/AutoMoq.Tests.dll
