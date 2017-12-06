@@ -1,14 +1,15 @@
-﻿using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.ObjectBuilder;
+﻿using AutoMoq;
+using Unity.Builder;
+using Unity.Extension;
 
-namespace AutoMoq.Unity
+namespace Automoqer.Unity
 {
-    internal class AutoMockingContainerExtension : UnityContainerExtension
+    public class AutoMockingContainerExtension : UnityContainerExtension
     {
-        private readonly IoC ioc;
+        private readonly IocContainer ioc;
         private readonly Mocking mocking;
 
-        public AutoMockingContainerExtension(IoC ioc, Mocking mocking)
+        public AutoMockingContainerExtension(IocContainer ioc, Mocking mocking)
         {
             this.ioc = ioc;
             this.mocking = mocking;

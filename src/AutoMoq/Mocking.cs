@@ -1,32 +1,17 @@
-﻿using System;
+﻿using Automoqer.Unity;
+using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using AutoMoq.Unity;
-using Moq;
 
 namespace AutoMoq
 {
-    // ReSharper disable once InconsistentNaming
-    public interface Mocking
+    public class Mocking : IMocking
     {
-        bool AMockHasNotBeenRegisteredFor(Type type);
-        void RegisterThisMock(object mock, Type type);
-        object GetTheRegisteredMockFor(Type type);
-        MockCreationResult CreateAMockObjectFor(Type type, MockBehavior mockBehavior);
-        MockCreationResult CreateANewMockObjectAndRegisterIt(Type type);
-        void SetMock(Type type, object mock);
-        void SetInstance<T>(T instance) where T : class;
-        Mock<T> GetMockByCreatingAMockIfOneHasNotAlreadyBeenCreated<T>() where T : class;
-        Mock<T> GetMockByCreatingAMockIfOneHasNotAlreadyBeenCreated<T>(MockBehavior mockBehavior) where T : class;
-    }
-
-    public class MockingWithMoq : Mocking
-    {
-        private readonly IoC ioc;
+        private readonly IocContainer ioc;
         private readonly MockRepository mockRepository;
 
-        public MockingWithMoq(Config config, IoC ioc)
+        public Mocking(Config config, IocContainer ioc)
         {
             this.ioc = ioc;
             RegisteredMocks = new Dictionary<Type, object>();
@@ -53,11 +38,11 @@ namespace AutoMoq
         public MockCreationResult CreateAMockObjectFor(Type type, MockBehavior mockBehavior = MockBehavior.Default)
         {
             var createMethod = mockRepository.GetType()
-                .GetMethod("Create", new[] {typeof (object[])}).MakeGenericMethod(type);
+                .GetMethod("Create", new[] { typeof(object[]) }).MakeGenericMethod(type);
 
             var parameters = new List<object>();
             if (mockBehavior != MockBehavior.Default) parameters.Add(mockBehavior);
-            var mock = (Mock) createMethod.Invoke(mockRepository, new object[] {parameters.ToArray()});
+            var mock = (Mock)createMethod.Invoke(mockRepository, new object[] { parameters.ToArray() });
 
             return new MockCreationResult
             {
@@ -70,7 +55,7 @@ namespace AutoMoq
         {
             var result = CreateAMockObjectFor(type);
 
-            var mock = (Mock) result.MockObject;
+            var mock = (Mock)result.MockObject;
 
             RegisterThisObjectInTheIoCContainer(type, mock);
             RegisterThisMockWithAutoMoq(type, mock);
@@ -91,15 +76,15 @@ namespace AutoMoq
                 .GetMethods()
                 .First(x => x.Name == "RegisterInstance" && x.IsGenericMethod)
                 .MakeGenericMethod(type)
-                .Invoke(ioc, new[] {mock.Object});
+                .Invoke(ioc, new[] { mock.Object });
         }
 
         public MockCreationResult CreateANewMockObjectAndRegisterIt<T>(MockBehavior mockBehavior = MockBehavior.Default) where T : class
         {
-            var result = CreateAMockObjectFor(typeof (T), mockBehavior);
-            var mock = (Mock<T>) result.MockObject;
+            var result = CreateAMockObjectFor(typeof(T), mockBehavior);
+            var mock = (Mock<T>)result.MockObject;
             ioc.RegisterInstance(mock.Object);
-            ioc.Resolve<AutoMoqer>().SetMock(typeof (T), mock);
+            ioc.Resolve<AutoMoqer>().SetMock(typeof(T), mock);
             return result;
         }
 
@@ -112,7 +97,7 @@ namespace AutoMoq
         public void SetInstance<T>(T instance) where T : class
         {
             ioc.RegisterInstance(instance);
-            SetMock(typeof (T), null);
+            SetMock(typeof(T), null);
         }
 
         public Mock<T> GetMockByCreatingAMockIfOneHasNotAlreadyBeenCreated<T>() where T : class
@@ -122,7 +107,7 @@ namespace AutoMoq
 
         public Mock<T> GetMockByCreatingAMockIfOneHasNotAlreadyBeenCreated<T>(MockBehavior mockBehavior) where T : class
         {
-            var type = typeof (T);
+            var type = typeof(T);
             if (GetMockHasNotBeenCalledForThisType(type))
                 CreateANewMockAndRegisterIt<T>(mockBehavior);
 
@@ -131,7 +116,7 @@ namespace AutoMoq
 
         private Mock<T> TheRegisteredMockForThisType<T>(Type type) where T : class
         {
-            return (Mock<T>) GetTheRegisteredMockFor(type);
+            return (Mock<T>)GetTheRegisteredMockFor(type);
         }
 
         private void CreateANewMockAndRegisterIt<T>(MockBehavior mockBehavior) where T : class

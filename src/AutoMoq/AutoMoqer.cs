@@ -1,17 +1,16 @@
-using System;
+﻿using System;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
-using Microsoft.Practices.Unity;
 using Moq;
 using Moq.Language.Flow;
+using Unity;
 
 [assembly: InternalsVisibleTo("AutoMoq.Tests")]
-
 namespace AutoMoq
 {
     public class AutoMoqer
     {
-        private IoC ioc;
+        private IocContainer ioc;
         private Mocking mocking;
         internal Type ResolveType;
 
@@ -22,7 +21,7 @@ namespace AutoMoq
 
         public AutoMoqer(IUnityContainer container)
         {
-            var config = new Config {Container = container};
+            var config = new Config { Container = container };
             SetupAutoMoqer(config);
         }
 
@@ -48,7 +47,7 @@ namespace AutoMoq
         /// <returns>An instance of T.</returns>
         public virtual T Create<T>()
         {
-            ResolveType = typeof (T);
+            ResolveType = typeof(T);
             var result = ioc.Resolve<T>();
             ResolveType = null;
             return result;
@@ -156,8 +155,8 @@ namespace AutoMoq
 
         private void SetupAutoMoqer(Config config)
         {
-            ioc = new UnityIoC(config.Container);
-            mocking = new MockingWithMoq(config, ioc);
+            ioc = new IocContainer(config.Container);
+            mocking = new Mocking(config, ioc);
 
             ioc.Setup(this, config, mocking);
         }
@@ -166,5 +165,6 @@ namespace AutoMoq
         {
             mocking.SetMock(type, mock);
         }
+
     }
 }

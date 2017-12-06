@@ -1,9 +1,14 @@
 language: csharp
+mono: none
+dotnet: 2.0.3
+dist: trusty
+script:
+ - dotnet restore
 solution: src/AutoMoq.sln
 before_install:
-  - sudo apt-get install nunit-console
+  - nuget install xunit.runners -Version 1.9.2 -OutputDirectory testrunner
 before_script:
   - nuget restore src/AutoMoq.sln
 script:
   - xbuild /p:Configuration=Release src/AutoMoq.sln
-  - nunit-console /home/travis/build/darrencauthon/AutoMoq/src/AutoMoq.Tests/bin/Release/AutoMoq.Tests.dll /home/travis/build/darrencauthon/AutoMoq/src/AutoMoq.TestFixture.Samples/bin/Release/AutoMoq.TestFixture.Samples.dll
+  - mono ./testrunner/xunit.runners.1.9.2/tools/xunit.console.clr4.exe /home/travis/build/darrencauthon/AutoMoq/src/AutoMoq.Tests/bin/Release/AutoMoq.Tests.dll

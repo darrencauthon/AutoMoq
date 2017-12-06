@@ -1,4 +1,4 @@
-namespace AutoMoq.Unity
+﻿namespace Automoqer.Unity
 {
     public class MockCreationResult
     {

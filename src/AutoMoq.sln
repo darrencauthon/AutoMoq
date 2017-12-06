@@ -1,35 +1,31 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMoq", "AutoMoq\AutoMoq.csproj", "{9A4C2524-6E70-4937-BF27-2A449F51D7E9}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMoq", "AutoMoq\AutoMoq.csproj", "{D88823B2-CDA6-4A04-A1F4-10D786795ACB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMoq.Tests", "AutoMoq.Tests\AutoMoq.Tests.csproj", "{5D9356F3-9AA2-4278-9A53-A7BD936EED9F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMoq.TestFixture.Samples", "AutoMoq.TestFixture.Samples\AutoMoq.TestFixture.Samples.csproj", "{D2FBF68E-3D26-484A-A5D7-DF6CC49837C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoMoq.Tests", "AutoMoq.Tests\AutoMoq.Tests.csproj", "{29FDA94E-1F17-4E65-87DC-F27B3745EA04}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = AutoMoq.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9A4C2524-6E70-4937-BF27-2A449F51D7E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9A4C2524-6E70-4937-BF27-2A449F51D7E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9A4C2524-6E70-4937-BF27-2A449F51D7E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9A4C2524-6E70-4937-BF27-2A449F51D7E9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5D9356F3-9AA2-4278-9A53-A7BD936EED9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5D9356F3-9AA2-4278-9A53-A7BD936EED9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5D9356F3-9AA2-4278-9A53-A7BD936EED9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5D9356F3-9AA2-4278-9A53-A7BD936EED9F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D2FBF68E-3D26-484A-A5D7-DF6CC49837C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D2FBF68E-3D26-484A-A5D7-DF6CC49837C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D2FBF68E-3D26-484A-A5D7-DF6CC49837C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D2FBF68E-3D26-484A-A5D7-DF6CC49837C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D88823B2-CDA6-4A04-A1F4-10D786795ACB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D88823B2-CDA6-4A04-A1F4-10D786795ACB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D88823B2-CDA6-4A04-A1F4-10D786795ACB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D88823B2-CDA6-4A04-A1F4-10D786795ACB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29FDA94E-1F17-4E65-87DC-F27B3745EA04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29FDA94E-1F17-4E65-87DC-F27B3745EA04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29FDA94E-1F17-4E65-87DC-F27B3745EA04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29FDA94E-1F17-4E65-87DC-F27B3745EA04}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EA452985-5B03-45CB-A5D9-DE668E03CDC3}
 	EndGlobalSection
 EndGlobal
