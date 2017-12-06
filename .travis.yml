@@ -6,4 +6,4 @@ solution: src/AutoMoq.sln
 script:
   - dotnet restore
   - dotnet build src/AutoMoq.sln --configuration Release
-  - dotnet vstest src/Automoq.tests/AutoMoq.Tests.csproj
+  - dotnet test src/Automoq.tests/AutoMoq.Tests.csproj
