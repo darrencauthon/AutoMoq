@@ -3,7 +3,8 @@ dotnet: 2.0.3
 dist: trusty
 script:
  - dotnet restore
+ 
 solution: src/AutoMoq.sln
 script:
   - dotnet build src/AutoMoq.sln --configuration Release
-  - mono ./packages/xunit.console/*/lib/netcoreapp2.0/xunit.console.exe /home/travis/build/darrencauthon/AutoMoq/src/AutoMoq.Tests/bin/Release/AutoMoq.Tests.dll
+  - dotnet test AutoMoq.Tests.csproj
