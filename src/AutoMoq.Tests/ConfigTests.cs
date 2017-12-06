@@ -1,19 +1,17 @@
 using Moq;
-using NUnit.Framework;
-using Should;
+using Xunit;
 
 namespace AutoMoq.Tests
 {
     public class ConfigTests
     {
-        [TestFixture]
         public class MockBehaviorTests
         {
-            [Test]
+            [Fact]
             public void It_should_default_to_loose()
             {
                 var config = new Config();
-                config.MockBehavior.ShouldEqual(MockBehavior.Loose);
+                Assert.Equal(MockBehavior.Loose, config.MockBehavior);
             }
         }
     }

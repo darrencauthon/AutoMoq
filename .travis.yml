@@ -1,9 +1,9 @@
 language: csharp
+mono: none
+dotnet: 2.0.3
+dist: trusty
 solution: src/AutoMoq.sln
-before_install:
-  - sudo apt-get install nunit-console
-before_script:
-  - nuget restore src/AutoMoq.sln
 script:
-  - xbuild /p:Configuration=Release src/AutoMoq.sln
-  - nunit-console /home/travis/build/darrencauthon/AutoMoq/src/AutoMoq.Tests/bin/Release/AutoMoq.Tests.dll /home/travis/build/darrencauthon/AutoMoq/src/AutoMoq.TestFixture.Samples/bin/Release/AutoMoq.TestFixture.Samples.dll
+  - dotnet add src/AutoMoq.Tests/AutoMoq.Tests.csproj package dotnet-xunit
+  - dotnet build src/AutoMoq.sln --configuration Release  
+  - dotnet test src/AutoMoq.Tests/AutoMoq.Tests.csproj

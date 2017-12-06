@@ -1,26 +1,19 @@
-using System;
-using AutoMoq.Helpers;
-using Microsoft.Practices.Unity;
-using Moq;
-using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using Should;
+using Xunit;
 
 namespace AutoMoq.Tests
 {
-    [TestFixture]
     public class AutoMoqListTests
     {
         private AutoMoqer mocker;
 
-        [SetUp]
-        public void Setup()
+        public AutoMoqListTests()
         {
             mocker = new AutoMoqer();
         }
 
-        [Test]
+        [Fact]
         public void Can_register_and_resolve_a_list_using_the_declared_type()
         {
             var dependency = new Dependency();
@@ -30,10 +23,10 @@ namespace AutoMoq.Tests
             mocker.SetInstance(list);
             var thing = mocker.Create<ThingThatHasDependencies>();
 
-            thing.FindOne().ShouldBeSameAs(dependency);
+            Assert.Same(thing.FindOne(), dependency);
         }
 
-        [Test]
+        [Fact]
         public void Can_register_and_resolve_a_list_with_an_explicit_type_provided_to_SetInstance()
         {
             var dependency = new Dependency();
@@ -43,7 +36,7 @@ namespace AutoMoq.Tests
             mocker.SetInstance<IList<Dependency>>(list);
             var thing = mocker.Create<ThingThatHasDependencies>();
 
-            thing.FindOne().ShouldBeSameAs(dependency);
+            Assert.Same(thing.FindOne(), dependency);
         }
     }
 
@@ -51,19 +44,23 @@ namespace AutoMoq.Tests
     {
     }
 
-    public class ThingThatHasDependencies {
+    public class ThingThatHasDependencies
+    {
         private IList<Dependency> innerList;
 
-        public ThingThatHasDependencies(IList<Dependency> dependencies) {
+        public ThingThatHasDependencies(IList<Dependency> dependencies)
+        {
             innerList = dependencies;
         }
 
-        public Dependency FindOne() {
-            if(innerList == null || innerList.Any() == false) {
-              return null;
+        public Dependency FindOne()
+        {
+            if (innerList == null || innerList.Any() == false)
+            {
+                return null;
             }
 
-            return innerList.FirstOrDefault();      
+            return innerList.FirstOrDefault();
         }
     }
 }

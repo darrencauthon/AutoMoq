@@ -1,6 +1,7 @@
-﻿using Moq;
+﻿using AutoMoq;
+using Moq;
 
-namespace AutoMoq.Helpers
+namespace Automoqer.Helpers
 {
     /// <summary>
     /// An auto moq base class that you can use to get AutoMoq setup built-in.

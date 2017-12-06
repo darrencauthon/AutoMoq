@@ -1,28 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Practices.Unity;
-using Moq;
-using NUnit.Framework;
-using Should;
+﻿using Moq;
+using Unity;
+using Xunit;
 
 namespace AutoMoq.Tests
 {
-    [TestFixture]
     public class ConstructorTests
     {
-        [Test]
+        [Fact]
         public void I_can_instantiate_a_working_automoqer_with_no_dependencies()
         {
             var mocker = new AutoMoqer();
 
             var bar = mocker.Create<Bar>();
-            bar.Foo.ShouldBeSameAs(mocker.GetMock<IFoo>().Object);
+            Assert.Same(mocker.GetMock<IFoo>().Object, bar.Foo);
         }
 
-        [Test]
+        [Fact]
         public void I_can_replace_the_unity_container_with_my_own()
         {
             var container = new UnityContainer();
@@ -33,14 +26,14 @@ namespace AutoMoq.Tests
             var mocker = new AutoMoqer(container);
 
             var bar = mocker.Create<Bar>();
-            bar.Foo.ShouldBeSameAs(foo);
+            Assert.Same(foo, bar.Foo);
         }
 
-        [Test]
+        [Fact]
         public void I_can_replace_the_unity_container_with_my_own_through_config()
         {
             var container = new UnityContainer();
-            var config = new Config() {Container = container};
+            var config = new Config() { Container = container };
 
             var foo = new Mock<IFoo>().Object;
             container.RegisterInstance(foo);
@@ -48,7 +41,7 @@ namespace AutoMoq.Tests
             var mocker = new AutoMoqer(config);
 
             var bar = mocker.Create<Bar>();
-            bar.Foo.ShouldBeSameAs(foo);
+            Assert.Same(foo, bar.Foo);
         }
 
         public interface IFoo

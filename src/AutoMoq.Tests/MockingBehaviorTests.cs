@@ -1,13 +1,11 @@
 using Moq;
-using NUnit.Framework;
-using Should;
+using Xunit;
 
 namespace AutoMoq.Tests
 {
-    [TestFixture]
     public class MockingBehaviorTests
     {
-        [Test]
+        [Fact]
         public void It_should_support_loose_mocking()
         {
             var mocker = new AutoMoqer();
@@ -17,11 +15,11 @@ namespace AutoMoq.Tests
             // is a loose mock
         }
 
-        [Test]
+        [Fact]
         public void It_should_support_strict_mocking()
         {
 
-            var config = new Config(){MockBehavior = MockBehavior.Strict};
+            var config = new Config() { MockBehavior = MockBehavior.Strict };
             var mocker = new AutoMoqer(config);
 
             var bar = mocker.Create<Bar>();
@@ -35,11 +33,11 @@ namespace AutoMoq.Tests
             {
                 anErrorWasThrown = true;
             }
-            anErrorWasThrown.ShouldBeTrue();
+            Assert.True(anErrorWasThrown);
 
         }
 
-        [Test]
+        [Fact]
         public void It_should_allow_a_mock_to_be_changed_on_a_mock_by_mock_basis()
         {
             var mocker = new AutoMoqer();
@@ -60,11 +58,12 @@ namespace AutoMoq.Tests
             {
                 anErrorWasThrown = true;
             }
-            anErrorWasThrown.ShouldBeTrue();
+            Assert.True(anErrorWasThrown);
+
 
         }
 
-        [Test]
+        [Fact]
         public void It_should_allow_a_mock_to_be_changed_on_a_mock_by_mock_basis_case_2()
         {
             var mocker = new AutoMoqer();
@@ -86,7 +85,7 @@ namespace AutoMoq.Tests
             {
                 anErrorWasThrown = true;
             }
-            anErrorWasThrown.ShouldBeTrue();
+            Assert.True(anErrorWasThrown);
         }
 
         public class Bar
@@ -135,6 +134,6 @@ namespace AutoMoq.Tests
         {
             void Catch();
         }
-        
+
     }
 }

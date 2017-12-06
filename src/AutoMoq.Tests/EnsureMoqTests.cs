@@ -1,14 +1,13 @@
-﻿using System;
-using Moq;
-using NUnit.Framework;
+﻿using Moq;
+using System;
+using Xunit;
 
 namespace AutoMoq.Tests.PullRequest
 {
-    [TestFixture]
     // ReSharper disable InconsistentNaming
     public class EnsureMoqTests
     {
-        [Test]
+        [Fact]
         public void GetMock_on_interface_returns_mock()
         {
             //Arrange
@@ -18,10 +17,10 @@ namespace AutoMoq.Tests.PullRequest
             var mock = mocker.GetMock<IDependency>();
 
             //Assert
-            Assert.IsNotNull(mock);
+            Assert.NotNull(mock);
         }
 
-        [Test]
+        [Fact]
         public void GetMock_on_concrete_returns_mock()
         {
             //Arrange
@@ -31,11 +30,11 @@ namespace AutoMoq.Tests.PullRequest
             var mock = mocker.GetMock<ConcreteClass>();
 
             //Assert
-            Assert.IsNotNull(mock);
+            Assert.NotNull(mock);
         }
 
 
-        [Test]
+        [Fact]
         public void Create_doesnt_return_mock()
         {
             //Arrange
@@ -45,10 +44,10 @@ namespace AutoMoq.Tests.PullRequest
             var result = mocker.Create<ConcreteClass>().Do();
 
             //Assert
-            Assert.AreEqual("hello", result);
+            Assert.Equal("hello", result);
         }
 
-        [Test]
+        [Fact]
         public void Resolve_is_an_alias_for_create()
         {
             //Arrange
@@ -58,10 +57,10 @@ namespace AutoMoq.Tests.PullRequest
             var result = mocker.Resolve<ConcreteClass>().Do();
 
             //Assert
-            Assert.AreEqual("hello", result);
+            Assert.Equal("hello", result);
         }
 
-        [Test]
+        [Fact]
         public void Create_with_dependency_doesnt_return_mock()
         {
             //Arrange
@@ -71,10 +70,10 @@ namespace AutoMoq.Tests.PullRequest
             var result = mocker.Create<VirtualDependency>().VirtualMethod();
 
             //Assert
-            Assert.AreEqual("hello", result);
+            Assert.Equal("hello", result);
         }
 
-        [Test]
+        [Fact]
         public void Create_with_mocked_dependency_uses_mock()
         {
             //Arrange
@@ -88,11 +87,11 @@ namespace AutoMoq.Tests.PullRequest
             var result = mocker.Create<ClassWithVirtualDependencies>().CallVirtualChild();
 
             //Assert
-            Assert.AreEqual("mocked", result);
+            Assert.Equal("mocked", result);
         }
 
 
-        [Test]
+        [Fact]
         public void Create_with_unbound_concerete_dependency_uses_mock()
         {
             //Arrange
@@ -104,11 +103,11 @@ namespace AutoMoq.Tests.PullRequest
             var mockedResult = new Mock<VirtualDependency>().Object.VirtualMethod();
 
             //Assert
-            Assert.AreEqual((object) mockedResult, result);
+            Assert.Equal((object)mockedResult, result);
         }
 
 
-        [Test]
+        [Fact]
         public void Create_with_constant_concerete_dependency_uses_constant()
         {
             //Arrange
@@ -122,13 +121,13 @@ namespace AutoMoq.Tests.PullRequest
             var result = mocker.Create<ClassWithVirtualDependencies>().GetVirtualProperty();
 
             //Assert
-            Assert.AreEqual((object) constant.PropValue, result);
+            Assert.Equal((object)constant.PropValue, result);
         }
 
-        [Test]
+        [Fact]
         public void Registering_instance_for_Interface_injects_that_Instance()
         {
-             //Arrange
+            //Arrange
             var mocker = new AutoMoqer();
 
             var instance = new Dependency();
@@ -139,7 +138,7 @@ namespace AutoMoq.Tests.PullRequest
             var result = mocker.Create<ClassWithDependencies>().Dependency;
 
             //Assert
-            Assert.AreEqual(instance, result);
+            Assert.Equal(instance, result);
         }
 
     }
