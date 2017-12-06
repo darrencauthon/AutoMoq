@@ -6,5 +6,5 @@ script:
  - dotnet restore
 solution: src/AutoMoq.sln
 script:
-  - xbuild /p:Configuration=Release src/AutoMoq.sln
+  - dotnet build src/AutoMoq.sln --configuration Release --no-restore
   - xunit-console /home/travis/build/darrencauthon/AutoMoq/src/AutoMoq.Tests/bin/Release/AutoMoq.Tests.dll
