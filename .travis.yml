@@ -7,4 +7,3 @@ script:
   - dotnet add src/AutoMoq.Tests/AutoMoq.Tests.csproj package dotnet-xunit
   - dotnet build src/AutoMoq.sln --configuration Release  
   - dotnet test src/AutoMoq.Tests/AutoMoq.Tests.csproj
-  - dotnet xunit src/AutoMoq.Tests/AutoMoq.Tests.csproj
