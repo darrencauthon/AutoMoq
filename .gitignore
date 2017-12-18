@@ -13,3 +13,4 @@ LocalTestRun.testrunconfig
 AutoMoq/TestResult
 *.user
 src/.vs/*
+src/packages/*
