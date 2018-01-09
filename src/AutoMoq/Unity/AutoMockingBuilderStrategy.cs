@@ -17,7 +17,7 @@ namespace AutoMoq.Unity
             this.ioc = ioc;
         }
 
-        public override void PreBuildUp(IBuilderContext context)
+        public override object PreBuildUp(IBuilderContext context)
         {
             var type = GetTheTypeFromTheBuilderContext(context);
             if (AMockObjectShouldBeCreatedForThisType(type))
@@ -27,6 +27,8 @@ namespace AutoMoq.Unity
             }
 
             LoadAnyAbstractDependenciesOf(type);
+
+	        return null;
         }
 
         private void LoadAnyAbstractDependenciesOf(Type type)
