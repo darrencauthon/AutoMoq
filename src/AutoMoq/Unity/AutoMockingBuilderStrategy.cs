@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Practices.ObjectBuilder2;
+using Unity.Builder;
+using Unity.Builder.Strategy;
 
 namespace AutoMoq.Unity
 {
@@ -18,8 +19,9 @@ namespace AutoMoq.Unity
 
         public override void PreBuildUp(IBuilderContext context)
         {
+            base.PreBuildUp(context);
             var type = GetTheTypeFromTheBuilderContext(context);
-            if (AMockObjectShouldBeCreatedForThisType(type))
+            if(AMockObjectShouldBeCreatedForThisType(type))
             {
                 var mock = CreateAMockTrackedByAutoMoq(type);
                 context.Existing = mock.ActualObject;
