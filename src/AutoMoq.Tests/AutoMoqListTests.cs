@@ -1,6 +1,6 @@
 using System;
 using AutoMoq.Helpers;
-using Microsoft.Practices.Unity;
+
 using Moq;
 using NUnit.Framework;
 using System.Collections.Generic;

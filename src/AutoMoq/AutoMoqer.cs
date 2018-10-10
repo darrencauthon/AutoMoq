@@ -1,9 +1,9 @@
 using System;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
-using Microsoft.Practices.Unity;
 using Moq;
 using Moq.Language.Flow;
+using Unity;
 
 [assembly: InternalsVisibleTo("AutoMoq.Tests")]
 

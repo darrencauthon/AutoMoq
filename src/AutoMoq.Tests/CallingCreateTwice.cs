@@ -1,6 +1,7 @@
-﻿using Microsoft.Practices.Unity;
+﻿
 using Moq;
 using NUnit.Framework;
+using Unity;
 
 namespace AutoMoq.Tests
 {

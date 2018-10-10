@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Practices.Unity;
+
 using Moq;
 using NUnit.Framework;
 using Should;
+using Unity;
 
 namespace AutoMoq.Tests
 {
