@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Practices.ObjectBuilder2;
+using Unity.Builder;
+using Unity.Builder.Strategy;
 
 namespace AutoMoq.Unity
 {

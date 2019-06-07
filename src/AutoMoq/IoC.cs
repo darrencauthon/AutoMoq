@@ -1,6 +1,6 @@
 ﻿using System;
 using AutoMoq.Unity;
-using Microsoft.Practices.Unity;
+using Unity;
 
 namespace AutoMoq
 {

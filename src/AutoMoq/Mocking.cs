@@ -72,7 +72,6 @@ namespace AutoMoq
 
             var mock = (Mock) result.MockObject;
 
-            RegisterThisObjectInTheIoCContainer(type, mock);
             RegisterThisMockWithAutoMoq(type, mock);
 
             return result;

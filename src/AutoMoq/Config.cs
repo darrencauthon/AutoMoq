@@ -1,5 +1,5 @@
-﻿using Microsoft.Practices.Unity;
-using Moq;
+﻿using Moq;
+using Unity;
 
 namespace AutoMoq
 {
