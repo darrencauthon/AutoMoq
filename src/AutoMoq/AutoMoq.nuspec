@@ -7,7 +7,7 @@
     <authors>Darren Cauthon</authors>
     <owners>Darren Cauthon</owners>
     <licenseUrl>https://github.com/darrencauthon/AutoMoq/blob/master/license.txt</licenseUrl>
-    <projectUrl>https://github.com/darrencauthon/AutoMoq</projectUrl>
+    <projectUrl>https://github.com/dariusz-wozniak/Automoqer</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Fork of AutoMoq (with updated packages)</description>
     <releaseNotes>Updated Moq (4.16.1) and other dependencies</releaseNotes>
