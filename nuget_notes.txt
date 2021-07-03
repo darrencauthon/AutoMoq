@@ -11,4 +11,4 @@ Open Visual Studio, clean the solution, then build a new Release Build.
 
 Build the nuget package:
 
-nuget pack src/AutoMoq/AutoMoq.csproj -Prop Configuration=Release
+nuget pack src/AutoMoq/AutoMoq.csproj
