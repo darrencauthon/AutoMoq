@@ -1,21 +1,17 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>AutoMoq</id>
-    <version>2.0.0.0</version>
-    <title>AutoMoq</title>
+    <id>dariusz-wozniak.AutoMoq</id>
+    <version>2.1.1.0</version>
+    <title>dariusz-wozniak.AutoMoq</title>
     <authors>Darren Cauthon</authors>
     <owners>Darren Cauthon</owners>
     <licenseUrl>https://github.com/darrencauthon/AutoMoq/blob/master/license.txt</licenseUrl>
-    <projectUrl>https://github.com/darrencauthon/AutoMoq</projectUrl>
+    <projectUrl>https://github.com/dariusz-wozniak/AutoMoq</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Auto-mocking container</description>
-    <releaseNotes>Upgraded Unity to 4.</releaseNotes>
-    <copyright>Copyright 2010-2016</copyright>
+    <description>Fork of AutoMoq (with updated packages)</description>
+    <releaseNotes>Updated project URL in NuGet specification</releaseNotes>
+    <copyright>Copyright 2010-2021</copyright>
     <tags>moq unity tdd testing test</tags>
-    <dependencies>
-        <dependency id="Unity" version="(4.0,)" />
-        <dependency id="Moq" version="(4.0,)" />
-    </dependencies>
   </metadata>
 </package>

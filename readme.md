@@ -1,5 +1,12 @@
+Fork of the AutoMoqer that has updated dependencies (such as Moq).
+
+Available at Nuget (fork): [![NuGet](https://buildstats.info/nuget/dariusz-wozniak.AutoMoq)](https://www.nuget.org/packages/dariusz-wozniak.AutoMoq/)
+
+Original readme just below the line 👇
+
+---
+
 # AutoMoq
-[![Build Status](https://travis-ci.org/darrencauthon/AutoMoq.svg?branch=master)](https://travis-ci.org/darrencauthon/AutoMoq)
 
 AutoMoqer is an "auto-mocking" container that creates objects for you. Just tell it what class to create and it will create it.
 

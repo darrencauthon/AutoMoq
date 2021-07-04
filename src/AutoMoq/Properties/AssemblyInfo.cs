@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 
-[assembly: AssemblyTitle("AutoMoq")]
-[assembly: AssemblyDescription("Automocker for Moq.")]
+[assembly: AssemblyTitle("dariusz-wozniak.AutoMoq")]
+[assembly: AssemblyDescription("Fork of AutoMoq (with updated packages)")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("AutoMoq")]
+[assembly: AssemblyProduct("dariusz-wozniak.AutoMoq")]
 [assembly: AssemblyCopyright("Copyright © Darren Cauthon 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 
-[assembly: Guid("e6f813c5-0225-4f79-824c-ac21b49decc9")]
+[assembly: Guid("ab516e1f-f86f-46e4-8fab-87fad3b58d39")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -35,5 +35,5 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("2.0.0.0")]
-[assembly: AssemblyFileVersion("2.0.0.0")]
+[assembly: AssemblyVersion("2.1.1.0")]
+[assembly: AssemblyFileVersion("2.1.1.0")]
