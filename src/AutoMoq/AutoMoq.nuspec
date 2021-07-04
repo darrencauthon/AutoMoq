@@ -2,15 +2,15 @@
 <package >
   <metadata>
     <id>dariusz-wozniak.AutoMoq</id>
-    <version>2.1.0.0</version>
+    <version>2.1.1.0</version>
     <title>dariusz-wozniak.AutoMoq</title>
     <authors>Darren Cauthon</authors>
     <owners>Darren Cauthon</owners>
     <licenseUrl>https://github.com/darrencauthon/AutoMoq/blob/master/license.txt</licenseUrl>
-    <projectUrl>https://github.com/dariusz-wozniak/Automoqer</projectUrl>
+    <projectUrl>https://github.com/dariusz-wozniak/AutoMoq</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Fork of AutoMoq (with updated packages)</description>
-    <releaseNotes>Updated Moq (4.16.1) and other dependencies</releaseNotes>
+    <releaseNotes>Updated project URL in NuGet specification</releaseNotes>
     <copyright>Copyright 2010-2021</copyright>
     <tags>moq unity tdd testing test</tags>
   </metadata>
